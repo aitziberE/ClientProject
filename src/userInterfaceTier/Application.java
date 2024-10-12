@@ -5,7 +5,6 @@
  */
 package userInterfaceTier;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,14 +14,14 @@ import javafx.stage.Stage;
  *
  * @author Aitziber
  */
-public class Application extends Application {
-    
+public class Application extends javafx.application.Application {
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
-        
+        Parent root = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.show();
     }
@@ -33,5 +32,5 @@ public class Application extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

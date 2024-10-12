@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane alignment="CENTER" hgap="10" vgap="10" prefHeight="505.0" prefWidth="762.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userInterfaceTier.FXMLDocumentController">
+    <padding>
+        <Insets bottom="20" left="50" right="50" top="20"/>
+    </padding>
+
+    <!-- Contenedor central para el formulario de inicio de sesión -->
+    <StackPane GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <VBox alignment="CENTER" spacing="10" maxWidth="300" style="-fx-background-color: #ffffff; -fx-padding: 20; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0.5, 0, 4);">
+            <Label text="Login" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <!-- Campo de texto para nombre de usuario -->
+            <Label text="Username:" style="-fx-font-size: 14px;"/>
+            <TextField fx:id="usernameField" maxWidth="200" promptText="Enter username"/>
+
+            <!-- Campo de texto para contraseña con botón de mostrar/ocultar -->
+            <Label text="Password:" style="-fx-font-size: 14px;"/>
+            <HBox alignment="CENTER_LEFT" spacing="5">
+                <PasswordField fx:id="passwordField" maxWidth="200" promptText="Enter password"/>
+                <Button fx:id="togglePasswordButton" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fx:id="eyeIcon" fitHeight="15" fitWidth="15">
+                            <!-- <Image url="@/path/to/eye_icon.png"/> -->
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </HBox>
+
+            <!-- Botón de inicio de sesión -->
+            <Button maxWidth="200" text="Login" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 5;"/>
+        </VBox>
+    </StackPane>
+
+    <!-- Columnas y filas para organizar el GridPane -->
+    <columnConstraints>
+        <ColumnConstraints/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints/>
+    </rowConstraints>
+</GridPane>
