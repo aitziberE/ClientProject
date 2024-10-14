@@ -35,7 +35,7 @@
                 <Button fx:id="togglePasswordButton" styleClass="btnEye">
                     <graphic>
                         <ImageView fx:id="eyeIcon" fitHeight="15" fitWidth="15">
-                            <!-- <Image url="@/path/to/eye_icon.png"/> -->
+                            <!-- <Image url="eye_open.png"/> -->
                         </ImageView>
                     </graphic>
                 </Button>
