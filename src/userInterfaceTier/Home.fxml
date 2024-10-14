@@ -25,7 +25,7 @@
    <children>
       <BorderPane layoutX="-3.0" prefHeight="400.0" prefWidth="600.0">
          <top>
-            <HBox prefHeight="62.0" prefWidth="600.0" spacing="100.0" BorderPane.alignment="CENTER">
+            <HBox id="HBox_header" prefHeight="62.0" prefWidth="600.0" spacing="100.0" BorderPane.alignment="CENTER">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome " />
                   <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Log Out">
@@ -40,7 +40,7 @@
             </HBox>
          </top>
          <left>
-            <VBox prefHeight="288.0" prefWidth="128.0" BorderPane.alignment="CENTER">
+            <VBox id="HBox_left" prefHeight="288.0" prefWidth="128.0" BorderPane.alignment="CENTER">
                <children>
                   <Avatar>
                      <contextMenu>
@@ -85,7 +85,7 @@
             </VBox>
          </right>
          <bottom>
-            <GridPane prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <GridPane id="HBox_footer" prefHeight="50.0" prefWidth="600.0" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

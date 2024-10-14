@@ -5,3 +5,24 @@
 .mainFxmlClass {
 
 }
+#HBox_header{
+    -fx-background-color: #bce0ff;
+
+}
+#HBox_header Text {
+    -fx-fill: #1b365c;
+}
+
+#HBox_left{
+    -fx-background-color: #8cb0cd;
+}
+#HBox_left Text {
+    -fx-fill: #003B4A;
+}
+
+#HBox_footer{
+    -fx-background-color: #002e46;
+}
+#HBox_footer Text {
+    -fx-fill: #E8E8E8;
+}
