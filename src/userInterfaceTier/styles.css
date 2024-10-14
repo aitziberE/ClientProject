@@ -6,6 +6,13 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.5, 0, 4);
 }
 
+.HBox {
+      -fx-background-color: #ffffff; 
+    -fx-padding: 20; 
+    -fx-background-radius: 10; 
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.5, 0, 4);
+}
+
 /* Estilos para el título de la etiqueta */
 .lblTitle {
     -fx-font-size: 20px; 
@@ -39,4 +46,24 @@
 
 .linkSignUp:hover {
     -fx-text-fill: #0056b3;  /* Color más oscuro al pasar el cursor */
+}
+
+.gridPane {
+  
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.5, 0, 4);
+    -fx-border-color: transparent;
+    -fx-hgap: 0;                     /* Sin espaciado horizontal */
+    -fx-vgap: 0;                     /* Sin espaciado vertical */
+    -fx-border-color: transparent; 
+    .gridPane > .label {
+    -fx-alignment: CENTER_RIGHT;/* Borde transparente entre celdas */
+}
+.text-field {
+    -fx-background-color: #f9f9f9;         /* Fondo suave para los TextFields */
+    -fx-border-color: transparent;         /* Sin borde visible alrededor de los TextFields */
+    -fx-padding: 5 10;    
+    /* Añadir algo de padding dentro de los campos */
 }
