@@ -25,8 +25,17 @@
                <children>
                   <HBox prefHeight="49.0" prefWidth="600.0">
                      <children>
-                        <Text id="lblWelcome" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="Welcome" />
-                        <Button id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text id="lblWelcome" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="Welcome" />
+                           </children>
+                        </StackPane>
+                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Button id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
+                           </children>
+                        </StackPane>
                      </children>
                   </HBox>
                </children>
@@ -37,15 +46,24 @@
                <children>
                   <VBox prefHeight="219.0" prefWidth="135.0">
                      <children>
-                        <ImageView id="imgProfile" fitHeight="99.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../resources/avatar.png" />
-                           </image>
-                           <clip>
-                               <Circle centerX="50" centerY="50" radius="50" />
-                           </clip>
-                        </ImageView>
-                        <Text id="lblName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <ImageView id="imgProfile" fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/avatar.png" />
+                                 </image>
+                                 <clip>
+                                     <Circle centerX="50" centerY="50" radius="50" />
+                                 </clip>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text id="lblName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
+                           </children>
+                        </StackPane>
                      </children></VBox>
                </children>
             </StackPane>
@@ -53,34 +71,38 @@
          <center>
             <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="vBox" BorderPane.alignment="CENTER">
                <children>
-                  <VBox prefHeight="219.0" prefWidth="473.0">
+                  <VBox prefHeight="219.0" prefWidth="473.0" spacing="10">
                      <children>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                                  <children>
-                                    <VBox prefHeight="200.0" prefWidth="346.0">
+                                    <VBox prefHeight="200.0" prefWidth="346.0" spacing="10">
                                        <children>
-                                          <Text id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblInput" text="Email" />
+                                          <Text id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
                                           <TextField id="txtfieldEmail" promptText="example@email.com" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                              <children>
-                                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
+                                                <TextField id="txtfieldStreet" promptText="example Street" />
+                                             </children>
+                                          </VBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10">
+                                             <children>
+                                                <StackPane prefHeight="150.0" prefWidth="200.0">
                                                    <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Street" />
-                                                      <TextField id="txtfieldStreet" promptText="example Street" />
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
+                                                         <children>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
+                                                         </children>
+                                                      </VBox>
                                                    </children>
-                                                </VBox>
-                                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                                </StackPane>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                                    <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="City" />
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
-                                                   </children>
-                                                </VBox>
-                                                <VBox prefHeight="200.0" prefWidth="100.0">
-                                                   <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ZIP" />
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
                                                       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
                                                    </children>
                                                 </VBox>
@@ -88,7 +110,8 @@
                                           </HBox>
                                        </children>
                                     </VBox>
-                                 </children></AnchorPane>
+                                 </children>
+                              </AnchorPane>
                           </content>
                         </ScrollPane>
                      </children></VBox>
@@ -96,9 +119,16 @@
             </StackPane>
          </center>
          <bottom>
-            <StackPane prefHeight="82.0" prefWidth="600.0" styleClass="vBox" BorderPane.alignment="CENTER">
+            <StackPane prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #4CAF50;" styleClass="vBox" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Authors: Aitziber Eskizabel, Ander Moreno, Iñigo Freire, Pablo Rodriguez" textAlignment="RIGHT" wrappingWidth="557.6570663452148" />
+                           </children>
+                        </StackPane>
+                     </children></HBox>
                </children>
             </StackPane>
          </bottom>
