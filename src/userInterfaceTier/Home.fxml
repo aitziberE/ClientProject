@@ -79,7 +79,7 @@
                                     <VBox prefHeight="200.0" prefWidth="346.0" spacing="10">
                                        <children>
                                           <Text id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
-                                          <Text id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="example@emailcom" wrappingWidth="344.9619140625" />
+                                          <Text id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="example@emailcom" wrappingWidth="344.9619140625" />
                                           <Text id="lblAddress" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
                                           <VBox prefHeight="55.0" prefWidth="346.0" spacing="10">
                                              <children>
