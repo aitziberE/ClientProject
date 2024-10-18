@@ -180,3 +180,10 @@
                         </VBox>
                     </children>
                 </StackPane>
+            </children>
+            <opaqueInsets>
+                <Insets bottom="20.0" left="50.0" right="50.0" top="20.0" />
+            </opaqueInsets>
+        </GridPane>
+    </children>
+</Pane>
