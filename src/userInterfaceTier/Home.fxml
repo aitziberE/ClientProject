@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -61,7 +60,7 @@
                         </StackPane>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Text id="lblName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
+                              <Text id="lblUserName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
                            </children>
                         </StackPane>
                      </children></VBox>
@@ -80,12 +79,12 @@
                                     <VBox prefHeight="200.0" prefWidth="346.0" spacing="10">
                                        <children>
                                           <Text id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
-                                          <TextField id="txtfieldEmail" promptText="example@email.com" />
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
+                                          <Text id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="example@emailcom" wrappingWidth="344.9619140625" />
+                                          <Text id="lblAddress" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
+                                          <VBox prefHeight="55.0" prefWidth="346.0" spacing="10">
                                              <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
-                                                <TextField id="txtfieldStreet" promptText="example Street" />
+                                                <Text id="lblStreet" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
+                                                <Text id="lblUserStreet" strokeType="OUTSIDE" strokeWidth="0.0" text="example street" wrappingWidth="344.8642578125" />
                                              </children>
                                           </VBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" spacing="10">
@@ -94,16 +93,16 @@
                                                    <children>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                                          <children>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
+                                                            <Text id="lblCity" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
+                                                            <Text id="lblUserCity" strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </StackPane>
                                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                                    <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
+                                                      <Text id="lblZip" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
+                                                      <Text id="lblUserZip" strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -125,7 +124,7 @@
                      <children>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Authors: Aitziber Eskizabel, Ander Moreno, Iñigo Freire, Pablo Rodriguez" textAlignment="RIGHT" wrappingWidth="557.6570663452148" />
+                              <Text id="lblAuthors" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Authors: Aitziber Eskizabel, Ander Moreno, Iñigo Freire, Pablo Rodriguez" textAlignment="RIGHT" wrappingWidth="557.6570663452148" />
                            </children>
                         </StackPane>
                      </children></HBox>

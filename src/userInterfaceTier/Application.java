@@ -19,11 +19,12 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-
+        scene.getStylesheets().add(getClass().getResource("home.css").toExternalForm());
+        stage.setScene(scene);
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }
