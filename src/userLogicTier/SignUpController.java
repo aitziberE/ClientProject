@@ -1,72 +1,83 @@
 package userLogicTier;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class SignUpController {
 
+    // 
     @FXML
-    private TextField nameField;
+    private TextField tfName;
 
     @FXML
-    private TextField emailField;
+    private TextField tfEmail;
 
     @FXML
-    private TextField passwordField;
+    private TextField tfPassword;
 
     @FXML
-    private TextField addressField;
+    private TextField tfAddess;
 
     @FXML
-    private TextField cityField;
+    private TextField tfCity;
 
     @FXML
-    private TextField zipField;
+    private TextField tfZip;
 
     @FXML
-    private Button signUpButton;
+    private Button btnSignUp;
 
     @FXML
-    private Hyperlink signInLink;
+    private Hyperlink hlSignIn;
 
     @FXML
     private Label lblError;
 
     @FXML
+    private CheckBox cbActive;
+
+    @FXML
+    @SuppressWarnings("Convert2Lambda")
     public void initialize() {
         lblError.setText("");
-        
-        signUpButton.setOnAction(event -> SignUp());
 
-        signInLink.setOnAction(event -> SignInRedirect());
+        btnSignUp.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                SignUp();
+            }
+        });
+
     }
 
     private void SignUp() {
-        String name = nameField.getText();
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        String address = addressField.getText();
-        String city = cityField.getText();
-        String zip = zipField.getText();
+        String name = tfName.getText();
+        String email = tfEmail.getText();
+        String password = tfPassword.getText();
+        String address = tfAddess.getText();
+        String city = tfCity.getText();
+        String zip = tfZip.getText();
 
-        // Validar que todos los campos estén llenos
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty()) {
             lblError.setText("Please fill out all fields.");
             return;
         }
-        
+
         if (!email.contains("@")) {
             lblError.setText("Please enter a valid email address.");
             return;
         }
-                
+
     }
 
     // Método que redirige a la ventana de "Sign In"
     private void SignInRedirect() {
-        
+
     }
 }
