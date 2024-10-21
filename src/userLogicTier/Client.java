@@ -14,19 +14,14 @@ import userLogicTier.model.User;
 public class Client implements Signable {
 
     @Override
-    public void signUp() {
-        
-        //
-        
+    public void signUp(User user) {
+
     }
 
     @Override
-    public User signIn() {
-        
-        //
-        
-        User user = new User();
+    public User signIn(User user) {
+
         return user;
     }
-    
+
 }

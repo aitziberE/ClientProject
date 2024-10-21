@@ -104,18 +104,22 @@ public class SignUpController {
     //Si se produce alguna excepción en esta respuesta atraparla y mostrar un mensaje de alerta con el mensaje de la excepción.
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
 
+        //Comprobar que todo esté lleno
         if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfAddess.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
             lblError.setText("Please fill out all fields.");
-            //
+            //Se pasan los valores a strings y boolean
         } else {
-            User user = new User();
-
             String name = tfName.getText();
             String email = tfEmail.getText();
             String password = tfPassword.getText();
             String address = tfAddess.getText();
             String city = tfCity.getText();
             String zip = tfZip.getText();
+            boolean isActive = cbActive.isSelected();
+            
+            //creamos el usuario pasando los datos
+            User user = new User(name, email, password, address, city, zip, isActive);
+            
         }
     }
 }
