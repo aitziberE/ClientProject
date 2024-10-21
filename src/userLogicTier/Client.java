@@ -13,14 +13,14 @@ import userLogicTier.model.User;
  */
 public class Client implements Signable {
 
-    @Override
+    //@Override
     public void signUp() {
         
         //
         
     }
 
-    @Override
+    //@Override
     public User signIn() {
         
         //

@@ -25,11 +25,11 @@
             <Label styleClass="lblTitle" text="Sign in" />
 
             <Label styleClass="lblInput" text="Username:" />
-            <TextField fx:id="usernameField" maxWidth="309.0" prefHeight="26.0" prefWidth="159.0" promptText="Enter username" />
+            <TextField fx:id="tfUsername" maxWidth="309.0" prefHeight="26.0" prefWidth="159.0" promptText="Enter username" />
 
             <Label styleClass="lblInput" text="Password:" />
             <HBox alignment="CENTER_LEFT" spacing="5">
-                <PasswordField fx:id="passwordField" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
+                <PasswordField fx:id="tfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
                 <Button fx:id="eyeIcon" prefHeight="30.0" prefWidth="46.0" textAlignment="CENTER">
                     <graphic>
                         <ImageView fitHeight="16.0" fitWidth="31.0">
