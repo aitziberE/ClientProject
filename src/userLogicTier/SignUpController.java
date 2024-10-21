@@ -43,23 +43,28 @@ public class SignUpController {
     @FXML
     private CheckBox cbActive;
 
-    public void initialize(Stage stage) {
-
+    public void setStage(Stage stage) {
         //Establecer el título de la ventana al valor “SignUp”.
         stage.setTitle("Sign Up");
+
         //La ventana no debe ser redimensionable
         stage.setResizable(false);
+
         //Mostrar la ventana.
         stage.show();
+
         //Borrar texto en lblError
         lblError.setText("");
-        //En caso de producirse alguna excepción, se mostrará un mensaje al usuario con el texto de la misma.
+    }
 
-        //Cuando pierden el foco
+    public void initialize() {
+        System.out.println("initializing...");
+
+        // Cuando pierden el foco
         tfEmail.focusedProperty().addListener(this::handleFocusProperyLostEmail);
         tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
 
-        //Validar que todos los campos han sido rellenados.
+        // Validar que todos los campos han sido rellenados
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
@@ -116,10 +121,10 @@ public class SignUpController {
             String city = tfCity.getText();
             String zip = tfZip.getText();
             boolean isActive = cbActive.isSelected();
-            
+
             //creamos el usuario pasando los datos
             User user = new User(name, email, password, address, city, zip, isActive);
-            
+
         }
     }
 }
