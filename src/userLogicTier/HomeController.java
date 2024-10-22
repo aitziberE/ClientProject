@@ -26,6 +26,12 @@ public class HomeController {
 
     @FXML
     private Text lblUserName;
+    
+    @FXML
+    private Text lblUserEmail;
+    
+    @FXML
+    private Text lblUserStreet;
 
     public HomeController() {
 
@@ -33,6 +39,10 @@ public class HomeController {
 
     public void setUser(User user) {
         this.user = user;
+        
+        if (lblUserName != null) {
+            updateUserInfo();
+        }
     }
 
     /**
@@ -41,8 +51,16 @@ public class HomeController {
     @FXML
     public void initialize() {
         System.out.println("initializing...");
+        
+        if (user != null) {
+            updateUserInfo();
+        }
+    }
 
+    private void updateUserInfo() {
         lblUserName.setText(user.getName());
+        lblUserEmail.setText(user.getEmail());
+        
     }
 }
 
