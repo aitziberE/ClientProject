@@ -3,6 +3,8 @@ package userLogicTier;
 import java.io.IOException;
 import java.util.IllegalFormatException;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,7 +33,7 @@ public class SignUpController {
     private TextField tfPassword;
 
     @FXML
-    private TextField tfAddess;
+    private TextField tfAddress;
 
     @FXML
     private TextField tfCity;
@@ -44,6 +46,8 @@ public class SignUpController {
 
     @FXML
     private Hyperlink hlSignIn;
+    @FXML 
+    private Button btnShowPassword;
 
     @FXML
     private Label lblError;
@@ -51,124 +55,124 @@ public class SignUpController {
     @FXML
     private CheckBox cbActive;
 
-    public void initialize(Stage stage) {
-
+   public void setStage(Stage stage) {
         //Establecer el título de la ventana al valor “SignUp”.
         stage.setTitle("Sign Up");
+
         //La ventana no debe ser redimensionable
         stage.setResizable(false);
+
         //Mostrar la ventana.
         stage.show();
+
         //Borrar texto en lblError
         lblError.setText("");
-        //En caso de producirse alguna excepción, se mostrará un mensaje al usuario con el texto de la misma.
-        
-        //Cuando pierden el foco
-        tfEmail.focusedProperty().addListener(this::handleFocusProperyLostEmail);
-        
-      
-        //Cuando pierde el foco
-        tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
-        
-        
-       
-        
-        //Validar que todos los campos han sido rellenados.
-        this.btnSignUp.setOnAction(this::handleSignUpButtonAction);
-        hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
     }
 
-    
-    //Al perder el foco del campo de texto, se realiza una comprobación para determinar si el texto introducido cumple con el formato requerido (email@dominio.extensión).
-    //Si no es válido, producir una IllegalFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un email válido”.
-    private void handleFocusProperyLostEmail(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (!oldValue){
-                    String email = tfEmail.getText();  
-        
-        // Expresión regular para validar el formato del email
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
-        
-            if (!email.matches(emailRegex)) 
-     
-            // Mostrar mensaje de error
-            System.out.println("Introduzca un email válido");
-            
+    public void initialize() {
+        System.out.println("initializing...");
 
+        // Cuando pierden el foco
+        tfEmail.focusedProperty().addListener(this::handleFocusPropertyLostEmail);
+        tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
+
+        // Cuando se pulsan
+        // El fokin boton solo se pulsa si le das en el borde superior muy justo
+        btnSignUp.setOnAction(this::handleSignUpButtonAction);
+        hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
+
+    }
+
+// Al perder el foco del campo de texto, se realiza una comprobación para determinar si el texto introducido
+// cumple con el formato requerido (email@dominio.extensión).
+// Si no es válido, producir una IllegalFormatException que se atrapará al final de esta respuesta para mostrar 
+// el mensaje “Introduzca un email válido”.
+    private void handleFocusPropertyLostEmail(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (oldValue) {  // Solo se ejecuta cuando se pierde el foco
+            String email = tfEmail.getText();
+
+            // Patrón para validar el formato de email
+            Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+            Matcher matcher = modelo.matcher(email);
+
+            if (!matcher.matches()) {
+                lblError.setText("Incorrect email format");
+                // Si el email no cumple con el formato, se lanza la excepción
+            } else {
+                lblError.setText("");
+            }
         }
     }
-    
+
     // Faltan manejo de erroresssss   
-    
-    
-    
-    
     //Al perder el foco del campo de texto, validar que el campo contiene un valor java.lang.Integer con una longitud de 5 caracteres.
     //Si no es válido, producir una NumberFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un código postal válido”.
-    private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldValue, Boolean newValue) {
 
-          if (!oldValue) {  
-        String zipCode = tfZip.getText();  
+    if (!oldValue) { 
+        String zipCode = tfZip.getText();
 
         try {
             // Verificar que el valor pueda ser convertido a un Integer y tenga 5 caracteres
             if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
-                throw new NumberFormatException("Código postal no válido");
+                System.out.println("Introduzca un ZIP válido de 5 dígitos");
+            } else {
+
+                System.out.println("");
             }
 
-            // Intentar convertir el valor a un número entero
-            Integer.parseInt(zipCode);
-
         } catch (NumberFormatException e) {
-            // Mostrar mensaje de error si el valor no es válido
-            System.out.println("Introduzca un código postal válido");
+            // Manejar el caso donde no se puede convertir a un número entero
+            System.out.println("El código postal no es un número válido.");
         }
     }
+}
 
-    }
-    
 
-    
     //Si está seleccionada, el valor de la checkbox será true, y en caso contrario false. 
     private void handleActiveCheckboxSelectedProperty() {
         boolean isSelected;
     }
-    
+
     //Pedir confirmación al usuario para salir de la ventana SignUp y abrir la ventana SignIn:
     //Si el usuario confirma, se redirigirá a la ventana SignIn.
     //Si no confirma, mantenerse en la ventana.
     private void handleSignInHyperLinkAction(ActionEvent actionEvent) {
 
-     // Crear un cuadro de diálogo de confirmación
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle("Confirmación");
-    alert.setHeaderText("Estás a punto de salir");
-    alert.setContentText("¿Estás seguro de que deseas salir de la ventana de registro y volver a la ventana de inicio de sesión?");
-    
-    // Obtener la respuesta del usuario
-    Optional<ButtonType> result = alert.showAndWait();
-    
-    // Si el usuario confirma la salida
-    if (result.isPresent() && result.get() == ButtonType.OK) {
-        // Cerrar la ventana actual de SignUp
-        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
-        
-        // Abrir la ventana de SignIn
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("SignIn");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Crear un cuadro de diálogo de confirmación
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación");
+        alert.setHeaderText("Estás a punto de salir");
+        alert.setContentText("¿Estás seguro de que deseas salir de la ventana de registro y volver a la ventana de inicio de sesión?");
+
+        // Obtener la respuesta del usuario
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Si el usuario confirma la salida
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Cerrar la ventana actual de SignUp
+            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+
+            // Abrir la ventana de SignIn
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setTitle("SignIn");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-    } 
-    // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
+        // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
     }
+     
     
+    
+    // mostrar la contraseña en el tfPassword solo cuando el el botón esté cargado
     private void handleShowPasswordButtonArmedProperty() {
-        
+
     }
 
     //Validar que todos los campos han sido rellenados.
@@ -188,13 +192,11 @@ public class SignUpController {
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
 
         //User user = new User();
-
         //ClientFactory.getSignable().signUp();
-
         String name = tfName.getText();
         String email = tfEmail.getText();
         String password = tfPassword.getText();
-        String address = tfAddess.getText();
+        String address = tfAddress.getText();
         String city = tfCity.getText();
         String zip = tfZip.getText();
 
@@ -203,8 +205,6 @@ public class SignUpController {
             return;
         }
     }
-    
-    private void handleStageOnCloseRequest() {
-        
-    }
+
+
 }
