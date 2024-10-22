@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -29,8 +30,13 @@
 
             <Label styleClass="lblInput" text="Password:" />
             <HBox alignment="CENTER_LEFT" spacing="5">
-                <PasswordField fx:id="tfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
-                <Button fx:id="eyeIcon" prefHeight="30.0" prefWidth="46.0" textAlignment="CENTER">
+            <AnchorPane prefHeight="30.0" prefWidth="126.0">
+               <children>
+                      <TextField fx:id="tfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171" />
+                      <PasswordField fx:id="pfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
+               </children>
+            </AnchorPane>
+                <Button fx:id="btnShowPassword" prefHeight="30.0" prefWidth="46.0" textAlignment="CENTER">
                     <graphic>
                         <ImageView fitHeight="16.0" fitWidth="31.0">
                             <image>
@@ -41,9 +47,9 @@
                 </Button>
             </HBox>
 
-            <Button maxWidth="217.0" prefHeight="30.0" prefWidth="217.0" styleClass="btnSignIn" text="Sign In" />
+                  <Button fx:id="btnSignIn" maxWidth="217.0" prefHeight="30.0" prefWidth="217.0" styleClass="btnSignIn" text="Sign In" />
 
-            <Label fx:id="errorMessage" style="-fx-text-fill: red;" text="wrong username or password" visible="false" />
+            <Label fx:id="lblError" style="-fx-text-fill: red;" text="wrong username or password" visible="false" />
 
             <HBox alignment="CENTER" spacing="5">
                 <Label styleClass="lblInput" text="Don't have an account?" />
