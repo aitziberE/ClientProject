@@ -23,7 +23,7 @@ public class SignUpController {
     private TextField tfPassword;
 
     @FXML
-    private TextField tfAddess;
+    private TextField tfAddress;
 
     @FXML
     private TextField tfCity;
@@ -64,7 +64,8 @@ public class SignUpController {
         tfEmail.focusedProperty().addListener(this::handleFocusProperyLostEmail);
         tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
 
-        // Validar que todos los campos han sido rellenados
+        // Cuando se pulsan
+        // El fokin boton solo se pulsa si le das en el borde superior muy justo
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
@@ -107,24 +108,24 @@ public class SignUpController {
     //Notification_type: valor por defecto (“email”)
     //Llamar al método de lógica signUp pasándole el objeto creado en el punto anterior.
     //Si se produce alguna excepción en esta respuesta atraparla y mostrar un mensaje de alerta con el mensaje de la excepción.
-    private void handleSignUpButtonAction(ActionEvent actionEvent) {
+        private void handleSignUpButtonAction(ActionEvent actionEvent) {
 
-        //Comprobar que todo esté lleno
-        if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfAddess.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
-            lblError.setText("Please fill out all fields.");
-            //Se pasan los valores a strings y boolean
-        } else {
-            String name = tfName.getText();
-            String email = tfEmail.getText();
-            String password = tfPassword.getText();
-            String address = tfAddess.getText();
-            String city = tfCity.getText();
-            String zip = tfZip.getText();
-            boolean isActive = cbActive.isSelected();
+            //Comprobar que todo esté lleno
+            if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
+                lblError.setText("Please fill out all fields");
+                //Se pasan los valores a strings y boolean
+            } else {
+                String name = tfName.getText();
+                String email = tfEmail.getText();
+                String password = tfPassword.getText();
+                String address = tfAddress.getText();
+                String city = tfCity.getText();
+                String zip = tfZip.getText();
+                boolean isActive = cbActive.isSelected();
 
-            //creamos el usuario pasando los datos
-            User user = new User(name, email, password, address, city, zip, isActive);
-
+                //creamos el usuario pasando los datos
+                User user = new User(name, email, password, address, city, zip, isActive);
+                ClientFactory.getSignable().signUp(user);
+            }
         }
-    }
 }
