@@ -2,8 +2,6 @@ package userLogicTier;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.input.MouseEvent;
@@ -77,14 +75,13 @@ public class SignUpController {
 
         //Mostrar la ventana.
         stage.show();
-
-        //Borrar texto en lblError
-        lblError.setText("");
     }
 
     public void initialize() {
         System.out.println("initializing...");
 
+        //Borrar texto en lblError
+        lblError.setText("");
         // Cuando pierden el foco
         tfEmail.focusedProperty().addListener(this::handleFocusPropertyLostEmail);
         tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
@@ -162,6 +159,7 @@ public class SignUpController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();
@@ -227,6 +225,25 @@ public class SignUpController {
                     User user = new User(name, email, password, address, city, zipCode, isActive);
                     // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
                     ClientFactory.getSignable().signUp(user);
+
+                    try {
+                        // Abrir la ventana de Home
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/Home.fxml"));
+
+                        Parent root = loader.load();
+                        HomeController homeController = loader.getController();
+                        homeController.setUser(user);
+
+                        Stage stage = new Stage();
+                        stage.setResizable(false);
+                        stage.setTitle("Home");
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                    } catch (IOException ex) {
+                        lblError.setText("Error opening Home window");
+                        ex.printStackTrace();
+                    }
+
                 }
             }
 
