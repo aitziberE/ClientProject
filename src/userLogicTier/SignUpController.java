@@ -2,6 +2,8 @@ package userLogicTier;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.input.MouseEvent;
@@ -23,9 +25,8 @@ import userLogicTier.model.User;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
-
 /**
- * 
+ *
  * @author Pablo
  * @author Ander
  */
@@ -144,29 +145,30 @@ public class SignUpController {
 
         // Crear un cuadro de diálogo de confirmación
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText("Estás a punto de salir");
-        alert.setContentText("¿Estás seguro de que deseas salir de la ventana de registro y volver a la ventana de inicio de sesión?");
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("You are about to exit");
+        alert.setContentText("Are you sure you want to leave the registration window and return to the login window?");
 
         // Obtener la respuesta del usuario
         Optional<ButtonType> result = alert.showAndWait();
 
         // Si el usuario confirma la salida
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Cerrar la ventana actual de SignUp
-            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-
-            // Abrir la ventana de SignIn
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
+                // Cerrar la ventana actual de SignUp
+                ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+
+                // Abrir la ventana de SignIn
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                lblError.setText("Error opening Sign In window");
             }
+
         }
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
     }
