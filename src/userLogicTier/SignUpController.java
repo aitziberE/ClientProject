@@ -155,7 +155,7 @@ private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldVa
 
             // Abrir la ventana de SignIn
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("SignIn.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("src/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
                 stage.setTitle("SignIn");
