@@ -88,7 +88,7 @@ public class SignUpController {
         tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
 
         // Cuando se pulsan
-        // El fokin boton solo se pulsa si le das en el borde superior muy justo
+        // El boton solo se pulsa si le das en el borde superior muy justo
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 

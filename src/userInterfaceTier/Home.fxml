@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
+<AnchorPane fx:id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
     <stylesheets>
         <URL value="@styles.css" />
     </stylesheets>
@@ -93,16 +93,16 @@
                                                    <children>
                                                       <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                                          <children>
-                                                            <Text id="lblCity" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
-                                                            <Text id="lblUserCity" strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
+                                                            <Text fx:id="lblCity" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
+                                                            <Text fx:id="lblUserCity" strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </StackPane>
                                                 <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
                                                    <children>
-                                                      <Text id="lblZip" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
-                                                      <Text id="lblUserZip" strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
+                                                      <Text fx:id="lblZip" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
+                                                      <Text fx:id="lblUserZip" strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
                                                    </children>
                                                 </VBox>
                                              </children>
