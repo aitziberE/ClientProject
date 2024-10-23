@@ -16,6 +16,9 @@ import javafx.stage.Stage;
  * @author Ander
  */
 public class Application extends javafx.application.Application {
+
+    @Override
+    public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
 
         Scene scene = new Scene(root);
