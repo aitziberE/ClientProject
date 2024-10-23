@@ -54,6 +54,7 @@ public class SignUpController {
 
     @FXML
     private Hyperlink hlSignIn;
+    
     @FXML 
     private Button btnShowPassword;
 
@@ -62,9 +63,6 @@ public class SignUpController {
 
     @FXML
     private CheckBox cbActive;
-
-    @FXML
-    private Button btnShowPassword;
 
     @FXML
     private PasswordField pfPassword;
