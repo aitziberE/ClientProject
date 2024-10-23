@@ -60,12 +60,16 @@ public class SignInController {
     @FXML
     private Hyperlink hlSignUp;
 
+    private boolean emailFormatCheck;
+
     public void initStage(Stage stage, Parent root) {
         logger.info("Initializing SignIn phase...");
         //Establecer el título de la ventana al valor “SignIn”.
         stage.setTitle("Sign In");
         //La ventana no debe ser redimensionable
         stage.setResizable(false);
+        
+        lblError.setText("");
         //Mostrar la ventana.
         stage.show();
         //En caso de producirse alguna excepción, se mostrará un mensaje al usuario con el texto de la misma.
@@ -84,24 +88,25 @@ public class SignInController {
     private void handleTfUsernameFocusProperyLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         // Solo se ejecuta cuando se pierde el foco
         if (oldValue) {
-            String email = tfUsername.getText();
-
-            // Patrón para validar el formato de email
-            Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); //TODO contrabarra (\) da error
+            String email = tfUsername.getText();            
+             Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
             Matcher matcher = modelo.matcher(email);
 
             if (!matcher.matches()) {
                 lblError.setText("Incorrect email format");
-                // Si el email no cumple con el formato, se lanza la excepción
+                btnSignIn.setDisable(true);
             } else {
                 lblError.setText("");
+                btnSignIn.setDisable(false);
             }
+            
         }
     }
 
     private void handleButtonPasswordPressed(MouseEvent event) {
-        tfPassword.setText(pfPassword.getText());
+        pfPassword.setVisible(false);
         tfPassword.setVisible(true);
+        tfPassword.setText(pfPassword.getText());
     }
 
     private void handleButtonPasswordReleased(MouseEvent event) {
@@ -110,29 +115,31 @@ public class SignInController {
     }
 
     private void handleSignInButtonAction(ActionEvent actionEvent) {
-        //ClientFactory.getSignable().signIn();
         String username = tfUsername.getText();
-        String password = tfPassword.getText();
+        String password = pfPassword.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
             lblError.setText("Please fill out all fields.");
         } else {
+            lblError.setText("");
             User user = new User(username, password);
-            User testUser = new User("test", "test");
-            if (user.equals(testUser)) {
-
+            //ClientFactory.getSignable().signIn(user);
+            User testUser = new User("test@jmail.com", "test");
+            if (testUser.getEmail().equals(username) && testUser.getPassword().equals(password)) { //TODO Remove after window testing
                 try {
-
                     ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-
                     FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/Home.fxml"));
                     Parent mainView = FXMLLoader.load();
+                    HomeController homeController = FXMLLoader.getController();
+                    homeController.setUser(user);
+                    Stage stage = new Stage();
                     stage.setResizable(false);
                     stage.setTitle("Home");
                     stage.setScene(new Scene(mainView));
-                    Scene scene = new Scene(mainView);
                     stage.show();
                 } catch (IOException e) {
+                    lblError.setText("Error opening Home window");
+                    e.printStackTrace();
                 }
             } else {
                 lblError.setText("ERROR");
