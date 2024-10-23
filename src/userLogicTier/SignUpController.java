@@ -63,8 +63,7 @@ public class SignUpController {
     @FXML
     private CheckBox cbActive;
 
-    @FXML
-    private Button btnShowPassword;
+ 
 
     @FXML
     private PasswordField pfPassword;
@@ -244,7 +243,6 @@ public class SignUpController {
                         stage.show();
                     } catch (IOException ex) {
                         lblError.setText("Error opening Home window");
-                        ex.printStackTrace();
                     }
 
                 }
