@@ -12,21 +12,13 @@ import userLogicTier.model.User;
  * @author Ander
  */
 public class Client implements Signable {
-
-    //@Override
-    public void signUp() {
-        
-        //
-        
+    @Override
+    public void signUp(User user) {
+        System.out.println("culiminacion");
     }
 
-    //@Override
-    public User signIn() {
-        
-        //
-        
-        User user = new User();
+    @Override
+    public User signIn(User user) {
         return user;
     }
-    
 }

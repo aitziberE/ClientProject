@@ -11,28 +11,62 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import userLogicTier.model.User;
 
 /**
  * FXML Controller class
  *
  * @author Aitziber
  */
-public class HomeController implements Initializable {
+public class HomeController {
+
+    private User user;
+
+    @FXML
+    private Text lblUserName;
     
-//    @FXML
-//    private ImageView imgProfile;
-//
-//    @FXML
-//    private Circle circleClip;
+    @FXML
+    private Text lblUserEmail;
+    
+    @FXML
+    private Text lblUserStreet;
+
+    public HomeController() {
+
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+        
+        if (lblUserName != null) {
+            updateUserInfo();
+        }
+    }
 
     /**
      * Initializes the controller class.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-//        circleClip.centerXProperty().bind(imgProfile.fitWidthProperty().divide(2));
-//        circleClip.centerYProperty().bind(imgProfile.fitHeightProperty().divide(2));
-//        circleClip.radiusProperty().bind(imgProfile.fitWidthProperty().divide(2));
-    }    
-    
+    @FXML
+    public void initialize() {
+        System.out.println("initializing...");
+        
+        if (user != null) {
+            updateUserInfo();
+        }
+    }
+
+    private void updateUserInfo() {
+        lblUserName.setText(user.getName());
+        lblUserEmail.setText(user.getEmail());
+        
+    }
 }
+
+/**
+ *
+ * @param url
+ * @param rb
+ * @Override public void initialize(URL url, ResourceBundle rb) { // circleClip.centerXProperty().bind(imgProfile.fitWidthProperty().divide(2)); // circleClip.centerYProperty().bind(imgProfile.fitHeightProperty().divide(2)); // circleClip.radiusProperty().bind(imgProfile.fitWidthProperty().divide(2)); }
+ */
