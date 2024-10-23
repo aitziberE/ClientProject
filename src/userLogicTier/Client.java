@@ -15,7 +15,7 @@ public class Client implements Signable {
 
     @Override
     public void signUp(User user) {
-        
+        System.out.println("culiminacion");
     }
 
     @Override
@@ -23,5 +23,4 @@ public class Client implements Signable {
 
         return user;
     }
-
 }

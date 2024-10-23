@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
     <stylesheets>
         <URL value="@styles.css" />
     </stylesheets>
@@ -32,7 +32,7 @@
                         <StackPane prefHeight="150.0" prefWidth="200.0" />
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Button id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
+                              <Button fx:id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
                            </children>
                         </StackPane>
                      </children>
@@ -60,7 +60,7 @@
                         </StackPane>
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Text id="lblUserName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
+                              <Text fx:id="lblUserName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
                            </children>
                         </StackPane>
                      </children></VBox>
@@ -78,13 +78,13 @@
                                  <children>
                                     <VBox prefHeight="200.0" prefWidth="346.0" spacing="10">
                                        <children>
-                                          <Text id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
-                                          <Text id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="example@emailcom" wrappingWidth="344.9619140625" />
-                                          <Text id="lblAddress" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
+                                          <Text fx:id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
+                                          <Text fx:id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="example@emailcom" wrappingWidth="344.9619140625" />
+                                          <Text fx:id="lblAddress" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
                                           <VBox prefHeight="55.0" prefWidth="346.0" spacing="10">
                                              <children>
-                                                <Text id="lblStreet" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
-                                                <Text id="lblUserStreet" strokeType="OUTSIDE" strokeWidth="0.0" text="example street" wrappingWidth="344.8642578125" />
+                                                <Text fx:id="lblStreet" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
+                                                <Text fx:id="lblUserStreet" strokeType="OUTSIDE" strokeWidth="0.0" text="example street" wrappingWidth="344.8642578125" />
                                              </children>
                                           </VBox>
                                           <HBox prefHeight="100.0" prefWidth="200.0" spacing="10">

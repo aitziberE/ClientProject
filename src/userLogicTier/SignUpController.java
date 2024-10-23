@@ -1,10 +1,10 @@
 package userLogicTier;
 
 import java.io.IOException;
-import java.util.IllegalFormatException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.scene.input.MouseEvent;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,15 +12,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import userLogicTier.model.User;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
+/**
+ *
+ * @author Pablo
+ * @author Ander
+ */
 public class SignUpController {
 
     @FXML
@@ -55,7 +63,13 @@ public class SignUpController {
     @FXML
     private CheckBox cbActive;
 
-   public void setStage(Stage stage) {
+    @FXML
+    private Button btnShowPassword;
+
+    @FXML
+    private PasswordField pfPassword;
+
+    public void setStage(Stage stage) {
         //Establecer el título de la ventana al valor “SignUp”.
         stage.setTitle("Sign Up");
 
@@ -64,14 +78,13 @@ public class SignUpController {
 
         //Mostrar la ventana.
         stage.show();
-
-        //Borrar texto en lblError
-        lblError.setText("");
     }
 
     public void initialize() {
         System.out.println("initializing...");
 
+        //Borrar texto en lblError
+        lblError.setText("");
         // Cuando pierden el foco
         tfEmail.focusedProperty().addListener(this::handleFocusPropertyLostEmail);
         tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
@@ -81,57 +94,48 @@ public class SignUpController {
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
+        // Botón de mostrar contraseña
+        // Mantener pulsado
+        btnShowPassword.setOnMousePressed(this::handleButtonPasswordPressed);
+        // Soltar botón
+        btnShowPassword.setOnMouseReleased(this::handleButtonPasswordReleased);
+
     }
 
-// Al perder el foco del campo de texto, se realiza una comprobación para determinar si el texto introducido
-// cumple con el formato requerido (email@dominio.extensión).
-// Si no es válido, producir una IllegalFormatException que se atrapará al final de esta respuesta para mostrar 
-// el mensaje “Introduzca un email válido”.
+    //Al perder el foco del campo de texto, se realiza una comprobación para determinar si el texto introducido cumple con el formato requerido (email@dominio.extensión).
+    //Si no es válido, producir una IllegalFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un email válido”.
     private void handleFocusPropertyLostEmail(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {  // Solo se ejecuta cuando se pierde el foco
             String email = tfEmail.getText();
-
             // Patrón para validar el formato de email
             Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
             Matcher matcher = modelo.matcher(email);
-
             if (!matcher.matches()) {
                 lblError.setText("Incorrect email format");
+                btnSignUp.setDisable(true);
                 // Si el email no cumple con el formato, se lanza la excepción
             } else {
                 lblError.setText("");
+                btnSignUp.setDisable(false);
             }
         }
     }
 
-    // Faltan manejo de erroresssss   
     //Al perder el foco del campo de texto, validar que el campo contiene un valor java.lang.Integer con una longitud de 5 caracteres.
     //Si no es válido, producir una NumberFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un código postal válido”.
-private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+    private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (oldValue) {
+            String zipCode = tfZip.getText();
 
-    if (!oldValue) { 
-        String zipCode = tfZip.getText();
-
-        try {
             // Verificar que el valor pueda ser convertido a un Integer y tenga 5 caracteres
             if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
-                System.out.println("Introduzca un ZIP válido de 5 dígitos");
+                lblError.setText("Write a valid 5 digit ZIP");
+                btnSignUp.setDisable(true);
             } else {
-
-                System.out.println("");
+                lblError.setText("");
+                btnSignUp.setDisable(false);
             }
-
-        } catch (NumberFormatException e) {
-            // Manejar el caso donde no se puede convertir a un número entero
-            System.out.println("El código postal no es un número válido.");
         }
-    }
-}
-
-
-    //Si está seleccionada, el valor de la checkbox será true, y en caso contrario false. 
-    private void handleActiveCheckboxSelectedProperty() {
-        boolean isSelected;
     }
 
     //Pedir confirmación al usuario para salir de la ventana SignUp y abrir la ventana SignIn:
@@ -141,70 +145,111 @@ private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldVa
 
         // Crear un cuadro de diálogo de confirmación
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmación");
-        alert.setHeaderText("Estás a punto de salir");
-        alert.setContentText("¿Estás seguro de que deseas salir de la ventana de registro y volver a la ventana de inicio de sesión?");
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("You are about to exit");
+        alert.setContentText("Are you sure you want to leave the registration window and return to the login window?");
 
         // Obtener la respuesta del usuario
         Optional<ButtonType> result = alert.showAndWait();
 
         // Si el usuario confirma la salida
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Cerrar la ventana actual de SignUp
-            ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-
-            // Abrir la ventana de SignIn
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("src/userInterfaceTier/SignIn.fxml"));
+                // Cerrar la ventana actual de SignUp
+                ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+
+                // Abrir la ventana de SignIn
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
+                stage.setResizable(false);
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                lblError.setText("Error opening Sign In window");
             }
+
         }
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
     }
-     
-    
-    
-    // mostrar la contraseña en el tfPassword solo cuando el el botón esté cargado
-    private void handleShowPasswordButtonArmedProperty() {
 
+    private void handleButtonPasswordPressed(MouseEvent event) {
+        String password = pfPassword.getText();
+        pfPassword.setVisible(false);
+        tfPassword.setText(password);
+        tfPassword.setVisible(true);
     }
 
-    //Validar que todos los campos han sido rellenados.
+    private void handleButtonPasswordReleased(MouseEvent event) {
+        tfPassword.setVisible(false);
+        pfPassword.setVisible(true);
+    }
+
     //Si falta alguno por rellenar, lanzar una excepción con el mensaje “Por favor, rellene todos los campos para completar el registro”.
-    //Crear un objeto Cliente y establecer sus propiedades name, login, password, street, city, zip, active, company_id y notification_type. Los valores provienen de los siguientes campos:
+    //Crear un objeto Usuario y establecer sus propiedades name, login, password, street, city, zip, active. Los valores provienen de los siguientes campos:
     //Name: campo Name
     //Login: campo Email
     //Password: campo Password
     //Street: campo Address
     //City: campo City
     //ZIP: campo ZIP
-    //Active: checkbox Active
-    //Company_id: valor por defecto (1)
-    //Notification_type: valor por defecto (“email”)
     //Llamar al método de lógica signUp pasándole el objeto creado en el punto anterior.
     //Si se produce alguna excepción en esta respuesta atraparla y mostrar un mensaje de alerta con el mensaje de la excepción.
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
 
-        //User user = new User();
-        //ClientFactory.getSignable().signUp();
-        String name = tfName.getText();
-        String email = tfEmail.getText();
-        String password = tfPassword.getText();
-        String address = tfAddress.getText();
-        String city = tfCity.getText();
-        String zip = tfZip.getText();
+        //Comprobar que todo esté lleno
+        if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
+            lblError.setText("Please fill out all fields");
+            //Se pasan los valores a strings y boolean
+        } else {
+            // Compruebo de nuevo que el zip esté bien puesto (Puede entrar sin haberlo puesto bien)
+            String zipCode = tfZip.getText();
+            if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
+                lblError.setText("Write a valid 5 digit ZIP");
+            } else {
+                // Lo mismo con el email
+                String email = tfEmail.getText();
+                // Patrón para validar el formato de email
+                Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+                Matcher matcher = modelo.matcher(email);
+                if (!matcher.matches()) {
+                    lblError.setText("Incorrect email format");
+                    // Si el email no cumple con el formato, se lanza la excepción
+                } else {
+                    // Si todo es correcto procede
+                    String name = tfName.getText();
+                    String password = tfPassword.getText();
+                    String address = tfAddress.getText();
+                    String city = tfCity.getText();
+                    boolean isActive = cbActive.isSelected();
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || address.isEmpty() || city.isEmpty() || zip.isEmpty()) {
-            lblError.setText("Please fill out all fields.");
-            return;
+                    // Creamos el usuario pasando los datos
+                    User user = new User(name, email, password, address, city, zipCode, isActive);
+                    // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
+                    ClientFactory.getSignable().signUp(user);
+
+                    try {
+                        // Abrir la ventana de Home
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/Home.fxml"));
+
+                        Parent root = loader.load();
+                        HomeController homeController = loader.getController();
+                        homeController.setUser(user);
+
+                        Stage stage = new Stage();
+                        stage.setResizable(false);
+                        stage.setTitle("Home");
+                        stage.setScene(new Scene(root));
+                        stage.show();
+                    } catch (IOException ex) {
+                        lblError.setText("Error opening Home window");
+                        ex.printStackTrace();
+                    }
+
+                }
+            }
+
         }
     }
-
-
 }
