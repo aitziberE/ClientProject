@@ -242,7 +242,6 @@ public class SignUpController {
                         stage.show();
                     } catch (IOException ex) {
                         lblError.setText("Error opening Home window");
-                        ex.printStackTrace();
                     }
 
                 }
