@@ -23,5 +23,4 @@ public class Client implements Signable {
 
         return user;
     }
-
 }
