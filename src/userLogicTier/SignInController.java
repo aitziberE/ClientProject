@@ -7,6 +7,7 @@ package userLogicTier;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,8 +38,7 @@ public class SignInController {
 
     private Stage stage;
 
-    private final Logger logger;
-
+    //private static final Logger logger = Logger.getLogger(SignInController.class.getName());
     @FXML
     private TextField tfUsername;
 
@@ -60,23 +60,6 @@ public class SignInController {
     @FXML
     private Hyperlink hlSignUp;
 
-    private boolean emailFormatCheck;
-
-    public void initStage(Stage stage, Parent root) {
-        logger.info("Initializing SignIn phase...");
-        //Establecer el título de la ventana al valor “SignIn”.
-        stage.setTitle("Sign In");
-        //La ventana no debe ser redimensionable
-        stage.setResizable(false);
-        
-        lblError.setText("");
-        //Mostrar la ventana.
-        stage.show();
-        //En caso de producirse alguna excepción, se mostrará un mensaje al usuario con el texto de la misma.
-        lblError.setText("ERROR");
-        //TODO meter excepciones
-    }
-
     public void initialize() {
         tfUsername.focusedProperty().addListener(this::handleTfUsernameFocusProperyLost);
         btnSignIn.setOnAction(this::handleSignInButtonAction);
@@ -88,8 +71,8 @@ public class SignInController {
     private void handleTfUsernameFocusProperyLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         // Solo se ejecuta cuando se pierde el foco
         if (oldValue) {
-            String email = tfUsername.getText();            
-             Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+            String email = tfUsername.getText();
+            Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
             Matcher matcher = modelo.matcher(email);
 
             if (!matcher.matches()) {
@@ -99,7 +82,7 @@ public class SignInController {
                 lblError.setText("");
                 btnSignIn.setDisable(false);
             }
-            
+
         }
     }
 
@@ -170,17 +153,5 @@ public class SignInController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public Stage getStage() {
-        return stage;
-    }
-
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
-
-    public SignInController() {
-        logger = Logger.getLogger(SignInController.class.getName());
     }
 }

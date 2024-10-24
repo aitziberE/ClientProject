@@ -16,15 +16,16 @@ import javafx.stage.Stage;
  * @author Ander
  */
 public class Application extends javafx.application.Application {
-
+    
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("SignIn.fxml"));
-
+        
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         stage.setScene(scene);
         stage.setResizable(false);
+        stage.setTitle("Sign In");
         stage.setScene(scene);
         stage.show();
     }
@@ -35,5 +36,5 @@ public class Application extends javafx.application.Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    
 }

@@ -13,7 +13,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -54,8 +53,8 @@ public class SignUpController {
 
     @FXML
     private Hyperlink hlSignIn;
-    
-    @FXML 
+
+    @FXML
     private Button btnShowPassword;
 
     @FXML
@@ -66,17 +65,6 @@ public class SignUpController {
 
     @FXML
     private PasswordField pfPassword;
-
-    public void setStage(Stage stage) {
-        //Establecer el título de la ventana al valor “SignUp”.
-        stage.setTitle("Sign Up");
-
-        //La ventana no debe ser redimensionable
-        stage.setResizable(false);
-
-        //Mostrar la ventana.
-        stage.show();
-    }
 
     public void initialize() {
         System.out.println("initializing...");
@@ -246,7 +234,6 @@ public class SignUpController {
 
                 }
             }
-
         }
     }
 }

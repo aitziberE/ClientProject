@@ -18,8 +18,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import userLogicTier.model.User;
-import java.util.Iterator;
-import javafx.scene.Node;
 
 /**
  * FXML Controller class
@@ -27,12 +25,12 @@ import javafx.scene.Node;
  * @author Aitziber
  */
 public class HomeController {
-    
+
     private static final Logger logger = Logger.getLogger(HomeController.class.getName());
 
     @FXML
     private AnchorPane AnchorPane;
-    
+
     @FXML
     private Button btnLogOut;
 
@@ -42,33 +40,21 @@ public class HomeController {
     @FXML
     private Text lblUserEmail;
 
-
     @FXML
     private Text lblUserStreet;
-            
+
     @FXML
     private Text lblUserZip;
-    
+
     @FXML
     private Text lblUserCity;
-    
+
     private User user;
-    
+
     private Stage stage;
 
     void setUser(User user) {
-        this.user=user;        
-    }
-    
-    public void setStage(Stage stage) {
-        //Establecer el título de la ventana al valor “Home”.
-        stage.setTitle("Home");
-
-        //La ventana no debe ser redimensionable
-        stage.setResizable(false);
-
-        //Mostrar la ventana.
-        stage.show();
+        this.user = user;
     }
 
     /**
@@ -77,14 +63,14 @@ public class HomeController {
     @FXML
     public void initialize() {
         logger.log(Level.INFO, "Initializing Home...");
-        
+
         btnLogOut.setOnAction(this::handleLogOutButtonAction);
-        
+
         if (user != null) {
             updateUserInfo();
         }
     }
-    
+
     private void updateUserInfo() {
         try {
             logger.log(Level.INFO, "Updating user info");
@@ -101,19 +87,20 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error updating user info", e);
         }
     }
-      
-    private String userDataExists(String testData){
+
+    private String userDataExists(String testData) {
         logger.log(Level.INFO, "Validating data...");
         // Si el dato no existe o está vacío, devolver "unknown"
         return (testData != null && !testData.trim().isEmpty()) ? testData : "unknown";
-        
+
     }
+
     private int userDataExists(int testData) {
         logger.log(Level.INFO, "Validating data...");
         // Comprobar que el número no sea negativo o cero, devolver "00000" si es así
-        return (testData > 0) ? testData : 00000; 
+        return (testData > 0) ? testData : 00000;
     }
-       
+
     private void handleLogOutButtonAction(ActionEvent actionEvent) {
         logger.log(Level.INFO, "Log out action initiated");
         try {
@@ -146,9 +133,9 @@ public class HomeController {
     // Vacía los campos que pudiesen contener información del usuario
     private void clearUserFields() {
         logger.log(Level.INFO, "Cleaning user fields");
-        
-        try {        
-        // escalable pero más lento :(
+
+        try {
+            // escalable pero más lento :(
 //        for (Node node : AnchorPane.getChildren()) {
 //            // Verifica si el nodo es un Text y contiene "lblUser" en su fx:id
 //            if (node instanceof Text && ((Text) node).getId() != null && ((Text) node).getId().contains("lblUser")) {
@@ -160,11 +147,11 @@ public class HomeController {
             lblUserStreet.setText("");
             lblUserZip.setText("");
             lblUserCity.setText("");
-        
+
             logger.log(Level.INFO, "Successful user field cleanup");
-            
+
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error cleaning user fields", e);
         }
-    } 
+    }
 }

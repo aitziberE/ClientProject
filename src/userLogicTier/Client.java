@@ -4,15 +4,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import userLogicTier.model.User;
 
 /**
- * Clase que implementa la lógica del cliente
- * encargada de enviar mensajes al servidor
- * utilizando User y MessageType.
+ * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
  */
 public class Client implements Signable {
-    
+
+    private static final Logger logger = Logger.getLogger(HomeController.class.getName());
     // CREAR EL ARCHIVO PROPERTIES
     private final int PUERTO = 5000;
     private final String IP = "127.0.0.1";
@@ -23,6 +24,8 @@ public class Client implements Signable {
         ObjectOutputStream salida = null;
         ObjectInputStream entrada = null;
         Message respuesta = null;
+
+        logger.log(Level.INFO, "Initializing Client...");
 
         try {
             // Establecer conexión con el servidor
@@ -39,16 +42,21 @@ public class Client implements Signable {
             respuesta = (Message) entrada.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
-            
-            
+
         } finally {
             // Cerrar los recursos de socket y streams
             try {
-                if (socket != null) socket.close();
-                if (salida != null) salida.close();
-                if (entrada != null) entrada.close();
+                if (socket != null) {
+                    socket.close();
+                }
+                if (salida != null) {
+                    salida.close();
+                }
+                if (entrada != null) {
+                    entrada.close();
+                }
             } catch (IOException e) {
-               
+
             }
         }
 
@@ -68,6 +76,7 @@ public class Client implements Signable {
     // Implementación del método signIn
     @Override
     public User signIn(User user) {
+
         // Crear el mensaje de tipo SERVER_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
 
