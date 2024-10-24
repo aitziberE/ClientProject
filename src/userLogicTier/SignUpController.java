@@ -215,21 +215,12 @@ public class SignUpController {
                     // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
                     ClientFactory.getSignable().signUp(user);
 
-                    try {
-                        // Abrir la ventana de Home
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/Home.fxml"));
-
-                        Parent root = loader.load();
-                        HomeController homeController = loader.getController();
-                        homeController.setUser(user);
-
-                        Stage stage = new Stage();
-                        stage.setResizable(false);
-                        stage.setTitle("Home");
-                        stage.setScene(new Scene(root));
-                        stage.show();
-                    } catch (IOException ex) {
-                        lblError.setText("Error opening Home window");
+                   try {
+                    ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+                    WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+                    } catch (Exception e) {
+                        lblError.setText("Error opening SignIn window");
+                        e.printStackTrace();
                     }
 
                 }

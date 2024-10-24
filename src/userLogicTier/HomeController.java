@@ -21,6 +21,7 @@ import userLogicTier.model.User;
 //import java.util.Iterator;
 //import javafx.scene.Node;
 import java.util.Optional;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
@@ -116,26 +117,14 @@ public class HomeController {
                 // Limpiar campos del usuario antes de cerrar sesión
                 clearUserFields();  
 
-                // Cargar la ventana de Sign In
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
-                Parent root = loader.load();
-
-                // Crear una nueva ventana para la pantalla de inicio de sesión
-                Stage stage = new Stage();
-                stage.setResizable(false);
-                stage.setTitle("Sign In");
-                stage.setScene(new Scene(root));
-                stage.show();
-
                 // Cerrar la ventana Home
                 Stage home = (Stage) btnLogOut.getScene().getWindow();
                 home.close();
+                WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
 
                 logger.log(Level.INFO, "Successfully navigated to Sign In screen.");
-            } catch (IOException e) {
-                logger.log(Level.SEVERE, "Error while trying to load Sign In screen.", e);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Unexpected error during logout process.", ex);
+            } catch (Exception e) {
+                logger.log(Level.SEVERE, "Unexpected error during logout process.", e);
             }
         } else {
             logger.log(Level.INFO, "Log out cancelled by user.");

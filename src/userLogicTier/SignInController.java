@@ -106,21 +106,13 @@ public class SignInController {
         } else {
             lblError.setText("");
             User user = new User(username, password);
-            //ClientFactory.getSignable().signIn(user);
+            ClientFactory.getSignable().signIn(user);
             User testUser = new User("test@jmail.com", "test");
             if (testUser.getEmail().equals(username) && testUser.getPassword().equals(password)) { //TODO Remove after window testing
                 try {
                     ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                    FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/Home.fxml"));
-                    Parent mainView = FXMLLoader.load();
-                    HomeController homeController = FXMLLoader.getController();
-                    homeController.setUser(user);
-                    Stage stage = new Stage();
-                    stage.setResizable(false);
-                    stage.setTitle("Home");
-                    stage.setScene(new Scene(mainView));
-                    stage.show();
-                } catch (IOException e) {
+                    WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
+                } catch (Exception e) {
                     lblError.setText("Error opening Home window");
                     e.printStackTrace();
                 }
