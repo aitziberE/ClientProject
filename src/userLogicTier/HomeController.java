@@ -18,6 +18,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import userLogicTier.model.User;
+//import java.util.Iterator;
+//import javafx.scene.Node;
+import java.util.Optional;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 
 /**
  * FXML Controller class
@@ -100,34 +106,51 @@ public class HomeController {
         // Comprobar que el número no sea negativo o cero, devolver "00000" si es así
         return (testData > 0) ? testData : 00000;
     }
-
+    
     private void handleLogOutButtonAction(ActionEvent actionEvent) {
         logger.log(Level.INFO, "Log out action initiated");
-        try {
-            // Limpiar campos del usuario antes de cerrar sesión
-            clearUserFields();
 
-            // Cargar la ventana de Sign In
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
-            Parent root = loader.load();
+        // Mostrar el cuadro de diálogo de confirmación
+        if (showLogoutConfirmation()) {
+            try {
+                // Limpiar campos del usuario antes de cerrar sesión
+                clearUserFields();  
 
-            // Crear una nueva ventana para la pantalla de inicio de sesión
-            Stage stage = new Stage();
-            stage.setResizable(false);
-            stage.setTitle("Sign In");
-            stage.setScene(new Scene(root));
-            stage.show();
+                // Cargar la ventana de Sign In
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
+                Parent root = loader.load();
 
-            // Cerrar la ventana Home
-            Stage home = (Stage) btnLogOut.getScene().getWindow();
-            home.close();
+                // Crear una nueva ventana para la pantalla de inicio de sesión
+                Stage stage = new Stage();
+                stage.setResizable(false);
+                stage.setTitle("Sign In");
+                stage.setScene(new Scene(root));
+                stage.show();
 
-            logger.log(Level.INFO, "Successfully navigated to SignIn screen");
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Error while trying to load SignIn screen", e);
-        } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Unexpected error during logout process", ex);
+                // Cerrar la ventana Home
+                Stage home = (Stage) btnLogOut.getScene().getWindow();
+                home.close();
+
+                logger.log(Level.INFO, "Successfully navigated to Sign In screen.");
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Error while trying to load Sign In screen.", e);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Unexpected error during logout process.", ex);
+            }
+        } else {
+            logger.log(Level.INFO, "Log out cancelled by user.");
         }
+    }
+    
+    // Muestra alert de confirmación y devuelve respuesta positiva en caso de queel usuario seleccione OK
+    private boolean showLogoutConfirmation() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Log Out");
+        alert.setHeaderText("This window will be closed.");
+        alert.setContentText("Are you sure you want to log out?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     // Vacía los campos que pudiesen contener información del usuario
