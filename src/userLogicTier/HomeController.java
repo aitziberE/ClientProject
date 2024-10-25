@@ -25,6 +25,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 
 /**
  * FXML Controller class
@@ -36,7 +37,7 @@ public class HomeController {
     private static final Logger logger = Logger.getLogger(HomeController.class.getName());
 
     @FXML
-    private AnchorPane AnchorPane;
+    private AnchorPane anchorPane;
 
     @FXML
     private Button btnLogOut;
@@ -72,7 +73,8 @@ public class HomeController {
         logger.log(Level.INFO, "Initializing Home...");
 
         btnLogOut.setOnAction(this::handleLogOutButtonAction);
-
+        
+        anchorPane.setOnMouseClicked(this::handleMouseClicked);
         if (user != null) {
             updateUserInfo();
         }
@@ -165,5 +167,9 @@ public class HomeController {
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error cleaning user fields", e);
         }
+    }
+    private void handleMouseClicked (MouseEvent event){
+        logger.info("Mouse clicked");
+        
     }
 }
