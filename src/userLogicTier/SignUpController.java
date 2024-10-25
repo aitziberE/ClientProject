@@ -80,11 +80,11 @@ public class SignUpController {
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
+        // Establecer el botón de "Sign Up" como predeterminado
+        btnSignUp.setDefaultButton(true);
         // Botón de mostrar contraseña
-        // Mantener pulsado
-        btnShowPassword.setOnMousePressed(this::handleButtonPasswordPressed);
-        // Soltar botón
-        btnShowPassword.setOnMouseReleased(this::handleButtonPasswordReleased);
+        // Agrega el listener a armedProperty
+        btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
 
     }
 
@@ -160,16 +160,18 @@ public class SignUpController {
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
     }
 
-    private void handleButtonPasswordPressed(MouseEvent event) {
-        String password = pfPassword.getText();
-        pfPassword.setVisible(false);
-        tfPassword.setText(password);
-        tfPassword.setVisible(true);
-    }
-
-    private void handleButtonPasswordReleased(MouseEvent event) {
-        tfPassword.setVisible(false);
-        pfPassword.setVisible(true);
+    private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            // Mostrar la contraseña cuando se presiona
+            String password = pfPassword.getText();
+            pfPassword.setVisible(false);
+            tfPassword.setText(password);
+            tfPassword.setVisible(true);
+        } else {
+            // Ocultar la contraseña cuando se suelta
+            tfPassword.setVisible(false);
+            pfPassword.setVisible(true);
+        }
     }
 
     //Si falta alguno por rellenar, lanzar una excepción con el mensaje “Por favor, rellene todos los campos para completar el registro”.
@@ -215,14 +217,13 @@ public class SignUpController {
                     // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
                     ClientFactory.getSignable().signUp(user);
 
-                   try {
-                    ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                    WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+                    try {
+                        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+                        WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
                     } catch (Exception e) {
                         lblError.setText("Error opening SignIn window");
                         e.printStackTrace();
                     }
-
                 }
             }
         }

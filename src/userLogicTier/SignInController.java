@@ -64,8 +64,12 @@ public class SignInController {
         tfUsername.focusedProperty().addListener(this::handleTfUsernameFocusProperyLost);
         btnSignIn.setOnAction(this::handleSignInButtonAction);
         hlSignUp.setOnAction(this::handleSignUpHyperlinkAction);
-        btnShowPassword.setOnMousePressed(this::handleButtonPasswordPressed);
-        btnShowPassword.setOnMouseReleased(this::handleButtonPasswordReleased);
+
+        // Establecer el botón de "Sign In" como predeterminado
+        btnSignIn.setDefaultButton(true);
+        // Botón de mostrar contraseña
+        // Agrega el listener a armedProperty
+        btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
     }
 
     private void handleTfUsernameFocusProperyLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
@@ -86,15 +90,18 @@ public class SignInController {
         }
     }
 
-    private void handleButtonPasswordPressed(MouseEvent event) {
-        pfPassword.setVisible(false);
-        tfPassword.setVisible(true);
-        tfPassword.setText(pfPassword.getText());
-    }
-
-    private void handleButtonPasswordReleased(MouseEvent event) {
-        tfPassword.setVisible(false);
-        pfPassword.setVisible(true);
+    private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            // Mostrar la contraseña cuando se presiona
+            String password = pfPassword.getText();
+            pfPassword.setVisible(false);
+            tfPassword.setText(password);
+            tfPassword.setVisible(true);
+        } else {
+            // Ocultar la contraseña cuando se suelta
+            tfPassword.setVisible(false);
+            pfPassword.setVisible(true);
+        }
     }
 
     private void handleSignInButtonAction(ActionEvent actionEvent) {

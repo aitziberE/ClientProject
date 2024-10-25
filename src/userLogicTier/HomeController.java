@@ -59,8 +59,6 @@ public class HomeController {
 
     private User user;
 
-    private Stage stage;
-
     void setUser(User user) {
         this.user = user;
     }
@@ -73,7 +71,10 @@ public class HomeController {
         logger.log(Level.INFO, "Initializing Home...");
 
         btnLogOut.setOnAction(this::handleLogOutButtonAction);
-        
+
+        // Establecer el botón de "Log out" como predeterminado
+        btnLogOut.setDefaultButton(true);
+
         anchorPane.setOnMouseClicked(this::handleMouseClicked);
         if (user != null) {
             updateUserInfo();
@@ -109,7 +110,7 @@ public class HomeController {
         // Comprobar que el número no sea negativo o cero, devolver "00000" si es así
         return (testData > 0) ? testData : 00000;
     }
-    
+
     private void handleLogOutButtonAction(ActionEvent actionEvent) {
         logger.log(Level.INFO, "Log out action initiated");
 
@@ -117,7 +118,7 @@ public class HomeController {
         if (showLogoutConfirmation()) {
             try {
                 // Limpiar campos del usuario antes de cerrar sesión
-                clearUserFields();  
+                clearUserFields();
 
                 // Cerrar la ventana Home
                 Stage home = (Stage) btnLogOut.getScene().getWindow();
@@ -132,7 +133,7 @@ public class HomeController {
             logger.log(Level.INFO, "Log out cancelled by user.");
         }
     }
-    
+
     // Muestra alert de confirmación y devuelve respuesta positiva en caso de queel usuario seleccione OK
     private boolean showLogoutConfirmation() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -168,8 +169,9 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error cleaning user fields", e);
         }
     }
-    private void handleMouseClicked (MouseEvent event){
+
+    private void handleMouseClicked(MouseEvent event) {
         logger.info("Mouse clicked");
-        
+
     }
 }
