@@ -245,4 +245,8 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error configuring context menu", e);
         }
     }
+
+    void start(Stage stage) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

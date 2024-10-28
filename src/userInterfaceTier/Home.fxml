@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.111"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
     <stylesheets>
         <URL value="@styles.css" />
     </stylesheets>
@@ -32,7 +32,7 @@
                         <StackPane prefHeight="150.0" prefWidth="200.0" />
                         <StackPane prefHeight="150.0" prefWidth="200.0">
                            <children>
-                              <Button fx:id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
+                              <Button id="btnLogOut" fx:id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
                            </children>
                         </StackPane>
                      </children>
