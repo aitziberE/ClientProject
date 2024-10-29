@@ -2,6 +2,8 @@ package userLogicTier;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.beans.value.ObservableValue;
@@ -29,6 +31,8 @@ import javafx.scene.control.ButtonType;
  * @author Aitziber
  */
 public class SignUpController {
+    
+    private static final Logger logger = Logger.getLogger(SignUpController.class.getName());
 
     @FXML
     private TextField tfName;
@@ -67,13 +71,14 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     public void initialize() {
-        System.out.println("initializing...");
+        logger.log(Level.INFO, "Initializing SignUpController...");
         
         btnSignUp.setDisable(true);
-
         //Borrar texto en lblError
         lblError.setText("");
+        
         // Cuando pierden el foco. los añado todos para hacer las validaciones antes de activar el btn
+        // aplicar tambien .textProperty().addListener()? o quedarnos solo con la perdida de foco
         tfName.focusedProperty().addListener(this::handleFocusLost);
         tfEmail.focusedProperty().addListener(this::handleFocusLost);
         tfPassword.focusedProperty().addListener(this::handleFocusLost);
@@ -81,7 +86,6 @@ public class SignUpController {
         tfCity.focusedProperty().addListener(this::handleFocusLost);
         tfZip.focusedProperty().addListener(this::handleFocusLost);
         
-        // aplicar tambien .textProperty().addListener()? o quedarnos solo con la perdida de foco
 
         // Cuando se pulsan
         // El boton solo se pulsa si le das en el borde superior muy justo
@@ -98,14 +102,17 @@ public class SignUpController {
     
     private void handleFocusLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
+            logger.log(Level.INFO, "Handling focus loss");
             // validar email
             if (!tfEmail.getText().isEmpty()) {
                 if (!validateEmail()) {
                     lblError.setText("Incorrect email format");
                     btnSignUp.setDisable(true);
+                     logger.log(Level.WARNING, "Email validation failed");
                     return;
                 } else {
                     lblError.setText("");
+                    logger.log(Level.INFO, "Email validation passed");
                 }
             }
 
@@ -114,9 +121,11 @@ public class SignUpController {
                 if (!validateZip()) {
                     lblError.setText("Write a valid 5 digit ZIP");
                     btnSignUp.setDisable(true);
+                    logger.log(Level.WARNING, "ZIP validation failed");
                     return;
                 } else {
                     lblError.setText("");
+                    logger.log(Level.INFO, "ZIP validation passed");
                 }
             }
             
@@ -125,26 +134,32 @@ public class SignUpController {
                 if (!validatePassword()) {
                     lblError.setText("Password must contain at least 8 characters");
                     btnSignUp.setDisable(true);
+                    logger.log(Level.WARNING, "Password validation failed");
                     return;
                 } else {
                     lblError.setText("");
+                    logger.log(Level.INFO, "Password validation passed");
                 }
             }
 
             //comprobar que todos los campos estén completados
             if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
                 btnSignUp.setDisable(true);
+                logger.log(Level.INFO, "Empty fields found in SignUp form, sign up button disabled");
             } else {
                 btnSignUp.setDisable(false);
+                logger.log(Level.INFO, "All fields filled in SignUp form, sign up button enabled");
             }
         }
     }
     
     public boolean validateZip(){
+        logger.log(Level.INFO, "Validating ZIP");
         return tfZip.getText().matches("^\\d{5}$");
     }
     
     public boolean validateEmail(){
+        logger.log(Level.INFO, "Validating email");
         boolean correct = false;
         String email = tfEmail.getText();
         // Patrón para validar el formato de email
@@ -157,6 +172,7 @@ public class SignUpController {
     }
     
     public boolean validatePassword(){
+        logger.log(Level.INFO, "Validating password");
         return tfPassword.getText().matches("^.{8,}$");
     }
     
@@ -167,10 +183,12 @@ public class SignUpController {
             pfPassword.setVisible(false);
             tfPassword.setText(password);
             tfPassword.setVisible(true);
+            logger.log(Level.INFO, "Password visibility toggled to show");
         } else {
             // Ocultar la contraseña cuando se suelta
             tfPassword.setVisible(false);
             pfPassword.setVisible(true);
+            logger.log(Level.INFO, "Password visibility toggled to hyde");
         }
     }
     
@@ -194,6 +212,7 @@ public class SignUpController {
             try {
                 // Cerrar la ventana actual de SignUp
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+                logger.log(Level.INFO, "Closing SignUp window");
 
                 // Abrir la ventana de SignIn
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
@@ -203,25 +222,31 @@ public class SignUpController {
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();
+                logger.log(Level.INFO, "Opened SignIn window");
             } catch (IOException ex) {
                 lblError.setText("Error opening Sign In window");
             }
-
         }
+        else {
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
+            logger.log(Level.INFO, "User canceled exiting SignUp window.");
+        }
     }
 
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
         // Creamos el usuario pasando los datos
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
+        logger.log(Level.INFO, "Creating user");
         // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
         ClientFactory.getSignable().signUp(user);
+        logger.log(Level.INFO, "User signed up successfully");
 
         try {
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
         } catch (Exception e) {
             lblError.setText("Error opening SignIn window");
+            logger.log(Level.SEVERE, "Error during SignUp:", e.getMessage());
             e.printStackTrace();
         }
     }
