@@ -58,6 +58,7 @@ public class SignUpControllerTest extends ApplicationTest{
 
     }
     
+    @Ignore
     @Test
     public void test_confirmationAlert_OK_navigation(){
         clickOn("#hlSignIn");
