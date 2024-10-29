@@ -133,7 +133,7 @@ public class SignUpController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("You are about to exit");
-        alert.setContentText("Are you sure you want to leave the registration window and return to the login window?");
+        alert.setContentText("Are you sure you want to leave the registration window and return to the Sign In window?");
 
         // Obtener la respuesta del usuario
         Optional<ButtonType> result = alert.showAndWait();
