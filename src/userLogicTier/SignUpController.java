@@ -2,9 +2,10 @@ package userLogicTier;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.scene.input.MouseEvent;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,8 +28,11 @@ import javafx.scene.control.ButtonType;
  *
  * @author Pablo
  * @author Ander
+ * @author Aitziber
  */
 public class SignUpController {
+    
+    private static final Logger logger = Logger.getLogger(SignUpController.class.getName());
 
     @FXML
     private TextField tfName;
@@ -67,13 +71,21 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     public void initialize() {
-        System.out.println("initializing...");
-
+        logger.log(Level.INFO, "Initializing SignUpController...");
+        
+        btnSignUp.setDisable(true);
         //Borrar texto en lblError
         lblError.setText("");
-        // Cuando pierden el foco
-        tfEmail.focusedProperty().addListener(this::handleFocusPropertyLostEmail);
-        tfZip.focusedProperty().addListener(this::handleFocusProperyLostZip);
+        
+        // Cuando pierden el foco. los añado todos para hacer las validaciones antes de activar el btn
+        // aplicar tambien .textProperty().addListener()? o quedarnos solo con la perdida de foco
+        tfName.focusedProperty().addListener(this::handleFocusLost);
+        tfEmail.focusedProperty().addListener(this::handleFocusLost);
+        tfPassword.focusedProperty().addListener(this::handleFocusLost);
+        tfAddress.focusedProperty().addListener(this::handleFocusLost);
+        tfCity.focusedProperty().addListener(this::handleFocusLost);
+        tfZip.focusedProperty().addListener(this::handleFocusLost);
+        
 
         // Cuando se pulsan
         // El boton solo se pulsa si le das en el borde superior muy justo
@@ -87,43 +99,101 @@ public class SignUpController {
         btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
 
     }
-
-    //Al perder el foco del campo de texto, se realiza una comprobación para determinar si el texto introducido cumple con el formato requerido (email@dominio.extensión).
-    //Si no es válido, producir una IllegalFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un email válido”.
-    private void handleFocusPropertyLostEmail(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (oldValue) {  // Solo se ejecuta cuando se pierde el foco
-            String email = tfEmail.getText();
-            // Patrón para validar el formato de email
-            Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
-            Matcher matcher = modelo.matcher(email);
-            if (!matcher.matches()) {
-                lblError.setText("Incorrect email format");
-                btnSignUp.setDisable(true);
-                // Si el email no cumple con el formato, se lanza la excepción
-            } else {
-                lblError.setText("");
-                btnSignUp.setDisable(false);
-            }
-        }
-    }
-
-    //Al perder el foco del campo de texto, validar que el campo contiene un valor java.lang.Integer con una longitud de 5 caracteres.
-    //Si no es válido, producir una NumberFormatException que se atrapará al final de esta respuesta para mostrar el mensaje “Introduzca un código postal válido”.
-    private void handleFocusProperyLostZip(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+    
+    private void handleFocusLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
-            String zipCode = tfZip.getText();
+            logger.log(Level.INFO, "Handling focus loss");
+            // validar email
+            if (!tfEmail.getText().isEmpty()) {
+                if (!validateEmail()) {
+                    lblError.setText("Incorrect email format");
+                    btnSignUp.setDisable(true);
+                     logger.log(Level.WARNING, "Email validation failed");
+                    return;
+                } else {
+                    lblError.setText("");
+                    logger.log(Level.INFO, "Email validation passed");
+                }
+            }
 
-            // Verificar que el valor pueda ser convertido a un Integer y tenga 5 caracteres
-            if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
-                lblError.setText("Write a valid 5 digit ZIP");
+            //validar zip
+            if (!tfZip.getText().isEmpty()) {
+                if (!validateZip()) {
+                    lblError.setText("Write a valid 5 digit ZIP");
+                    btnSignUp.setDisable(true);
+                    logger.log(Level.WARNING, "ZIP validation failed");
+                    return;
+                } else {
+                    lblError.setText("");
+                    logger.log(Level.INFO, "ZIP validation passed");
+                }
+            }
+            
+            //validar contraseña
+            if (!pfPassword.getText().isEmpty()) {
+                if (!validatePassword()) {
+                    //no se muestra este lbl en la perdida de foco, las otras validaciones si que muestran el texto de error
+                    lblError.setText("Password must contain at least 8 characters");
+                    btnSignUp.setDisable(true);
+                    logger.log(Level.WARNING, "Password validation failed");
+                    return;
+                } else {
+                    lblError.setText("");
+                    logger.log(Level.INFO, "Password validation passed");
+                }
+            }
+
+            //comprobar que todos los campos estén completados
+            if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
                 btnSignUp.setDisable(true);
+                logger.log(Level.INFO, "Empty fields found in SignUp form, sign up button disabled");
             } else {
-                lblError.setText("");
                 btnSignUp.setDisable(false);
+                logger.log(Level.INFO, "All fields filled in SignUp form, sign up button enabled");
             }
         }
     }
-
+    
+    public boolean validateZip(){
+        logger.log(Level.INFO, "Validating ZIP");
+        return tfZip.getText().matches("^\\d{5}$");
+    }
+    
+    public boolean validateEmail(){
+        logger.log(Level.INFO, "Validating email");
+        boolean correct = false;
+        String email = tfEmail.getText();
+        // Patrón para validar el formato de email
+        Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+        Matcher matcher = modelo.matcher(email);
+        if (matcher.matches()) {
+            correct = true;
+        }
+        return correct;
+    }
+    
+    public boolean validatePassword(){
+        logger.log(Level.INFO, "Validating password");
+        return pfPassword.getText().matches("^.{8,}$");
+    }
+    
+    private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
+        if (newValue) {
+            // Mostrar la contraseña cuando se presiona
+            String password = pfPassword.getText();
+            pfPassword.setVisible(false);
+            tfPassword.setText(password);
+            tfPassword.setVisible(true);
+            logger.log(Level.INFO, "Password visibility toggled to show");
+        } else {
+            // Ocultar la contraseña cuando se suelta
+            tfPassword.setVisible(false);
+            pfPassword.setVisible(true);
+            logger.log(Level.INFO, "Password visibility toggled to hyde");
+        }
+    }
+    
+    
     //Pedir confirmación al usuario para salir de la ventana SignUp y abrir la ventana SignIn:
     //Si el usuario confirma, se redirigirá a la ventana SignIn.
     //Si no confirma, mantenerse en la ventana.
@@ -133,7 +203,7 @@ public class SignUpController {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("You are about to exit");
-        alert.setContentText("Are you sure you want to leave the registration window and return to the login window?");
+        alert.setContentText("Are you sure you want to leave the registration window and return to the Sign In window?");
 
         // Obtener la respuesta del usuario
         Optional<ButtonType> result = alert.showAndWait();
@@ -143,6 +213,7 @@ public class SignUpController {
             try {
                 // Cerrar la ventana actual de SignUp
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
+                logger.log(Level.INFO, "Closing SignUp window");
 
                 // Abrir la ventana de SignIn
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
@@ -152,80 +223,32 @@ public class SignUpController {
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();
+                logger.log(Level.INFO, "Opened SignIn window");
             } catch (IOException ex) {
                 lblError.setText("Error opening Sign In window");
             }
-
         }
+        else {
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
-    }
-
-    private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
-        if (newValue) {
-            // Mostrar la contraseña cuando se presiona
-            String password = pfPassword.getText();
-            pfPassword.setVisible(false);
-            tfPassword.setText(password);
-            tfPassword.setVisible(true);
-        } else {
-            // Ocultar la contraseña cuando se suelta
-            tfPassword.setVisible(false);
-            pfPassword.setVisible(true);
+            logger.log(Level.INFO, "User canceled exiting SignUp window action.");
         }
     }
 
-    //Si falta alguno por rellenar, lanzar una excepción con el mensaje “Por favor, rellene todos los campos para completar el registro”.
-    //Crear un objeto Usuario y establecer sus propiedades name, login, password, street, city, zip, active. Los valores provienen de los siguientes campos:
-    //Name: campo Name
-    //Login: campo Email
-    //Password: campo Password
-    //Street: campo Address
-    //City: campo City
-    //ZIP: campo ZIP
-    //Llamar al método de lógica signUp pasándole el objeto creado en el punto anterior.
-    //Si se produce alguna excepción en esta respuesta atraparla y mostrar un mensaje de alerta con el mensaje de la excepción.
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
+        // Creamos el usuario pasando los datos
+        User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
+        logger.log(Level.INFO, "Creating user");
+        // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
+        try {
+            ClientFactory.getSignable().signUp(user);
+            logger.log(Level.INFO, "User signed up successfully");
 
-        //Comprobar que todo esté lleno
-        if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
-            lblError.setText("Please fill out all fields");
-            //Se pasan los valores a strings y boolean
-        } else {
-            // Compruebo de nuevo que el zip esté bien puesto (Puede entrar sin haberlo puesto bien)
-            String zipCode = tfZip.getText();
-            if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
-                lblError.setText("Write a valid 5 digit ZIP");
-            } else {
-                // Lo mismo con el email
-                String email = tfEmail.getText();
-                // Patrón para validar el formato de email
-                Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
-                Matcher matcher = modelo.matcher(email);
-                if (!matcher.matches()) {
-                    lblError.setText("Incorrect email format");
-                    // Si el email no cumple con el formato, se lanza la excepción
-                } else {
-                    // Si todo es correcto procede
-                    String name = tfName.getText();
-                    String password = tfPassword.getText();
-                    String address = tfAddress.getText();
-                    String city = tfCity.getText();
-                    boolean isActive = cbActive.isSelected();
-
-                    // Creamos el usuario pasando los datos
-                    User user = new User(name, email, password, address, city, zipCode, isActive);
-                    // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
-                    ClientFactory.getSignable().signUp(user);
-
-                    try {
-                        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                        WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
-                    } catch (Exception e) {
-                        lblError.setText("Error opening SignIn window");
-                        e.printStackTrace();
-                    }
-                }
-            }
+            ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+        } catch (Exception e) {
+            lblError.setText("Error opening SignIn window");
+            logger.log(Level.SEVERE, "Error during SignUp:", e.getMessage());
+            e.printStackTrace();
         }
     }
 }
