@@ -1,6 +1,7 @@
 package userLogicTier;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -249,6 +250,51 @@ public class SignUpController {
             lblError.setText("Error opening SignIn window");
             logger.log(Level.SEVERE, "Error during SignUp:", e.getMessage());
             e.printStackTrace();
+
+//         //Comprobar que todo esté lleno
+//         if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
+//             lblError.setText("Please fill out all fields");
+//             //Se pasan los valores a strings y boolean
+//         } else {
+//             // Compruebo de nuevo que el zip esté bien puesto (Puede entrar sin haberlo puesto bien)
+//             String zipCode = tfZip.getText();
+//             if (zipCode.length() != 5 || !zipCode.matches("\\d+")) {
+//                 lblError.setText("Write a valid 5 digit ZIP");
+//             } else {
+//                 // Lo mismo con el email
+//                 String email = tfEmail.getText();
+//                 // Patrón para validar el formato de email
+//                 Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+//                 Matcher matcher = modelo.matcher(email);
+//                 if (!matcher.matches()) {
+//                     lblError.setText("Incorrect email format");
+//                     // Si el email no cumple con el formato, se lanza la excepción
+//                 } else {
+//                     // Si todo es correcto procede
+//                     String name = tfName.getText();
+//                     String password = tfPassword.getText();
+//                     String address = tfAddress.getText();
+//                     String city = tfCity.getText();
+//                     boolean isActive = cbActive.isSelected();
+
+//                     // Creamos el usuario pasando los datos
+//                     User user = new User(name, email, password, address, city, zipCode, isActive);
+//                     try {
+//                         // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
+//                         User userRespuesta = ClientFactory.getSignable().signUp(user);
+//                     } catch (SQLException ex) {
+//                         Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+//                     }
+
+//                     try {
+//                         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+//                         WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+//                     } catch (Exception e) {
+//                         lblError.setText("Error opening SignIn window");
+//                         e.printStackTrace();
+//                     }
+//                 }
+//             }
         }
     }
 }

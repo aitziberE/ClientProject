@@ -65,12 +65,20 @@ public class Client implements Signable {
 
     // Implementación del método signUp
     @Override
-    public void signUp(User user) {
+    public User signUp(User user) {
         // Crear el mensaje de tipo SERVER_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
         // Enviar el mensaje al servidor
-        enviarMensajeAlServidor(mensaje);
+        Message respuesta = enviarMensajeAlServidor(mensaje);
+
+        // Si la respuesta es positiva, retornar el usuario, de lo contrario, retornar null
+        if (respuesta != null && respuesta.getMessageType() == MessageType.SERVER_RESPONSE_OK) {
+            return respuesta.getUser();
+        } else {
+            return null; // Retorna null si no es exitoso
+            //CREAR UN MESSAGETYPE DEL SERVIDOR Y METER UN IF/ SWITCH DEPENDIENDO DE LA RESPUESTA DEL SERVIDOR
+        }
     }
 
     // Implementación del método signIn
