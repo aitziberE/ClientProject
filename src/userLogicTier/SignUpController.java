@@ -130,8 +130,9 @@ public class SignUpController {
             }
             
             //validar contraseña
-            if (!tfPassword.getText().isEmpty()) {
+            if (!pfPassword.getText().isEmpty()) {
                 if (!validatePassword()) {
+                    //no se muestra este lbl en la perdida de foco, las otras validaciones si que muestran el texto de error
                     lblError.setText("Password must contain at least 8 characters");
                     btnSignUp.setDisable(true);
                     logger.log(Level.WARNING, "Password validation failed");
@@ -143,7 +144,7 @@ public class SignUpController {
             }
 
             //comprobar que todos los campos estén completados
-            if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || tfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
+            if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
                 btnSignUp.setDisable(true);
                 logger.log(Level.INFO, "Empty fields found in SignUp form, sign up button disabled");
             } else {
@@ -173,7 +174,7 @@ public class SignUpController {
     
     public boolean validatePassword(){
         logger.log(Level.INFO, "Validating password");
-        return tfPassword.getText().matches("^.{8,}$");
+        return pfPassword.getText().matches("^.{8,}$");
     }
     
     private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
@@ -229,7 +230,7 @@ public class SignUpController {
         }
         else {
         // Si el usuario cancela, no hacemos nada y permanecemos en la ventana actual
-            logger.log(Level.INFO, "User canceled exiting SignUp window.");
+            logger.log(Level.INFO, "User canceled exiting SignUp window action.");
         }
     }
 
@@ -238,10 +239,10 @@ public class SignUpController {
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
         logger.log(Level.INFO, "Creating user");
         // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
-        ClientFactory.getSignable().signUp(user);
-        logger.log(Level.INFO, "User signed up successfully");
-
         try {
+            ClientFactory.getSignable().signUp(user);
+            logger.log(Level.INFO, "User signed up successfully");
+
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
         } catch (Exception e) {

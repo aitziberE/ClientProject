@@ -14,8 +14,12 @@ import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import org.testfx.api.FxAssert;
 import org.testfx.framework.junit.ApplicationTest;
+import org.testfx.matcher.base.NodeMatchers;
+import static org.testfx.matcher.base.NodeMatchers.isDisabled;
 import static org.testfx.matcher.base.NodeMatchers.isEnabled;
 import org.testfx.matcher.base.WindowMatchers;
+import static org.testfx.matcher.control.ButtonMatchers.isCancelButton;
+import static org.testfx.matcher.control.ButtonMatchers.isDefaultButton;
 import org.testfx.matcher.control.LabeledMatchers;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 import userInterfaceTier.ApplicationSignUp;
@@ -23,7 +27,7 @@ import userInterfaceTier.ApplicationSignUp;
 
 /**
  *
- * @author Usuario
+ * @author Aitziber
  */
     
 @FixMethodOrder(MethodSorters.NAME_ASCENDING) //Esto es como un método @Before en JUnit
@@ -37,28 +41,116 @@ public class SignUpControllerTest extends ApplicationTest{
     public SignUpControllerTest() {
     }
     
-//    @Ignore
-//    @Test
-//    public void test1_SignUpOK(){
-//        clickOn("#tfName");
-//        write("Test");
-//        clickOn("#tfEmail");
-//        write("test@jmail.com");
-//        clickOn("#tfPassword");
-//        write("12345678");
-//        clickOn("#cbActive");
-//        FxAssert.verifyThat("#btnSignUp", isEnabled());
-//        clickOn("#btnSignUp");
-//    }
-    @Ignore
+  
+    // después del clickOn quiero usar isFocused() pero no sé cómo
+    
+    //  hacer también las validaciones, rellenar todos los campos y a ver si acepta el formato, no informa de error y activa el boton de registro
+    
+    // hacer test para lo del ojo 
+
+    @Test
+    public void test_emailFormatError() {
+        clickOn("#tfEmail");
+        write("notEmailAddress");
+        clickOn("#tfName");
+        
+        FxAssert.verifyThat("#lblError", hasText("Incorrect email format"));
+        FxAssert.verifyThat("#btnSignUp", isDisabled());
+    }
+
+    @Test
+    public void test_zipFormatError() {
+        clickOn("#tfZip");
+        write("1234");
+        clickOn("#tfName");
+        
+        FxAssert.verifyThat("#lblError", hasText("Write a valid 5 digit ZIP"));
+        FxAssert.verifyThat("#btnSignUp", NodeMatchers.isDisabled());
+    }
+   
+
+    @Test
+    public void test_passwordValidationError() {
+        // hay un problema con el foco 
+        clickOn("#pfPassword");
+        write("1");
+        clickOn("#tfEmail");
+        clickOn("#pfPassword");
+        
+        FxAssert.verifyThat("#lblError", hasText("Password must contain at least 8 characters"));
+        FxAssert.verifyThat("#btnSignUp", NodeMatchers.isDisabled());
+    }
+   
+
+    @Test
+    public void test_btnSignUp_isDefaultButton(){
+        FxAssert.verifyThat("#btnSignUp", isDefaultButton());
+    }
+
+    @Test
+    public void test_btnSignUp_enablesOnFill(){
+        clickOn("#tfName");
+        write("name");
+
+        clickOn("#tfEmail");
+        write("example@email.com");
+
+        clickOn("#pfPassword");
+        write("abcd*1234");
+
+        clickOn("#tfAddress");
+        write("street");
+
+        clickOn("#tfCity");
+        write("city");
+
+        clickOn("#tfZip");
+        write("12345");
+
+        clickOn("#cbActive");
+
+        FxAssert.verifyThat("#btnSignUp", isEnabled());
+    }
+    
+    @Ignore("Hay problema con el boton")
+    @Test
+    public void test_SignUp(){
+        clickOn("#tfName");
+        write("name");
+
+        clickOn("#tfEmail");
+        write("example@email.com");
+
+        clickOn("#pfPassword");
+        write("abcd*1234");
+
+        clickOn("#tfAddress");
+        write("street");
+
+        clickOn("#tfCity");
+        write("city");
+
+        clickOn("#tfZip");
+        write("12345");
+
+        clickOn("#cbActive");
+
+        FxAssert.verifyThat("#btnSignUp", isEnabled());
+        clickOn("#btnSignUp");
+        
+        //hay problema con el boton
+        FxAssert.verifyThat(window("SignIn"), WindowMatchers.isShowing());
+    }
+    
+    // Hyperlink and alert
     @Test
     public void test_hyperlink_showsAlert(){
         clickOn("#hlSignIn");
         FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
+        clickOn("Cancelar");
 
     }
     
-    @Ignore
     @Test
     public void test_confirmationAlert_OK_navigation(){
         clickOn("#hlSignIn");
@@ -71,34 +163,19 @@ public class SignUpControllerTest extends ApplicationTest{
        FxAssert.verifyThat(window("SignIn"), WindowMatchers.isShowing());
     }
     
-    @Ignore
+    @Ignore("No identifica la ventana SignUp")
     @Test
     public void test_confirmationAlert_CANCEL(){
         clickOn("#hlSignIn");
         FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
-        
+        FxAssert.verifyThat("Cancelar", isCancelButton());
+
         clickOn("Cancelar");
         
-        //FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isNotShowing());
-        FxAssert.verifyThat(window("SignUp"), WindowMatchers.isShowing());
+//        //FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isNotShowing());
         
-    }
-   
-//    @Test
-//    public void test_EmailFormatOK(){
-//        clickOn("#tfEmail");
-//        write("paco@mail.com");
-//        clickOn("#tfName");
-//        FxAssert.verifyThat("#btnSignUp", isEnabled());
-//    }
-//    
-//    @Test
-//    public void test_EmailFormatERROR(){
-//        clickOn("#tfEmail");
-//        write("pacomail.com");
-//        clickOn("#tfName");
-//        FxAssert.verifyThat("#lblError", LabeledMatchers.hasText("ERROR"));
-//    }
-    
+        //no está identificando este ventana
+        FxAssert.verifyThat(window("SignUp"), WindowMatchers.isShowing());
+    }   
 }
 
