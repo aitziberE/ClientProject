@@ -1,7 +1,10 @@
 package userLogicTier;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.input.MouseEvent;
@@ -214,8 +217,12 @@ public class SignUpController {
 
                     // Creamos el usuario pasando los datos
                     User user = new User(name, email, password, address, city, zipCode, isActive);
-                    // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
-                    ClientFactory.getSignable().signUp(user);
+                    try {
+                        // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
+                        User userRespuesta = ClientFactory.getSignable().signUp(user);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     try {
                         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
