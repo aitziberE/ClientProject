@@ -1,13 +1,19 @@
 package userLogicTier;
 
-import message.MessageType;
-import message.Message;
+import com.sun.xml.internal.ws.wsdl.parser.InaccessibleWSDLException;
+import exceptions.ExistingUserException;
+import exceptions.InactiveUserException;
+import exceptions.ServerException;
+import exceptions.UserCapException;
+import exceptions.UserCredentialException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import message.Message;
+import message.MessageType;
 import userLogicTier.model.User;
 
 /**
@@ -15,8 +21,7 @@ import userLogicTier.model.User;
  */
 public class Client implements Signable {
 
-    private static final Logger logger = Logger.getLogger(HomeController.class.getName());
-    // CREAR EL ARCHIVO PROPERTIES
+    private static final Logger logger = Logger.getLogger(Client.class.getName());
     private final int PUERTO = 5000;
     private final String IP = "127.0.0.1";
 
@@ -44,7 +49,7 @@ public class Client implements Signable {
             respuesta = (Message) entrada.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
-
+            logger.log(Level.SEVERE, "Error communicating with server: {0}", e.getMessage());
         } finally {
             // Cerrar los recursos de socket y streams
             try {
@@ -58,7 +63,7 @@ public class Client implements Signable {
                     entrada.close();
                 }
             } catch (IOException e) {
-
+                logger.log(Level.WARNING, "Error closing resources: {0}", e.getMessage());
             }
         }
 
@@ -67,38 +72,73 @@ public class Client implements Signable {
 
     // Implementación del método signUp
     @Override
-    public User signUp(User user) {
-        // Crear el mensaje de tipo SERVER_REQUEST con el User
+    public User signUp(User user) throws ExistingUserException, ServerException, UserCapException {
+        // Crear el mensaje de tipo SERVER_SIGN_UP_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
         // Enviar el mensaje al servidor
         Message respuesta = enviarMensajeAlServidor(mensaje);
 
-        // Si la respuesta es positiva, retornar el usuario, de lo contrario, retornar null
-        if (respuesta != null && respuesta.getMessageType() == MessageType.SERVER_RESPONSE_OK) {
-            return respuesta.getUser();
+        // Procesar la respuesta del servidor
+        if (respuesta != null) {
+            switch (respuesta.getMessageType()) {
+                case SERVER_RESPONSE_OK:
+                    logger.log(Level.INFO, "User signed up.");
+                    // Registro exitoso, retorna el usuario
+                    return respuesta.getUser();
+                case SERVER_USER_ALREADY_EXISTS:
+                    logger.log(Level.INFO, "User already exists.");
+                    throw new ExistingUserException();
+                case SERVER_USER_CAP_REACHED:
+                    logger.log(Level.INFO, "User limit reached on server.");
+                    throw new UserCapException();
+                case SERVER_RESPONSE_DENIED:
+                    logger.log(Level.INFO, "Registration denied by server.");
+                    throw new ServerException();
+                case SERVER_CONNECTION_ERROR:
+                    logger.log(Level.INFO, "Connection error with the server.");
+                    throw new ServerException();
+                default:
+                    logger.log(Level.WARNING, "Unexpected server response.");
+                    throw new ServerException();
+            }
         } else {
-            return null; // Retorna null si no es exitoso
-            //CREAR UN MESSAGETYPE DEL SERVIDOR Y METER UN IF/ SWITCH DEPENDIENDO DE LA RESPUESTA DEL SERVIDOR
+            logger.log(Level.SEVERE, "No response from server.");
+            throw new ServerException();
         }
     }
 
     // Implementación del método signIn
     @Override
-    public User signIn(User user) {
-
-        // Crear el mensaje de tipo SERVER_REQUEST con el User
+    public User signIn(User user) throws UserCredentialException, ServerException {
+        // Crear el mensaje de tipo SERVER_SIGN_IN_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
 
         // Enviar el mensaje al servidor y recibir la respuesta
         Message respuesta = enviarMensajeAlServidor(mensaje);
 
-        // Si la respuesta es positiva, retornar el usuario, de lo contrario, retornar null
-        if (respuesta != null && respuesta.getMessageType() == MessageType.SERVER_RESPONSE_OK) {
-            return respuesta.getUser();
+        // Procesar la respuesta del servidor
+        if (respuesta != null) {
+            switch (respuesta.getMessageType()) {
+                case SERVER_RESPONSE_OK:
+                    // Inicio de sesión exitoso, retorna el usuario
+                    return respuesta.getUser();
+                case SERVER_USER_NOT_FOUND:
+                    logger.log(Level.INFO, "User not found.");
+                    throw new UserCredentialException();
+                case SERVER_RESPONSE_DENIED:
+                    logger.log(Level.INFO, "Login denied by server.");
+                    throw new ServerException();
+                case SERVER_CONNECTION_ERROR:
+                    logger.log(Level.INFO, "Connection error with the server.");
+                    throw new ServerException();
+                default:
+                    logger.log(Level.WARNING, "Unexpected server response.");
+                    throw new ServerException();
+            }
         } else {
-            return null; // Retorna null si no es exitoso
-            //CREAR UN MESSAGETYPE DEL SERVIDOR Y METER UN IF/ SWITCH DEPENDIENDO DE LA RESPUESTA DEL SERVIDOR
+            logger.log(Level.SEVERE, "No response from server.");
+            throw new ServerException();
         }
     }
 }
