@@ -26,7 +26,6 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import userLogicTier.model.User;
@@ -37,9 +36,8 @@ import userLogicTier.model.User;
  */
 public class SignInController {
 
-    private Stage stage;
+    private static final Logger logger = Logger.getLogger(SignInController.class.getName());
 
-    //private static final Logger logger = Logger.getLogger(SignInController.class.getName());
     @FXML
     private TextField tfUsername;
 
@@ -62,6 +60,7 @@ public class SignInController {
     private Hyperlink hlSignUp;
 
     public void initialize() {
+        logger.log(Level.INFO, "Initilizing sign in controller");
         tfUsername.focusedProperty().addListener(this::handleTfUsernameFocusProperyLost);
         btnSignIn.setOnAction(this::handleSignInButtonAction);
         hlSignUp.setOnAction(this::handleSignUpHyperlinkAction);
@@ -112,24 +111,24 @@ public class SignInController {
         if (username.isEmpty() || password.isEmpty()) {
             lblError.setText("Please fill out all fields.");
         } else {
-            lblError.setText("");
-            User user = new User(username, password);
             try {
+                lblError.setText("");
+                User user = new User(username, password);
                 ClientFactory.getSignable().signIn(user);
-            } catch (SQLException ex) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            User testUser = new User("test@jmail.com", "test");
-            if (testUser.getEmail().equals(username) && testUser.getPassword().equals(password)) { //TODO Remove after window testing
-                try {
-                    ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                    WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
-                } catch (Exception e) {
-                    lblError.setText("Error opening Home window");
-                    e.printStackTrace();
+                User testUser = new User("test@jmail.com", "test");
+                if (testUser.getEmail().equals(username) && testUser.getPassword().equals(password)) { //TODO Remove after window testing
+                    try {
+                        ((Node) actionEvent.getSource()).getScene().getWindow().hide();
+                        WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
+                    } catch (Exception e) {
+                        lblError.setText("Error opening Home window");
+                        logger.log(Level.SEVERE, null, e);
+                    }
+                } else {
+                    lblError.setText("ERROR");
                 }
-            } else {
-                lblError.setText("ERROR");
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -155,7 +154,7 @@ public class SignInController {
                 stage.show();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, null, e);
         }
     }
 }

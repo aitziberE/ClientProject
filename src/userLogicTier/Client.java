@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import message.Message;
+import message.MessageType;
 import userLogicTier.model.User;
 import userLogicTier.Message;
 import userLogicTier.MessageType;
