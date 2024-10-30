@@ -60,6 +60,7 @@ public class SignInController {
     private Hyperlink hlSignUp;
 
     public void initialize() {
+        logger.log(Level.INFO, "Initilizing sign in controller");
         tfUsername.focusedProperty().addListener(this::handleTfUsernameFocusProperyLost);
         btnSignIn.setOnAction(this::handleSignInButtonAction);
         hlSignUp.setOnAction(this::handleSignUpHyperlinkAction);
@@ -121,13 +122,13 @@ public class SignInController {
                         WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
                     } catch (Exception e) {
                         lblError.setText("Error opening Home window");
-                        Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, e);
+                        logger.log(Level.SEVERE, null, e);
                     }
                 } else {
                     lblError.setText("ERROR");
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -153,7 +154,7 @@ public class SignInController {
                 stage.show();
             }
         } catch (IOException e) {
-            Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, e);
+            logger.log(Level.SEVERE, null, e);
         }
     }
 }
