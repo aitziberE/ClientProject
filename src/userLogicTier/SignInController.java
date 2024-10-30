@@ -6,6 +6,7 @@
 package userLogicTier;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,7 +114,11 @@ public class SignInController {
         } else {
             lblError.setText("");
             User user = new User(username, password);
-            ClientFactory.getSignable().signIn(user);
+            try {
+                ClientFactory.getSignable().signIn(user);
+            } catch (SQLException ex) {
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             User testUser = new User("test@jmail.com", "test");
             if (testUser.getEmail().equals(username) && testUser.getPassword().equals(password)) { //TODO Remove after window testing
                 try {

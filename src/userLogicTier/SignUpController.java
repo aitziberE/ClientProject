@@ -222,7 +222,7 @@ public class SignUpController {
                         User userRespuesta = ClientFactory.getSignable().signUp(user);
                     } catch (SQLException ex) {
                         Logger.getLogger(SignUpController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+                    }catch ()
 
                     try {
                         ((Node) actionEvent.getSource()).getScene().getWindow().hide();
