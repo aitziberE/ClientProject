@@ -9,9 +9,6 @@ import java.util.logging.Logger;
 import message.Message;
 import message.MessageType;
 import userLogicTier.model.User;
-import userLogicTier.Message;
-import userLogicTier.MessageType;
-
 
 /**
  * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
@@ -80,7 +77,7 @@ public class Client implements Signable {
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
-                     logger.log(Level.INFO, "User signed up.");
+                    logger.log(Level.INFO, "User signed up.");
                     return respuesta.getUser(); // Registro exitoso, retorna el usuario
                 case SERVER_USER_ALREADY_EXISTS:
                     logger.log(Level.INFO, "User already exists.");
