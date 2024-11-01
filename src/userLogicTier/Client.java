@@ -1,6 +1,5 @@
 package userLogicTier;
 
-import com.sun.xml.internal.ws.wsdl.parser.InaccessibleWSDLException;
 import exceptions.ExistingUserException;
 import exceptions.InactiveUserException;
 import exceptions.ServerException;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import message.Message;
@@ -17,13 +17,18 @@ import message.MessageType;
 import userLogicTier.model.User;
 
 /**
+ *
+ * @author Ander
+ * @author Pablo
+ * @author Aitziber
+ * 
  * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
  */
 public class Client implements Signable {
 
     private static final Logger logger = Logger.getLogger(Client.class.getName());
-    private final int PUERTO = 5000;
-    private final String IP = "127.0.0.1";
+    private int PUERTO;
+    private String IP;
 
     // Método para enviar el mensaje al servidor y recibir la respuesta
     private Message enviarMensajeAlServidor(Message mensaje) {
@@ -35,6 +40,9 @@ public class Client implements Signable {
         logger.log(Level.INFO, "Initializing Client...");
 
         try {
+            
+            loadConfig();
+           
             // Establecer conexión con el servidor
             socket = new Socket(IP, PUERTO);
 
@@ -71,46 +79,69 @@ public class Client implements Signable {
     }
 
     // Implementación del método signUp
+
+    /**
+     *
+     * @param user
+     * @return
+     * @throws ExistingUserException
+     * @throws ServerException
+     */
     @Override
-    public User signUp(User user) throws ExistingUserException, ServerException, UserCapException {
+    public User signUp(User user) throws ExistingUserException, ServerException {
+        User responseUser = null;
+        
         // Crear el mensaje de tipo SERVER_SIGN_UP_REQUEST con el User
-        Message mensaje = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
+        Message peticion = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
         // Enviar el mensaje al servidor
-        Message respuesta = enviarMensajeAlServidor(mensaje);
+        Message respuesta = enviarMensajeAlServidor(peticion);
 
         // Procesar la respuesta del servidor
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
+                    responseUser = respuesta.getUser();
                     logger.log(Level.INFO, "User signed up.");
-                    // Registro exitoso, retorna el usuario
-                    return respuesta.getUser();
+                    break;
                 case SERVER_USER_ALREADY_EXISTS:
-                    logger.log(Level.INFO, "User already exists.");
+                    logger.log(Level.SEVERE, "User already exists.");
                     throw new ExistingUserException();
-                case SERVER_USER_CAP_REACHED:
-                    logger.log(Level.INFO, "User limit reached on server.");
-                    throw new UserCapException();
                 case SERVER_RESPONSE_DENIED:
-                    logger.log(Level.INFO, "Registration denied by server.");
+                    logger.log(Level.SEVERE, "Registration denied by server.");
                     throw new ServerException();
                 case SERVER_CONNECTION_ERROR:
-                    logger.log(Level.INFO, "Connection error with the server.");
+                    logger.log(Level.SEVERE, "Connection error with the server.");
                     throw new ServerException();
                 default:
-                    logger.log(Level.WARNING, "Unexpected server response.");
+                    logger.log(Level.SEVERE, "Unexpected server response.");
                     throw new ServerException();
-            }
+            }         
+
         } else {
             logger.log(Level.SEVERE, "No response from server.");
             throw new ServerException();
         }
+        
+        // Registro exitoso, retorna el usuario
+        return responseUser;
     }
 
     // Implementación del método signIn
+
+    /**
+     *
+     * @param user
+     * @return
+     * @throws InactiveUserException
+     * @throws UserCredentialException
+     * @throws UserCapException
+     * @throws ServerException
+     */
     @Override
-    public User signIn(User user) throws UserCredentialException, ServerException {
+    public User signIn(User user) throws InactiveUserException, UserCredentialException, UserCapException, ServerException {
+        User responseUser = null;
+
         // Crear el mensaje de tipo SERVER_SIGN_IN_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
 
@@ -121,24 +152,43 @@ public class Client implements Signable {
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
-                    // Inicio de sesión exitoso, retorna el usuario
-                    return respuesta.getUser();
+                    responseUser = respuesta.getUser();
+                    logger.log(Level.INFO, "User signed in.");
+                    break;
+                case SERVER_USER_INACTIVE:
+                    logger.log(Level.SEVERE, "Inactive user.");
+                    throw new InactiveUserException();
                 case SERVER_USER_NOT_FOUND:
-                    logger.log(Level.INFO, "User not found.");
+                    logger.log(Level.SEVERE, "User not found.");
                     throw new UserCredentialException();
+                case SERVER_USER_CAP_REACHED:
+                    logger.log(Level.SEVERE, "User limit reached on server.");
+                    throw new UserCapException();
                 case SERVER_RESPONSE_DENIED:
-                    logger.log(Level.INFO, "Login denied by server.");
+                    logger.log(Level.SEVERE, "Login denied by server.");
                     throw new ServerException();
                 case SERVER_CONNECTION_ERROR:
-                    logger.log(Level.INFO, "Connection error with the server.");
+                    logger.log(Level.SEVERE, "Connection error with the server.");
                     throw new ServerException();
                 default:
-                    logger.log(Level.WARNING, "Unexpected server response.");
+                    logger.log(Level.SEVERE, "Unexpected server response.");
                     throw new ServerException();
             }
         } else {
             logger.log(Level.SEVERE, "No response from server.");
             throw new ServerException();
         }
+        
+        // Inicio de sesión exitoso, retorna el usuario
+        return responseUser;
+    }
+    
+    /**
+     * Loads config data into class variables.
+     */
+    public void loadConfig() {
+        ResourceBundle configFile = ResourceBundle.getBundle("config.properties");
+        IP = configFile.getString("IP");
+        PUERTO = Integer.parseInt(configFile.getString("PORT"));
     }
 }
