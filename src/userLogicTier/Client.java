@@ -1,5 +1,11 @@
 package userLogicTier;
 
+import com.sun.xml.internal.ws.wsdl.parser.InaccessibleWSDLException;
+import exceptions.ExistingUserException;
+import exceptions.InactiveUserException;
+import exceptions.ServerException;
+import exceptions.UserCapException;
+import exceptions.UserCredentialException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -67,7 +73,7 @@ public class Client implements Signable {
 
     // Implementación del método signUp
     @Override
-    public User signUp(User user) {
+    public User signUp(User user) throws ExistingUserException, ServerException, UserCapException {
         // Crear el mensaje de tipo SERVER_SIGN_UP_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
@@ -79,32 +85,33 @@ public class Client implements Signable {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
                     logger.log(Level.INFO, "User signed up.");
-                    return respuesta.getUser(); // Registro exitoso, retorna el usuario
+                    // Registro exitoso, retorna el usuario
+                    return respuesta.getUser();
                 case SERVER_USER_ALREADY_EXISTS:
                     logger.log(Level.INFO, "User already exists.");
-//throws new exception User                    
+                    throw new ExistingUserException();
                 case SERVER_USER_CAP_REACHED:
                     logger.log(Level.INFO, "User limit reached on server.");
-                    return null;
+                    throw new UserCapException();
                 case SERVER_RESPONSE_DENIED:
                     logger.log(Level.INFO, "Registration denied by server.");
-                    return null;
+                    throw new ServerException();
                 case SERVER_CONNECTION_ERROR:
                     logger.log(Level.INFO, "Connection error with the server.");
-                    return null;
+                    throw new ServerException();
                 default:
                     logger.log(Level.WARNING, "Unexpected server response.");
-                    return null;
+                    throw new ServerException();
             }
         } else {
             logger.log(Level.SEVERE, "No response from server.");
-            return null;
+            throw new ServerException();
         }
     }
 
     // Implementación del método signIn
     @Override
-    public User signIn(User user) {
+    public User signIn(User user) throws UserCredentialException, ServerException {
         // Crear el mensaje de tipo SERVER_SIGN_IN_REQUEST con el User
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
 
@@ -115,23 +122,24 @@ public class Client implements Signable {
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
-                    return respuesta.getUser(); // Inicio de sesión exitoso, retorna el usuario
+                    // Inicio de sesión exitoso, retorna el usuario
+                    return respuesta.getUser();
                 case SERVER_USER_NOT_FOUND:
                     logger.log(Level.INFO, "User not found.");
-                    return null;
+                    throw new UserCredentialException();
                 case SERVER_RESPONSE_DENIED:
                     logger.log(Level.INFO, "Login denied by server.");
-                    return null;
+                    throw new ServerException();
                 case SERVER_CONNECTION_ERROR:
                     logger.log(Level.INFO, "Connection error with the server.");
-                    return null;
+                    throw new ServerException();
                 default:
                     logger.log(Level.WARNING, "Unexpected server response.");
-                    return null;
+                    throw new ServerException();
             }
         } else {
             logger.log(Level.SEVERE, "No response from server.");
-            return null;
+            throw new ServerException();
         }
     }
 }
