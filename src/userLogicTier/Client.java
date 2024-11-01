@@ -11,7 +11,8 @@ import message.MessageType;
 import userLogicTier.model.User;
 
 /**
- * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
+ *
+ * @author Pebble
  */
 public class Client implements Signable {
 
