@@ -158,7 +158,7 @@ public class Client implements Signable {
                 case SERVER_USER_INACTIVE:
                     logger.log(Level.SEVERE, "Inactive user.");
                     throw new InactiveUserException();
-                case SERVER_USER_NOT_FOUND:
+                case SERVER_USER_CREDENTIAL_ERROR:
                     logger.log(Level.SEVERE, "User not found.");
                     throw new UserCredentialException();
                 case SERVER_USER_CAP_REACHED:
