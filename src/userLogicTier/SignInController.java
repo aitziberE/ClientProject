@@ -5,6 +5,8 @@
  */
 package userLogicTier;
 
+import exceptions.ServerException;
+import exceptions.UserCredentialException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -128,6 +130,19 @@ public class SignInController {
                     lblError.setText("ERROR");
                 }
             } catch (SQLException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Database error");
+                alert.setContentText("There was an error in the database, please contact the responsible technician");
+                logger.log(Level.SEVERE, null, ex);
+            } catch (UserCredentialException ex) {
+                lblError.setText("Wrong user or password");
+                Logger.getLogger(SignInController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ServerException ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR");
+                alert.setHeaderText("Server error");
+                alert.setContentText("There was an error in the server, please contact the responsible technician");
                 logger.log(Level.SEVERE, null, ex);
             }
         }
