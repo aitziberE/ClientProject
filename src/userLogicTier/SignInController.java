@@ -46,8 +46,6 @@ import userLogicTier.model.User;
  * </ul>
  * </p>
  * 
- * @version 1.0
- * 
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent

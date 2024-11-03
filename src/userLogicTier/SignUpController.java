@@ -2,9 +2,7 @@ package userLogicTier;
 
 import exceptions.ExistingUserException;
 import exceptions.ServerException;
-import exceptions.UserCapException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,60 +27,118 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
- *
- * @author Pablo
- * @author Ander
- * @author Aitziber
+ * Controller class for the Sign Up screen.
+ * Manages user registration, input validation, and navigation actions.
+ * This class is responsible for handling user interactions on the sign-up screen.
+ * <p>
+ * It includes:
+ * <ul>
+ *     <li>Field validation methods</li>
+ *     <li>Password visibility toggle</li>
+ *     <li>Sign-up logic with error handling for various exceptions</li>
+ * </ul>
+ * </p>
+ * 
+ * @see userLogicTier.model.User
+ * @see javafx.beans.value.ObservableValue
+ * @see javafx.event.ActionEvent
+ * @see java.util.logging.Logger
+ * 
+ * @authors Pablo
+ * @authors Ander
+ * @authors Aitziber
  */
 public class SignUpController {
-
+    
+    /**
+     * Logger to track the class activity and handle debugging information.
+     */
     private static final Logger logger = Logger.getLogger(SignUpController.class.getName());
 
+    /**
+     * TextField for user name input.
+     */
     @FXML
     private TextField tfName;
 
+    /**
+     * TextField for user email input.
+     */
     @FXML
     private TextField tfEmail;
 
+    /**
+     * TextField for displaying the plain text password.
+     */
     @FXML
     private TextField tfPassword;
 
+    /**
+     * TextField for user address input.
+     */
     @FXML
     private TextField tfAddress;
 
+    /**
+     * TextField for user city input.
+     */
     @FXML
     private TextField tfCity;
 
+    /**
+     * TextField for user ZIP code input.
+     */
     @FXML
     private TextField tfZip;
 
+    /**
+     * Button to submit registration data.
+     */
     @FXML
     private Button btnSignUp;
 
+    /**
+     * Hyperlink to navigate to the Sign In screen.
+     */
     @FXML
     private Hyperlink hlSignIn;
 
+    /**
+     * Button to toggle password visibility.
+     */
     @FXML
     private Button btnShowPassword;
 
+    /**
+     * Label to display error messages.
+     */
     @FXML
     private Label lblError;
 
+    /**
+     * CheckBox to set the user's active status.
+     */
     @FXML
     private CheckBox cbActive;
 
+    /**
+     * PasswordField for password input (hidden by default).
+     */
     @FXML
     private PasswordField pfPassword;
 
+    /**
+     * Initializes the controller by setting up event listeners and button properties.
+     * This method is automatically called after the FXML file is loaded.
+     * It configures the default state of the sign-up fields and assigns listeners for validation and actions.
+     */
     public void initialize() {
         logger.log(Level.INFO, "Initializing SignUpController...");
 
         btnSignUp.setDisable(true);
-        //Borrar texto en lblError
         lblError.setText("");
 
-        // Cuando pierden el foco. los añado todos para hacer las validaciones antes de activar el btn
-        // aplicar tambien .textProperty().addListener()? o quedarnos solo con la perdida de foco
+        // Add listeners for input field focus loss to validate data before enabling the SignUp button
         tfName.focusedProperty().addListener(this::handleFocusLost);
         tfEmail.focusedProperty().addListener(this::handleFocusLost);
         tfPassword.focusedProperty().addListener(this::handleFocusLost);
@@ -90,22 +146,28 @@ public class SignUpController {
         tfCity.focusedProperty().addListener(this::handleFocusLost);
         tfZip.focusedProperty().addListener(this::handleFocusLost);
 
-        // Cuando se pulsan
-        // El boton solo se pulsa si le das en el borde superior muy justo
+        // !!!!!!!!!!!!!! El boton solo se pulsa si le das en el borde superior muy justo !!!!!!!!!!!!!
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
-        // Establecer el botón de "Sign Up" como predeterminado
+        // Set the "Sign Up" button as the default button
         btnSignUp.setDefaultButton(true);
-        // Botón de mostrar contraseña
-        // Agrega el listener a armedProperty
+        // Toggle password visibility button listener
         btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
 
     }
 
+    /**
+     * Validates input fields when they lose focus.
+     * Enables the Sign Up button if all required fields are valid.
+     *
+     * @param observable the observable property of the input field's focus.
+     * @param oldValue   the previous focus state.
+     * @param newValue   the new focus state.
+     */
     private void handleFocusLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
-            // validar email
+            // Validate email format
             if (!tfEmail.getText().isEmpty()) {
                 if (!validateEmail()) {
                     lblError.setText("Incorrect email format");
@@ -116,7 +178,7 @@ public class SignUpController {
                 }
             }
 
-            //validar zip
+            // Validate zip code format
             if (!tfZip.getText().isEmpty()) {
                 if (!validateZip()) {
                     lblError.setText("Write a valid 5 digit ZIP");
@@ -127,10 +189,9 @@ public class SignUpController {
                 }
             }
 
-            //validar contraseña
+            // Validate password length
             if (!pfPassword.getText().isEmpty()) {
                 if (!validatePassword()) {
-                    //no se muestra este lbl en la perdida de foco, las otras validaciones si que muestran el texto de error
                     lblError.setText("Password must contain at least 8 characters");
                     btnSignUp.setDisable(true);
                     return;
@@ -139,7 +200,7 @@ public class SignUpController {
                 }
             }
 
-            //comprobar que todos los campos estén completados
+            // Check that all fields are completed
             if (tfName.getText().isEmpty() || tfEmail.getText().isEmpty() || pfPassword.getText().isEmpty() || tfAddress.getText().isEmpty() || tfCity.getText().isEmpty() || tfZip.getText().isEmpty()) {
                 btnSignUp.setDisable(true);
             } else {
@@ -148,10 +209,20 @@ public class SignUpController {
         }
     }
 
+    /**
+     * Validates the ZIP code format (must be exactly 5 digits).
+     *
+     * @return true if the ZIP code format is valid, false otherwise.
+     */
     public boolean validateZip() {
         return tfZip.getText().matches("^\\d{5}$");
     }
 
+    /**
+     * Validates the email format.
+     *
+     * @return true if the email format is valid, false otherwise.
+     */
     public boolean validateEmail() {
         boolean correct = false;
         String email = tfEmail.getText();
@@ -164,48 +235,61 @@ public class SignUpController {
         return correct;
     }
 
+    /**
+     * Validates the password length (must be at least 8 characters).
+     *
+     * @return true if the password meets the minimum length requirement, false otherwise.
+     */
     public boolean validatePassword() {
         return pfPassword.getText().matches("^.{8,}$");
     }
 
+    /**
+     * Toggles the visibility of the password between plain text and hidden.
+     *
+     * @param observable the observable property of the button.
+     * @param oldValue   the previous state of the button.
+     * @param newValue   the new state of the button.
+     */
     private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
-            // Mostrar la contraseña cuando se presiona
+            // Show the password when pressed
             String password = pfPassword.getText();
             pfPassword.setVisible(false);
             tfPassword.setText(password);
             tfPassword.setVisible(true);
             logger.log(Level.INFO, "Password visibility toggled to show");
         } else {
-            // Ocultar la contraseña cuando se suelta
+            // Hide the password when released
             tfPassword.setVisible(false);
             pfPassword.setVisible(true);
             logger.log(Level.INFO, "Password visibility toggled to hyde");
         }
     }
 
-    //Pedir confirmación al usuario para salir de la ventana SignUp y abrir la ventana SignIn:
-    //Si el usuario confirma, se redirigirá a la ventana SignIn.
-    //Si no confirma, mantenerse en la ventana.
+    /**
+     * Handles the action of the Sign In hyperlink.
+     * Prompts for confirmation to leave the registration screen and navigates to the Sign In screen if confirmed.
+     *
+     * @param actionEvent the action event triggered by clicking the hyperlink.
+     */
     private void handleSignInHyperLinkAction(ActionEvent actionEvent) {
 
-        // Crear un cuadro de diálogo de confirmación
+        // Create a confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("You are about to exit");
         alert.setContentText("Are you sure you want to leave the registration window and return to the Sign In window?");
-
-        // Obtener la respuesta del usuario
         Optional<ButtonType> result = alert.showAndWait();
 
-        // Si el usuario confirma la salida
+        // If the user confirms the exit
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Cerrar la ventana actual de SignUp
+                // Close the current SignUp window
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
                 logger.log(Level.INFO, "Closing SignUp window");
 
-                // Abrir la ventana de SignIn
+                // Open the SignIn window
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
@@ -219,21 +303,26 @@ public class SignUpController {
             }
         }
     }
-
+    
+    /**
+     * Handles the action of the Sign Up button.
+     * Creates a user, attempts registration, and navigates to the Sign In screen on success.
+     *
+     * @param actionEvent the action event triggered by clicking the Sign Up button.
+     * @throws ExistingUserException if the user already exists.
+     * @throws ServerException       if a server error occurs during registration.
+     */
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
-        // Creamos el usuario pasando los datos
+        // Create the user by passing the data
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
         logger.log(Level.INFO, "Creating user");
-        // Llamamos al metodo sign Up del cliente que implementa signable y pasa por la factoría
+        // Call the signUp method of the client that implements signable and goes through the factory
         try {
             ClientFactory.getSignable().signUp(user);
             logger.log(Level.INFO, "User signed up successfully");
 
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
-        } catch (SQLException e) {
-            lblError.setText("Error opening SignIn window");
-            logger.log(Level.SEVERE, "Error during SignUp:", e.getMessage());
         } catch (ExistingUserException ex) {
             lblError.setText("User already exists");
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
@@ -242,12 +331,6 @@ public class SignUpController {
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");
             alert.setContentText("There was an error in the server, please contact the responsible technician");
-            logger.log(Level.SEVERE, null, ex);
-        } catch (UserCapException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ERROR");
-            alert.setHeaderText("User limit exceeded");
-            alert.setContentText("User limit was exceeded, please contact the server manager");
             logger.log(Level.SEVERE, null, ex);
         }
     }
