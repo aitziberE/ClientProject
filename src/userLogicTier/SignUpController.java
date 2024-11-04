@@ -1,5 +1,8 @@
 package userLogicTier;
 
+import exceptions.ExistingUserException;
+import exceptions.ServerException;
+import exceptions.UserCapException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -231,6 +234,21 @@ public class SignUpController {
         } catch (SQLException e) {
             lblError.setText("Error opening SignIn window");
             logger.log(Level.SEVERE, "Error during SignUp:", e.getMessage());
+        } catch (ExistingUserException ex) {
+            lblError.setText("User already exists");
+            logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
+        } catch (ServerException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("Server error");
+            alert.setContentText("There was an error in the server, please contact the responsible technician");
+            logger.log(Level.SEVERE, null, ex);
+        } catch (UserCapException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("User limit exceeded");
+            alert.setContentText("User limit was exceeded, please contact the server manager");
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 }
