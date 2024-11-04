@@ -327,7 +327,7 @@ public class SignUpController {
         } catch (ExistingUserException ex) {
             lblError.setText("User already exists");
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
-        } catch (ServerException | SQLException ex) {
+        } catch (ServerException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");

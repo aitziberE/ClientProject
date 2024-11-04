@@ -17,14 +17,35 @@ import message.MessageType;
 import userLogicTier.model.User;
 
 /**
- *
- * @author Pebble
- * @author Ander
- * @author Pablo
- * @author Aitziber
+ * The {@code Client} class implements the client logic for communicating with a server
+ * using {@link User} and {@link MessageType} objects. It manages the sending and receiving
+ * of {@link Message} objects and handles various server responses based on message types.
+ * <p>
+ * This class uses {@link Signable} to provide sign-up and sign-in operations, processing
+ * server responses and managing exceptions specific to user registration and authentication.
+ * </p>
+ * <p><b>Configuration:</b> The server IP and port are loaded from a configuration file.
+ * </p>
  * 
- * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
->>>>>>> 115ca416b01bd1ed22e6cc3dcc5626eefc47e553
+ * <p><b>Usage:</b></p>
+ * <pre>
+ *     Client client = new Client();
+ *     client.loadConfig();
+ *     client.signUp(user);
+ * </pre>
+ * 
+ * @see Signable
+ * @see Message
+ * @see MessageType
+ * @see User
+ * @see ExistingUserException
+ * @see InactiveUserException
+ * @see ServerException
+ * @see UserCapException
+ * @see UserCredentialException
+ * 
+ * @author Pebble
+ * @version 1.0
  */
 public class Client implements Signable {
 
@@ -32,7 +53,13 @@ public class Client implements Signable {
     private int PUERTO;
     private String IP;
 
-    // Método para enviar el mensaje al servidor y recibir la respuesta
+    /**
+     * Sends a {@link Message} object to the server and receives the server's response.
+     * Initializes the connection, sends the message, and waits for the response.
+     *
+     * @param mensaje the {@link Message} to be sent to the server
+     * @return the {@link Message} received from the server, or {@code null} if no response is received
+     */
     private Message enviarMensajeAlServidor(Message mensaje) {
         Socket socket = null;
         ObjectOutputStream salida = null;
@@ -45,23 +72,23 @@ public class Client implements Signable {
             
             loadConfig();
            
-            // Establecer conexión con el servidor
+            // Establish connection with the server
             socket = new Socket(IP, PUERTO);
 
-            // Inicializar los flujos de salida y entrada
+            // Initialize output and input streams
             salida = new ObjectOutputStream(socket.getOutputStream());
             entrada = new ObjectInputStream(socket.getInputStream());
 
-            // Enviar el mensaje al servidor
+            // Send the message to the server
             salida.writeObject(mensaje);
 
-            // Recibir la respuesta del servidor
+            // Receive the response from the server
             respuesta = (Message) entrada.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
             logger.log(Level.SEVERE, "Error communicating with server: {0}", e.getMessage());
         } finally {
-            // Cerrar los recursos de socket y streams
+            // Close socket and streams
             try {
                 if (socket != null) {
                     socket.close();
@@ -77,29 +104,28 @@ public class Client implements Signable {
             }
         }
 
-        return respuesta; // Retornar la respuesta del servidor
+        return respuesta; // Return the server response
     }
 
-    // Implementación del método signUp
-
     /**
+     * Registers a new user with the server.
      *
-     * @param user
-     * @return
-     * @throws ExistingUserException
-     * @throws ServerException
+     * @param user the {@link User} to register
+     * @return the registered {@link User} object if registration is successful
+     * @throws ExistingUserException if the user already exists on the server
+     * @throws ServerException if a server-related error occurs during registration
      */
     @Override
     public User signUp(User user) throws ExistingUserException, ServerException {
         User responseUser = null;
         
-        // Crear el mensaje de tipo SERVER_SIGN_UP_REQUEST con el User
+        // Create the registration message for the server
         Message peticion = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
-        // Enviar el mensaje al servidor
+        // Send the message and receive the response
         Message respuesta = enviarMensajeAlServidor(peticion);
 
-        // Procesar la respuesta del servidor
+        // Process the server's response
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
@@ -125,32 +151,31 @@ public class Client implements Signable {
             throw new ServerException();
         }
         
-        // Registro exitoso, retorna el usuario
+        // Successful registration, return the user
         return responseUser;
     }
 
-    // Implementación del método signIn
-
     /**
+     * Authenticates an existing user with the server.
      *
-     * @param user
-     * @return
-     * @throws InactiveUserException
-     * @throws UserCredentialException
-     * @throws UserCapException
-     * @throws ServerException
+     * @param user the {@link User} attempting to sign in
+     * @return the authenticated {@link User} object if login is successful
+     * @throws InactiveUserException if the user is inactive
+     * @throws UserCredentialException if the user credentials are invalid
+     * @throws UserCapException if the server has reached the maximum number of users
+     * @throws ServerException if a server-related error occurs during authentication
      */
     @Override
     public User signIn(User user) throws InactiveUserException, UserCredentialException, UserCapException, ServerException {
         User responseUser = null;
 
-        // Crear el mensaje de tipo SERVER_SIGN_IN_REQUEST con el User
+        // Create the sign-in message for the server
         Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
 
-        // Enviar el mensaje al servidor y recibir la respuesta
+        // Send the message and receive the response
         Message respuesta = enviarMensajeAlServidor(mensaje);
 
-        // Procesar la respuesta del servidor
+        // Process the server's response
         if (respuesta != null) {
             switch (respuesta.getMessageType()) {
                 case SERVER_RESPONSE_OK:
@@ -181,12 +206,12 @@ public class Client implements Signable {
             throw new ServerException();
         }
         
-        // Inicio de sesión exitoso, retorna el usuario
+        // Successful login, return the user
         return responseUser;
     }
     
     /**
-     * Loads config data into class variables.
+     * Loads configuration data (such as IP address and port) from a properties file.
      */
     public void loadConfig() {
         ResourceBundle configFile = ResourceBundle.getBundle("config.properties");
