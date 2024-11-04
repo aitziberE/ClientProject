@@ -3,6 +3,7 @@ package userLogicTier;
 import exceptions.ExistingUserException;
 import exceptions.ServerException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -326,7 +327,7 @@ public class SignUpController {
         } catch (ExistingUserException ex) {
             lblError.setText("User already exists");
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
-        } catch (ServerException ex) {
+        } catch (ServerException | SQLException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");

@@ -10,6 +10,7 @@ import exceptions.ServerException;
 import exceptions.UserCapException;
 import exceptions.UserCredentialException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -190,7 +191,7 @@ public class SignInController {
            } catch (UserCredentialException ex) {
                 lblError.setText("Incorrect username or password.");
                 logger.log(Level.SEVERE, null, ex);
-            } catch (ServerException ex) {
+            } catch (ServerException | SQLException ex) {
                 showErrorAlert("Server error", "There was an error on the server, please contact support.");
                 logger.log(Level.SEVERE, null, ex);
             } catch (InactiveUserException ex) {
