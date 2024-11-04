@@ -18,11 +18,13 @@ import userLogicTier.model.User;
 
 /**
  *
+ * @author Pebble
  * @author Ander
  * @author Pablo
  * @author Aitziber
  * 
  * Clase que implementa la lógica del cliente encargada de enviar mensajes al servidor utilizando User y MessageType.
+>>>>>>> 115ca416b01bd1ed22e6cc3dcc5626eefc47e553
  */
 public class Client implements Signable {
 
