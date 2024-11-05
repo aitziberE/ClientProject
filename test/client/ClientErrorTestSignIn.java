@@ -68,6 +68,8 @@ public class ClientErrorTestSignIn extends ApplicationTest {
 
         clickOn("#tfZip");
         write("12345");
+        
+        clickOn("#tfCity");
 
         clickOn("#btnSignUp");
     }
