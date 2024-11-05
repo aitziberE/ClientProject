@@ -41,12 +41,8 @@ public class SignUpControllerTest extends ApplicationTest{
     public SignUpControllerTest() {
     }
     
-  
-    // después del clickOn quiero usar isFocused() pero no sé cómo
-    
     //  hacer también las validaciones, rellenar todos los campos y a ver si acepta el formato, no informa de error y activa el boton de registro
     
-    // hacer test para lo del ojo 
 
     @Test
     public void test_emailFormatError() {
@@ -156,7 +152,7 @@ public class SignUpControllerTest extends ApplicationTest{
         clickOn("#hlSignIn");
         FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
     
-         clickOn("Aceptar");
+        clickOn("Aceptar");
       // estas lineas no están funcionando
       // FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isNotShowing());
       // FxAssert.verifyThat(window("SignUp"), WindowMatchers.isNotShowing());
