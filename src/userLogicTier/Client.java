@@ -11,29 +11,29 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import static java.util.logging.Level.INFO;
 import java.util.logging.Logger;
 import message.Message;
 import message.MessageType;
 import userLogicTier.model.User;
 
 /**
- * The {@code Client} class implements the client logic for communicating with a server
- * using {@link User} and {@link MessageType} objects. It manages the sending and receiving
- * of {@link Message} objects and handles various server responses based on message types.
+ * The {@code Client} class implements the client logic for communicating with a server using {@link User} and {@link MessageType} objects. It manages the sending and receiving of {@link Message} objects and handles various server responses based on message types.
  * <p>
- * This class uses {@link Signable} to provide sign-up and sign-in operations, processing
- * server responses and managing exceptions specific to user registration and authentication.
+ * This class uses {@link Signable} to provide sign-up and sign-in operations, processing server responses and managing exceptions specific to user registration and authentication.
  * </p>
- * <p><b>Configuration:</b> The server IP and port are loaded from a configuration file.
+ * <p>
+ * <b>Configuration:</b> The server IP and port are loaded from a configuration file.
  * </p>
- * 
- * <p><b>Usage:</b></p>
+ *
+ * <p>
+ * <b>Usage:</b></p>
  * <pre>
  *     Client client = new Client();
  *     client.loadConfig();
  *     client.signUp(user);
  * </pre>
- * 
+ *
  * @see Signable
  * @see Message
  * @see MessageType
@@ -43,68 +43,72 @@ import userLogicTier.model.User;
  * @see ServerException
  * @see UserCapException
  * @see UserCredentialException
- * 
+ *
  * @author Pebble
  * @version 1.0
  */
 public class Client implements Signable {
 
     private static final Logger logger = Logger.getLogger(Client.class.getName());
-    private int PUERTO;
+    private int PORT;
     private String IP;
 
     /**
-     * Sends a {@link Message} object to the server and receives the server's response.
-     * Initializes the connection, sends the message, and waits for the response.
+     * Sends a {@link Message} object to the server and receives the server's response. Initializes the connection, sends the message, and waits for the response.
      *
-     * @param mensaje the {@link Message} to be sent to the server
+     * @param message the {@link Message} to be sent to the server
      * @return the {@link Message} received from the server, or {@code null} if no response is received
      */
-    private Message enviarMensajeAlServidor(Message mensaje) {
+    private Message handleMessage(Message message) {
         Socket socket = null;
-        ObjectOutputStream salida = null;
-        ObjectInputStream entrada = null;
-        Message respuesta = null;
+        ObjectOutputStream writer = null;
+        ObjectInputStream reader = null;
+        Message response = null;
 
         logger.log(Level.INFO, "Initializing Client...");
 
         try {
-            
             loadConfig();
-           
+            logger.log(Level.INFO, "Configuration loaded");
             // Establish connection with the server
-            socket = new Socket(IP, PUERTO);
-
+            socket = new Socket(IP, PORT);
+            logger.log(INFO, "Socket obtained");
             // Initialize output and input streams
-            salida = new ObjectOutputStream(socket.getOutputStream());
-            entrada = new ObjectInputStream(socket.getInputStream());
+            reader = new ObjectInputStream(socket.getInputStream());
+            System.out.println("lee");
+            writer = new ObjectOutputStream(socket.getOutputStream());
+            logger.log(INFO, "Writer & reader instanced");
 
             // Send the message to the server
-            salida.writeObject(mensaje);
+            //logger.log(INFO, "Writing message");
+            //writer.writeObject(message);
+            String mensaje = (String) reader.readObject();
+            System.out.println("Conexión realizada con servidor");
+            System.out.println(mensaje);
 
             // Receive the response from the server
-            respuesta = (Message) entrada.readObject();
+            response = (Message) reader.readObject();
 
         } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, "Error communicating with server: {0}", e.getMessage());
+            logger.log(Level.SEVERE, "Error communicating with server: ", e.getMessage());
         } finally {
             // Close socket and streams
             try {
                 if (socket != null) {
                     socket.close();
                 }
-                if (salida != null) {
-                    salida.close();
+                if (writer != null) {
+                    writer.close();
                 }
-                if (entrada != null) {
-                    entrada.close();
+                if (reader != null) {
+                    reader.close();
                 }
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Error closing resources: {0}", e.getMessage());
+                logger.log(Level.WARNING, "Error closing resources: ", e.getMessage());
             }
         }
 
-        return respuesta; // Return the server response
+        return response; // Return the server response
     }
 
     /**
@@ -118,18 +122,18 @@ public class Client implements Signable {
     @Override
     public User signUp(User user) throws ExistingUserException, ServerException {
         User responseUser = null;
-        
+
         // Create the registration message for the server
-        Message peticion = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
+        Message request = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
         // Send the message and receive the response
-        Message respuesta = enviarMensajeAlServidor(peticion);
+        Message response = handleMessage(request);
 
         // Process the server's response
-        if (respuesta != null) {
-            switch (respuesta.getMessageType()) {
+        if (response != null) {
+            switch (response.getMessageType()) {
                 case SERVER_RESPONSE_OK:
-                    responseUser = respuesta.getUser();
+                    responseUser = response.getUser();
                     logger.log(Level.INFO, "User signed up.");
                     break;
                 case SERVER_USER_ALREADY_EXISTS:
@@ -144,13 +148,13 @@ public class Client implements Signable {
                 default:
                     logger.log(Level.SEVERE, "Unexpected server response.");
                     throw new ServerException();
-            }         
+            }
 
         } else {
             logger.log(Level.SEVERE, "No response from server.");
             throw new ServerException();
         }
-        
+
         // Successful registration, return the user
         return responseUser;
     }
@@ -170,16 +174,15 @@ public class Client implements Signable {
         User responseUser = null;
 
         // Create the sign-in message for the server
-        Message mensaje = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
-
+        Message message = new Message(user, MessageType.SERVER_SIGN_IN_REQUEST);
         // Send the message and receive the response
-        Message respuesta = enviarMensajeAlServidor(mensaje);
+        Message response = handleMessage(message);
 
         // Process the server's response
-        if (respuesta != null) {
-            switch (respuesta.getMessageType()) {
+        if (response != null) {
+            switch (response.getMessageType()) {
                 case SERVER_RESPONSE_OK:
-                    responseUser = respuesta.getUser();
+                    responseUser = response.getUser();
                     logger.log(Level.INFO, "User signed in.");
                     break;
                 case SERVER_USER_INACTIVE:
@@ -205,17 +208,17 @@ public class Client implements Signable {
             logger.log(Level.SEVERE, "No response from server.");
             throw new ServerException();
         }
-        
+
         // Successful login, return the user
         return responseUser;
     }
-    
+
     /**
      * Loads configuration data (such as IP address and port) from a properties file.
      */
     public void loadConfig() {
-        ResourceBundle configFile = ResourceBundle.getBundle("config.properties");
+        ResourceBundle configFile = ResourceBundle.getBundle("resources.config");
         IP = configFile.getString("IP");
-        PUERTO = Integer.parseInt(configFile.getString("PORT"));
+        PORT = Integer.parseInt(configFile.getString("PORT"));
     }
 }

@@ -191,7 +191,7 @@ public class SignInController {
            } catch (UserCredentialException ex) {
                 lblError.setText("Incorrect username or password.");
                 logger.log(Level.SEVERE, null, ex);
-            } catch (ServerException | SQLException ex) {
+            } catch (ServerException ex) {
                 showErrorAlert("Server error", "There was an error on the server, please contact support.");
                 logger.log(Level.SEVERE, null, ex);
             } catch (InactiveUserException ex) {
