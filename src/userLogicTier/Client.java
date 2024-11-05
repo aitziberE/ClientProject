@@ -61,8 +61,8 @@ public class Client implements Signable {
      */
     private Message handleMessage(Message message) {
         Socket socket = null;
-        ObjectOutputStream writer = null;
         ObjectInputStream reader = null;
+        ObjectOutputStream writer = null;
         Message response = null;
 
         logger.log(Level.INFO, "Initializing Client...");
@@ -72,19 +72,15 @@ public class Client implements Signable {
             logger.log(Level.INFO, "Configuration loaded");
             // Establish connection with the server
             socket = new Socket(IP, PORT);
-            logger.log(INFO, "Socket obtained");
+            logger.log(Level.INFO, "Socket obtained");
             // Initialize output and input streams
-            reader = new ObjectInputStream(socket.getInputStream());
-            System.out.println("lee");
             writer = new ObjectOutputStream(socket.getOutputStream());
+            reader = new ObjectInputStream(socket.getInputStream());
             logger.log(INFO, "Writer & reader instanced");
 
             // Send the message to the server
-            //logger.log(INFO, "Writing message");
-            //writer.writeObject(message);
-            String mensaje = (String) reader.readObject();
-            System.out.println("Conexión realizada con servidor");
-            System.out.println(mensaje);
+            logger.log(INFO, "Writing message");
+            writer.writeObject(message);
 
             // Receive the response from the server
             response = (Message) reader.readObject();
@@ -107,7 +103,6 @@ public class Client implements Signable {
                 logger.log(Level.WARNING, "Error closing resources: ", e.getMessage());
             }
         }
-
         return response; // Return the server response
     }
 
