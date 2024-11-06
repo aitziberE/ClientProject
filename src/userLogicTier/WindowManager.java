@@ -9,6 +9,7 @@ import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import userLogicTier.model.User;
@@ -27,6 +28,7 @@ public class WindowManager {
             HomeController homeController = fxmlLoader.getController();
             homeController.setUser(user);
             Stage stage = new Stage();
+            stage.getIcons().add(new Image("resources/logo.png"));
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
@@ -42,6 +44,7 @@ public class WindowManager {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             stage.setTitle(title);
+            stage.getIcons().add(new Image("resources/logo.png"));
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
