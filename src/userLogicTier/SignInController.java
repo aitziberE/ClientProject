@@ -35,23 +35,21 @@ import javafx.stage.Stage;
 import userLogicTier.model.User;
 
 /**
- * Controller class for the Sign In screen. 
- * Manages user authentication, navigation actions, and input validation.
- * This class is responsible for handling user interactions on the sign-in screen.
+ * Controller class for the Sign In screen. Manages user authentication, navigation actions, and input validation. This class is responsible for handling user interactions on the sign-in screen.
  * <p>
  * It includes:
  * <ul>
- *     <li>Field validation methods</li>
- *     <li>Password visibility toggle</li>
- *     <li>Sign-in logic with error handling for various exceptions</li>
+ * <li>Field validation methods</li>
+ * <li>Password visibility toggle</li>
+ * <li>Sign-in logic with error handling for various exceptions</li>
  * </ul>
  * </p>
- * 
+ *
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
+ *
  * @authors Ander
  * @authors Aitziber
  */
@@ -105,8 +103,7 @@ public class SignInController {
     private Hyperlink hlSignUp;
 
     /**
-     * Initializes the controller by setting up event listeners and button properties.
-     * This method is automatically called after the FXML file is loaded.
+     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded.
      */
     public void initialize() {
         logger.log(Level.INFO, "Initilizing sign in controller");
@@ -119,10 +116,9 @@ public class SignInController {
         // Button for showing password
         btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
     }
-    
+
     /**
-     * Validates the email format in the username field when it loses focus.
-     * Disables the Sign In button if the email format is incorrect.
+     * Validates the email format in the username field when it loses focus. Disables the Sign In button if the email format is incorrect.
      *
      * @param observable the observable property of the TextField's focus.
      * @param oldValue the previous focus state.
@@ -131,7 +127,7 @@ public class SignInController {
     private void handleTfUsernameFocusProperyLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
             String email = tfUsername.getText();
-            Pattern pattern  = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+            Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
             Matcher matcher = pattern.matcher(email);
 
             if (!matcher.matches()) {
@@ -144,10 +140,9 @@ public class SignInController {
 
         }
     }
-    
+
     /**
-     * Toggles the visibility of the password between a concealed PasswordField and a plain text TextField.
-     * Called when the "Show Password" button is pressed or released.
+     * Toggles the visibility of the password between a concealed PasswordField and a plain text TextField. Called when the "Show Password" button is pressed or released.
      *
      * @param observable the observable property of the button's armed status.
      * @param oldValue the previous armed status.
@@ -168,8 +163,7 @@ public class SignInController {
     }
 
     /**
-     * Handles the Sign In button action, validating the fields and performing user authentication.
-     * Displays appropriate error messages or navigates to the home screen upon successful authentication.
+     * Handles the Sign In button action, validating the fields and performing user authentication. Displays appropriate error messages or navigates to the home screen upon successful authentication.
      *
      * @param actionEvent Action event triggered by the Sign In button.
      */
@@ -180,15 +174,14 @@ public class SignInController {
         if (username.isEmpty() || password.isEmpty()) {
             lblError.setText("Please fill out all fields.");
         } else {
-             try {
+            try {
                 lblError.setText("");
                 User user = new User(username, password);
-                ClientFactory.getSignable().signIn(user);
-                
+                user = ClientFactory.getSignable().signIn(user);
                 // Successfully authenticated; proceed to home screen
                 ((Node) actionEvent.getSource()).getScene().getWindow().hide();
                 WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
-           } catch (UserCredentialException ex) {
+            } catch (UserCredentialException ex) {
                 lblError.setText("Incorrect username or password.");
                 logger.log(Level.SEVERE, null, ex);
             } catch (ServerException ex) {
@@ -233,7 +226,7 @@ public class SignInController {
             logger.log(Level.SEVERE, null, e);
         }
     }
-    
+
     /**
      * Helper method to display an error alert with a custom title and message.
      *

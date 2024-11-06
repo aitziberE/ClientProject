@@ -5,9 +5,11 @@ import exceptions.InactiveUserException;
 import exceptions.ServerException;
 import exceptions.UserCapException;
 import exceptions.UserCredentialException;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -63,7 +65,7 @@ public class Client implements Signable {
         Socket socket = null;
         ObjectInputStream reader = null;
         ObjectOutputStream writer = null;
-        Message response = null;
+        Message responseMessage = null;
 
         logger.log(Level.INFO, "Initializing Client...");
 
@@ -83,11 +85,16 @@ public class Client implements Signable {
             writer.writeObject(message);
 
             // Receive the response from the server
-            response = (Message) reader.readObject();
+            logger.log(Level.INFO, "Receiving message");
+            responseMessage = (Message) reader.readObject();
+            System.out.println(responseMessage.getUser().getName());
 
+        } catch (EOFException e) {
+            logger.log(Level.SEVERE, "EOFException: No response from server, possible connection closure.", e);
         } catch (IOException | ClassNotFoundException e) {
-            logger.log(Level.SEVERE, "Error communicating with server: ", e.getMessage());
+            logger.log(Level.SEVERE, "Error communicating with server: ", e);
         } finally {
+
             // Close socket and streams
             try {
                 if (socket != null) {
@@ -103,7 +110,7 @@ public class Client implements Signable {
                 logger.log(Level.WARNING, "Error closing resources: ", e.getMessage());
             }
         }
-        return response; // Return the server response
+        return responseMessage; // Return the server response
     }
 
     /**
@@ -117,6 +124,8 @@ public class Client implements Signable {
     @Override
     public User signUp(User user) throws ExistingUserException, ServerException {
         User responseUser = null;
+
+        logger.log(Level.SEVERE, user.getPassword());
 
         // Create the registration message for the server
         Message request = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);

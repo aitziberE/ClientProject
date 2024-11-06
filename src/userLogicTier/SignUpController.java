@@ -315,6 +315,7 @@ public class SignUpController {
      */
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
         // Create the user by passing the data
+        tfPassword.setText(pfPassword.getText());
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
         logger.log(Level.INFO, "Creating user");
         // Call the signUp method of the client that implements signable and goes through the factory

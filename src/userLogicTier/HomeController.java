@@ -36,7 +36,7 @@ public class HomeController {
 
     private static final Logger logger = Logger.getLogger(HomeController.class.getName());
     private final ContextMenu contextMenu = new ContextMenu();
-    
+
     @FXML
     private AnchorPane anchorPane;
 
@@ -62,6 +62,7 @@ public class HomeController {
 
     void setUser(User user) {
         this.user = user;
+        updateUserInfo();
     }
 
     /**
@@ -70,21 +71,18 @@ public class HomeController {
     @FXML
     public void initialize() {
         logger.log(Level.INFO, "Initializing Home...");
-        
-       try {
+
+        try {
             anchorPane.setOnMouseClicked(this::handleMouseClicked);
             anchorPane.setOnKeyPressed(this::handleKeyPress);
-        
+
             btnLogOut.setOnAction(this::handleLogOutButtonAction);
-        
+
             // Establecer el botón de "Log out" como predeterminado
             btnLogOut.setDefaultButton(true);
-        
+
             configureContextMenu();
-        
-            if (user != null) {
-                updateUserInfo();
-            }
+
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error during initialization", e);
         }
@@ -109,8 +107,9 @@ public class HomeController {
 
     private String userDataExists(String testData) {
         logger.log(Level.INFO, "Validating data...");
-         try {
+        try {
             // Si el dato no existe o está vacío, devolver "unknown"
+            logger.log(Level.SEVERE, "Empty data");
             return (testData != null && !testData.trim().isEmpty()) ? testData : "unknown";
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error validating string data", e);
@@ -156,7 +155,7 @@ public class HomeController {
 
     // Muestra alert de confirmación y devuelve respuesta positiva en caso de que el usuario seleccione OK
     private boolean showLogoutConfirmation() {
-          try {
+        try {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Log Out");
             alert.setHeaderText("This window will be closed.");
@@ -210,35 +209,35 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error handling mouse click", e);
         }
     }
-    
+
     private void handleKeyPress(KeyEvent event) {
-         try {
+        try {
             if (event.getCode() == KeyCode.F10 && event.isShiftDown()) {
                 Stage home = (Stage) anchorPane.getScene().getWindow();
                 double homeWidth = home.getWidth();
                 double homeHeight = home.getHeight();
-                
+
                 // recoge las coordenadas de la ventana y calcula el centro de cada eje
                 double menuX = home.getX() + (homeWidth / 2) - (contextMenu.getWidth() / 2);
                 double menuY = home.getY() + (homeHeight / 2) - (contextMenu.getHeight() / 2);
-                
+
                 // muestra el menú contextual en el centro de la ventana
                 contextMenu.show(anchorPane, menuX, menuY);
-                event.consume(); 
+                event.consume();
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error handling key press", e);
         }
     }
-    
-     private void configureContextMenu() {
+
+    private void configureContextMenu() {
         try {
             // añadir elemento LogOut al menú contextual
             MenuItem itemLogOut = new MenuItem("Log Out");
             itemLogOut.setOnAction((ActionEvent e) -> {
                 handleLogOutButtonAction(e);
             });
-        
+
             contextMenu.getItems().addAll(itemLogOut);
             logger.log(Level.INFO, "Context menu configured successfully.");
         } catch (Exception e) {

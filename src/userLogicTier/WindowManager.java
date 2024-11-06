@@ -19,21 +19,23 @@ import userLogicTier.model.User;
  * @author Aitziber
  */
 public class WindowManager {
- 
+
     public static void openWindow(String fxmlFilePath, String title, User user) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(WindowManager.class.getResource(fxmlFilePath));
             Parent root = fxmlLoader.load();
+            HomeController homeController = fxmlLoader.getController();
+            homeController.setUser(user);
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
-            
+
         }
     }
-    
+
     public static void openWindow(String fxmlFilePath, String title) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(WindowManager.class.getResource(fxmlFilePath));
@@ -44,7 +46,7 @@ public class WindowManager {
             stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
-            
+
         }
     }
 }
