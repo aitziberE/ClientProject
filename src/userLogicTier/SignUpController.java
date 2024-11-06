@@ -26,28 +26,27 @@ import javafx.stage.Stage;
 import userLogicTier.model.User;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 
 /**
  * Controller class for the Sign Up screen.
  * Manages user registration, input validation, and navigation actions.
  * This class is responsible for handling user interactions on the sign-up screen.
- * <p>
  * It includes:
  * <ul>
  *     <li>Field validation methods</li>
  *     <li>Password visibility toggle</li>
  *     <li>Sign-up logic with error handling for various exceptions</li>
  * </ul>
- * </p>
  * 
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
  * 
- * @authors Pablo
- * @authors Ander
- * @authors Aitziber
+ * @author Pablo
+ * @author Ander
+ * @author Aitziber
  */
 public class SignUpController {
     
@@ -295,6 +294,7 @@ public class SignUpController {
                 Parent root = loader.load();
                 Stage stage = new Stage();
                 stage.setResizable(false);
+                stage.getIcons().add(new Image("resources/logo.png"));
                 stage.setTitle("SignIn");
                 stage.setScene(new Scene(root));
                 stage.show();

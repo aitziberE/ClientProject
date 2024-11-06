@@ -30,6 +30,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import userLogicTier.model.User;
@@ -38,22 +39,20 @@ import userLogicTier.model.User;
  * Controller class for the Sign In screen. 
  * Manages user authentication, navigation actions, and input validation.
  * This class is responsible for handling user interactions on the sign-in screen.
- * <p>
  * It includes:
  * <ul>
  *     <li>Field validation methods</li>
  *     <li>Password visibility toggle</li>
  *     <li>Sign-in logic with error handling for various exceptions</li>
  * </ul>
- * </p>
+ * 
  * 
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
  * 
- * @authors Ander
- * @authors Aitziber
+ * @author Ander, Aitziber
  */
 public class SignInController {
 
@@ -225,6 +224,7 @@ public class SignInController {
                 Parent mainView = FXMLLoader.load();
                 Stage stage = new Stage();
                 stage.setResizable(false);
+                stage.getIcons().add(new Image("resources/logo.png"));
                 stage.setTitle("SignUp");
                 stage.setScene(new Scene(mainView));
                 stage.show();
