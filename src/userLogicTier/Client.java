@@ -87,7 +87,6 @@ public class Client implements Signable {
             // Receive the response from the server
             logger.log(Level.INFO, "Receiving message");
             responseMessage = (Message) reader.readObject();
-            System.out.println(responseMessage.getUser().getName());
 
         } catch (EOFException e) {
             logger.log(Level.SEVERE, "EOFException: No response from server, possible connection closure.", e);

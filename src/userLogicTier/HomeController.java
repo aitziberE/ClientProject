@@ -14,8 +14,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import userLogicTier.model.User;
-//import java.util.Iterator;
-//import javafx.scene.Node;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -31,6 +29,7 @@ import javafx.scene.input.MouseEvent;
  * FXML Controller class
  *
  * @author Aitziber
+ * @author Ander
  */
 public class HomeController {
 
@@ -142,7 +141,7 @@ public class HomeController {
                 // Cerrar la ventana Home
                 Stage home = (Stage) btnLogOut.getScene().getWindow();
                 home.close();
-                WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+                WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
 
                 logger.log(Level.INFO, "Successfully navigated to Sign In screen.");
             } catch (Exception e) {
@@ -175,13 +174,6 @@ public class HomeController {
         logger.log(Level.INFO, "Cleaning user fields");
 
         try {
-            // escalable pero más lento :(
-//        for (Node node : AnchorPane.getChildren()) {
-//            // Verifica si el nodo es un Text y contiene "lblUser" en su fx:id
-//            if (node instanceof Text && ((Text) node).getId() != null && ((Text) node).getId().contains("lblUser")) {
-//                ((Text) node).setText("");
-//            }
-//        }
             lblUserName.setText("");
             lblUserEmail.setText("");
             lblUserStreet.setText("");
@@ -195,15 +187,17 @@ public class HomeController {
     }
 
     private void handleMouseClicked(MouseEvent event) {
-// añadir logger? demasiada información igual        
+        logger.log(Level.SEVERE, "Clicked on anchor pane");
         try {
             // al hacer click derecho
             if (event.getButton() == MouseButton.SECONDARY) {
                 // desplegar el menú contextual en la posición del cursor
                 contextMenu.show(anchorPane, event.getScreenX(), event.getScreenY());
+                logger.log(Level.SEVERE, "Context menu shown");
             } else {
                 // si se presiona otro botón, ocultar el menú contextual
                 contextMenu.hide();
+                logger.log(Level.SEVERE, "Context menu hidden");
             }
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error handling mouse click", e);

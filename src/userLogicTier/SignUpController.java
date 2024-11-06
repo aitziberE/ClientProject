@@ -28,29 +28,27 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
 /**
- * Controller class for the Sign Up screen.
- * Manages user registration, input validation, and navigation actions.
- * This class is responsible for handling user interactions on the sign-up screen.
+ * Controller class for the Sign Up screen. Manages user registration, input validation, and navigation actions. This class is responsible for handling user interactions on the sign-up screen.
  * <p>
  * It includes:
  * <ul>
- *     <li>Field validation methods</li>
- *     <li>Password visibility toggle</li>
- *     <li>Sign-up logic with error handling for various exceptions</li>
+ * <li>Field validation methods</li>
+ * <li>Password visibility toggle</li>
+ * <li>Sign-up logic with error handling for various exceptions</li>
  * </ul>
  * </p>
- * 
+ *
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
+ *
  * @authors Pablo
  * @authors Ander
  * @authors Aitziber
  */
 public class SignUpController {
-    
+
     /**
      * Logger to track the class activity and handle debugging information.
      */
@@ -129,9 +127,7 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     /**
-     * Initializes the controller by setting up event listeners and button properties.
-     * This method is automatically called after the FXML file is loaded.
-     * It configures the default state of the sign-up fields and assigns listeners for validation and actions.
+     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. It configures the default state of the sign-up fields and assigns listeners for validation and actions.
      */
     public void initialize() {
         logger.log(Level.INFO, "Initializing SignUpController...");
@@ -159,12 +155,11 @@ public class SignUpController {
     }
 
     /**
-     * Validates input fields when they lose focus.
-     * Enables the Sign Up button if all required fields are valid.
+     * Validates input fields when they lose focus. Enables the Sign Up button if all required fields are valid.
      *
      * @param observable the observable property of the input field's focus.
-     * @param oldValue   the previous focus state.
-     * @param newValue   the new focus state.
+     * @param oldValue the previous focus state.
+     * @param newValue the new focus state.
      */
     private void handleFocusLost(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (oldValue) {
@@ -249,8 +244,8 @@ public class SignUpController {
      * Toggles the visibility of the password between plain text and hidden.
      *
      * @param observable the observable property of the button.
-     * @param oldValue   the previous state of the button.
-     * @param newValue   the new state of the button.
+     * @param oldValue the previous state of the button.
+     * @param newValue the new state of the button.
      */
     private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
@@ -269,8 +264,7 @@ public class SignUpController {
     }
 
     /**
-     * Handles the action of the Sign In hyperlink.
-     * Prompts for confirmation to leave the registration screen and navigates to the Sign In screen if confirmed.
+     * Handles the action of the Sign In hyperlink. Prompts for confirmation to leave the registration screen and navigates to the Sign In screen if confirmed.
      *
      * @param actionEvent the action event triggered by clicking the hyperlink.
      */
@@ -304,14 +298,13 @@ public class SignUpController {
             }
         }
     }
-    
+
     /**
-     * Handles the action of the Sign Up button.
-     * Creates a user, attempts registration, and navigates to the Sign In screen on success.
+     * Handles the action of the Sign Up button. Creates a user, attempts registration, and navigates to the Sign In screen on success.
      *
      * @param actionEvent the action event triggered by clicking the Sign Up button.
      * @throws ExistingUserException if the user already exists.
-     * @throws ServerException       if a server error occurs during registration.
+     * @throws ServerException if a server error occurs during registration.
      */
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
         // Create the user by passing the data
@@ -324,7 +317,7 @@ public class SignUpController {
             logger.log(Level.INFO, "User signed up successfully");
 
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", user);
+            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
         } catch (ExistingUserException ex) {
             lblError.setText("User already exists");
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
