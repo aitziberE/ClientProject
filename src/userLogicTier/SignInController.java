@@ -10,7 +10,6 @@ import exceptions.ServerException;
 import exceptions.UserCapException;
 import exceptions.UserCredentialException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,12 +39,9 @@ import userLogicTier.model.User;
  * Manages user authentication, navigation actions, and input validation.
  * This class is responsible for handling user interactions on the sign-in screen.
  * It includes:
- * <ul>
- * <li>Field validation methods</li>
- * <li>Password visibility toggle</li>
- * <li>Sign-in logic with error handling for various exceptions</li>
- * </ul>
- * 
+ * - Field validation methods
+ * - Password visibility toggle
+ * - Sign-in logic with error handling for various exceptions
  * 
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue

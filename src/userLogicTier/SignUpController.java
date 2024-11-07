@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package userLogicTier;
 
 import exceptions.ExistingUserException;
@@ -33,16 +38,15 @@ import javafx.scene.image.Image;
  * This class is responsible for handling user interactions on the sign-up screen.
  * 
  * It includes:
- * <ul>
- * <li>Field validation methods</li>
- * <li>Password visibility toggle</li>
- * <li>Sign-up logic with error handling for various exceptions</li>
- * </ul>
+ * - Field validation methods
+ * - Password visibility toggle
+ * - Sign-up logic with error handling for various exceptions
  * 
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
+ * 
  * 
  * @author Pablo
  * @author Ander
@@ -144,7 +148,6 @@ public class SignUpController {
         tfCity.focusedProperty().addListener(this::handleFocusLost);
         tfZip.focusedProperty().addListener(this::handleFocusLost);
 
-        // !!!!!!!!!!!!!! El boton solo se pulsa si le das en el borde superior muy justo !!!!!!!!!!!!!
         btnSignUp.setOnAction(this::handleSignUpButtonAction);
         hlSignIn.setOnAction(this::handleSignInHyperLinkAction);
 
@@ -152,7 +155,6 @@ public class SignUpController {
         btnSignUp.setDefaultButton(true);
         // Toggle password visibility button listener
         btnShowPassword.armedProperty().addListener(this::handleButtonPasswordVisibility);
-
     }
 
     /**
@@ -223,9 +225,8 @@ public class SignUpController {
     public boolean validateEmail() {
         boolean correct = false;
         String email = tfEmail.getText();
-        // Patrón para validar el formato de email
-        Pattern modelo = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
-        Matcher matcher = modelo.matcher(email);
+        Pattern model = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+        Matcher matcher = model.matcher(email);
         if (matcher.matches()) {
             correct = true;
         }
@@ -250,17 +251,15 @@ public class SignUpController {
      */
     private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
-            // Show the password when pressed
             String password = pfPassword.getText();
             pfPassword.setVisible(false);
             tfPassword.setText(password);
             tfPassword.setVisible(true);
             logger.log(Level.INFO, "Password visibility toggled to show");
         } else {
-            // Hide the password when released
             tfPassword.setVisible(false);
             pfPassword.setVisible(true);
-            logger.log(Level.INFO, "Password visibility toggled to hyde");
+            logger.log(Level.INFO, "Password visibility toggled to hide");
         }
     }
 
@@ -270,22 +269,17 @@ public class SignUpController {
      * @param actionEvent the action event triggered by clicking the hyperlink.
      */
     private void handleSignInHyperLinkAction(ActionEvent actionEvent) {
-
-        // Create a confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("You are about to exit");
         alert.setContentText("Are you sure you want to leave the registration window and return to the Sign In window?");
         Optional<ButtonType> result = alert.showAndWait();
 
-        // If the user confirms the exit
         if (result.isPresent() && result.get() == ButtonType.OK) {
             try {
-                // Close the current SignUp window
                 ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
                 logger.log(Level.INFO, "Closing SignUp window");
 
-                // Open the SignIn window
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
                 Parent root = loader.load();
                 Stage stage = new Stage();
@@ -309,11 +303,9 @@ public class SignUpController {
      * @throws ServerException if a server error occurs during registration.
      */
     private void handleSignUpButtonAction(ActionEvent actionEvent) {
-        // Create the user by passing the data
         tfPassword.setText(pfPassword.getText());
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
         logger.log(Level.INFO, "Creating user");
-        // Call the signUp method of the client that implements signable and goes through the factory
         try {
             ClientFactory.getSignable().signUp(user);
             logger.log(Level.INFO, "User signed up successfully");

@@ -26,8 +26,21 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 /**
- * FXML Controller class
+ * Controller class for the Home view.
  *
+ * Manages user interaction within the Home view, handling user data display, logout operations, and contextual menu actions.
+ * Provides functions for displaying user information, confirming logouts, and managing various input events.
+ * 
+ * This class is linked to the FXML Home view file, and it is initialized automatically when the view is loaded.
+ * 
+ * Usage Example:
+ * 
+ *     HomeController controller = new HomeController();
+ *     controller.setUser(user);
+ * 
+ * @see User
+ * @see WindowManager
+ * 
  * @author Aitziber
  * @author Ander
  */
@@ -59,6 +72,11 @@ public class HomeController {
 
     private User user;
 
+    /**
+     * Sets the user for the Home view and updates the displayed information.
+     *
+     * @param user the {@link User} object containing the user data to be displayed
+     */
     void setUser(User user) {
         this.user = user;
         updateUserInfo();
@@ -66,6 +84,10 @@ public class HomeController {
 
     /**
      * Initializes the controller class.
+     *
+     * Sets up event handlers for mouse and keyboard interactions, configures the contextual menu, 
+     * and logs the initialization process.
+     *
      */
     @FXML
     public void initialize() {
@@ -77,7 +99,7 @@ public class HomeController {
 
             btnLogOut.setOnAction(this::handleLogOutButtonAction);
 
-            // Establecer el botón de "Log out" como predeterminado
+            // Set the "Log out" button as the default button
             btnLogOut.setDefaultButton(true);
 
             configureContextMenu();
@@ -87,11 +109,13 @@ public class HomeController {
         }
     }
 
+    /**
+     * Updates the displayed user information based on the provided {@link User} data.
+     */
     private void updateUserInfo() {
         try {
             logger.log(Level.INFO, "Updating user info");
 
-            // Verificar si los datos existen antes de mostrarlos
             lblUserName.setText(userDataExists(user.getName()));
             lblUserEmail.setText(userDataExists(user.getEmail()));
             lblUserStreet.setText(userDataExists(user.getStreet()));
@@ -107,11 +131,9 @@ public class HomeController {
     private String userDataExists(String testData) {
         logger.log(Level.INFO, "Validating data...");
         try {
-            // Si el dato no existe o está vacío, devolver "unknown"
             return (testData != null && !testData.trim().isEmpty()) ? testData : "unknown";
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error validating string data", e);
-            // si se produce error también devuelve unknown
             return "unknown";
         }
     }
@@ -119,25 +141,25 @@ public class HomeController {
     private int userDataExists(int testData) {
         logger.log(Level.INFO, "Validating data...");
         try {
-            // Comprobar que el número no sea negativo o cero, devolver "00000" si es así
             return (testData > 0) ? testData : 00000;
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error validating numeric data", e);
-            // si se produce error también devuelve 0
             return 0;
         }
     }
 
+    /**
+     * Handles the logout button action, displaying a confirmation dialog and performing logout if confirmed.
+     *
+     * @param actionEvent the action event triggered by pressing the logout button
+     */
     private void handleLogOutButtonAction(ActionEvent actionEvent) {
         logger.log(Level.INFO, "Log out action initiated");
 
-        // Mostrar el cuadro de diálogo de confirmación
         if (showLogoutConfirmation()) {
             try {
-                // Limpiar campos del usuario antes de cerrar sesión
                 clearUserFields();
 
-                // Cerrar la ventana Home
                 Stage home = (Stage) btnLogOut.getScene().getWindow();
                 home.close();
                 WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
@@ -151,7 +173,11 @@ public class HomeController {
         }
     }
 
-    // Muestra alert de confirmación y devuelve respuesta positiva en caso de que el usuario seleccione OK
+    /**
+     * Displays a confirmation dialog for the logout action.
+     *
+     * @return {@code true} if the user confirms the logout, {@code false} otherwise
+     */
     private boolean showLogoutConfirmation() {
         try {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -163,12 +189,13 @@ public class HomeController {
             return result.isPresent() && result.get() == ButtonType.OK;
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error showing logout confirmation", e);
-            // si se produce error no cierra sesión
             return false;
         }
     }
 
-    // Vacía los campos que pudiesen contener información del usuario
+    /**
+     * Clears user information fields on the view.
+     */
     private void clearUserFields() {
         logger.log(Level.INFO, "Cleaning user fields");
 
@@ -188,13 +215,10 @@ public class HomeController {
     private void handleMouseClicked(MouseEvent event) {
         logger.log(Level.SEVERE, "Clicked on anchor pane");
         try {
-            // al hacer click derecho
             if (event.getButton() == MouseButton.SECONDARY) {
-                // desplegar el menú contextual en la posición del cursor
                 contextMenu.show(anchorPane, event.getScreenX(), event.getScreenY());
                 logger.log(Level.SEVERE, "Context menu shown");
             } else {
-                // si se presiona otro botón, ocultar el menú contextual
                 contextMenu.hide();
                 logger.log(Level.SEVERE, "Context menu hidden");
             }
@@ -210,11 +234,9 @@ public class HomeController {
                 double homeWidth = home.getWidth();
                 double homeHeight = home.getHeight();
 
-                // recoge las coordenadas de la ventana y calcula el centro de cada eje
                 double menuX = home.getX() + (homeWidth / 2) - (contextMenu.getWidth() / 2);
                 double menuY = home.getY() + (homeHeight / 2) - (contextMenu.getHeight() / 2);
 
-                // muestra el menú contextual en el centro de la ventana
                 contextMenu.show(anchorPane, menuX, menuY);
                 event.consume();
             }
@@ -223,9 +245,11 @@ public class HomeController {
         }
     }
 
+    /**
+     * Configures the context menu with options, including a "Log Out" item.
+     */
     private void configureContextMenu() {
         try {
-            // añadir elemento LogOut al menú contextual
             MenuItem itemLogOut = new MenuItem("Log Out");
             itemLogOut.setOnAction((ActionEvent e) -> {
                 handleLogOutButtonAction(e);
