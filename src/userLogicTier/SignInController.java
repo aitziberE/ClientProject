@@ -48,7 +48,8 @@ import userLogicTier.model.User;
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
  * 
- * @author Ander, Aitziber
+ * @author Ander
+ * @author Aitziber
  */
 public class SignInController {
 

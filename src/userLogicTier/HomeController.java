@@ -45,31 +45,61 @@ import javafx.scene.input.MouseEvent;
  * @author Ander
  */
 public class HomeController {
-
+    /**
+     * Logger to track the class activity and handle debugging information.
+     */
     private static final Logger logger = Logger.getLogger(HomeController.class.getName());
+    
+    /**
+     * Context menu to provide user options like log out when right-clicked.
+     */
     private final ContextMenu contextMenu = new ContextMenu();
 
+   /**
+     * AnchorPane that serves as the main container for the layout of the Home view.
+     */
     @FXML
     private AnchorPane anchorPane;
 
+    /**
+     * Button for logging out the user from the Home view.
+     */
     @FXML
     private Button btnLogOut;
 
+    /**
+     * Text label to display the user's name.
+     */
     @FXML
     private Text lblUserName;
 
+    /**
+     * Text label to display the user's email.
+     */
     @FXML
     private Text lblUserEmail;
 
+    /**
+     * Text label to display the user's street address.
+     */
     @FXML
     private Text lblUserStreet;
 
+    /**
+     * Text label to display the user's zip code.
+     */
     @FXML
     private Text lblUserZip;
 
+    /**
+     * Text label to display the user's city.
+     */
     @FXML
     private Text lblUserCity;
 
+    /**
+     * User object containing the data to be displayed in the Home view.
+     */
     private User user;
 
     /**
@@ -127,7 +157,13 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error updating user info", e);
         }
     }
-
+    
+    /**
+     * Validates if the provided string data is valid (non-null and non-empty).
+     * 
+     * @param testData the string data to be validated
+     * @return the validated data or "unknown" if the data is invalid
+     */
     private String userDataExists(String testData) {
         logger.log(Level.INFO, "Validating data...");
         try {
@@ -137,7 +173,13 @@ public class HomeController {
             return "unknown";
         }
     }
-
+    
+    /**
+     * Validates if the provided integer data is valid (greater than 0).
+     * 
+     * @param testData the integer data to be validated
+     * @return the validated data or 00000 if the data is invalid
+     */
     private int userDataExists(int testData) {
         logger.log(Level.INFO, "Validating data...");
         try {
@@ -212,6 +254,11 @@ public class HomeController {
         }
     }
 
+    /**
+     * Handles mouse click events on the anchor pane.
+     *
+     * @param event the mouse event triggered by the user's click
+     */
     private void handleMouseClicked(MouseEvent event) {
         logger.log(Level.SEVERE, "Clicked on anchor pane");
         try {
@@ -227,6 +274,11 @@ public class HomeController {
         }
     }
 
+    /**
+     * Handles key press events on the anchor pane.
+     *
+     * @param event the key event triggered by the user pressing a key
+     */
     private void handleKeyPress(KeyEvent event) {
         try {
             if (event.getCode() == KeyCode.F10 && event.isShiftDown()) {
@@ -261,8 +313,15 @@ public class HomeController {
             logger.log(Level.SEVERE, "Error configuring context menu", e);
         }
     }
-
+    
+    /**
+     * Start method to initialize the stage.
+     * This method is currently not supported.
+     * 
+     * @param stage the {@link Stage} for initializing the window
+     * @throws UnsupportedOperationException always thrown since this method is not supported
+     */
     void start(Stage stage) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

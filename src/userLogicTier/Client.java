@@ -48,7 +48,8 @@ import userLogicTier.model.User;
  * @see UserCredentialException
  * 
  * @author Pablo
- * @version 1.0
+ * @author Ander
+ * @author Aitziber
  */
 public class Client implements Signable {
 
@@ -110,7 +111,7 @@ public class Client implements Signable {
                 logger.log(Level.WARNING, "Error closing resources: ", e.getMessage());
             }
         }
-        return responseMessage; // Return the server response
+        return responseMessage;
     }
 
     /**
@@ -216,7 +217,7 @@ public class Client implements Signable {
     }
 
     /**
-     * Loads configuration data (such as IP address and port) from a properties file.
+     * Loads IP and PORT configuration from a properties file.
      */
     public void loadConfig() {
         ResourceBundle configFile = ResourceBundle.getBundle("resources.config");

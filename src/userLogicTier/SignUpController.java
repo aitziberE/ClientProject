@@ -35,9 +35,7 @@ import javafx.scene.image.Image;
 /**
  * Controller class for the Sign Up screen.
  * Manages user registration, input validation, and navigation actions.
- * This class is responsible for handling user interactions on the sign-up screen.
- * 
- * It includes:
+ * This class handles user interactions on the sign-up screen, including:
  * - Field validation methods
  * - Password visibility toggle
  * - Sign-up logic with error handling for various exceptions
@@ -46,7 +44,6 @@ import javafx.scene.image.Image;
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
  * 
  * @author Pablo
  * @author Ander
@@ -132,7 +129,8 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     /**
-     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. It configures the default state of the sign-up fields and assigns listeners for validation and actions.
+     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. 
+     * It configures the default state of the sign-up fields and assigns listeners for validation and actions.
      */
     public void initialize() {
         logger.log(Level.INFO, "Initializing SignUpController...");
