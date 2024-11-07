@@ -1,0 +1,47 @@
+/* Estilos para el VBox que contiene el formulario */
+.vBox {
+    -fx-background-color: #ffffff; 
+    -fx-padding: 20; 
+    -fx-background-radius: 10; 
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0.5, 0, 4);
+}
+
+/* Estilos para el título de la etiqueta */
+.lblTitle {
+    -fx-font-size: 20px; 
+    -fx-font-weight: bold;
+}
+
+/* Estilos para las etiquetas de entrada */
+.lblInput {
+    -fx-font-size: 14px;
+}
+
+/* Estilos para el botón de inicio de sesión */
+.btnSignIn {
+    -fx-background-color: #4CAF50; 
+    -fx-text-fill: white; 
+    -fx-font-size: 14px; 
+    -fx-background-radius: 5;
+}
+
+/* Estilos para el botón de mostrar/ocultar contraseña */
+.btnEye {
+    -fx-background-color: transparent;
+}
+
+/* Estilos para el enlace de registro */
+.linkSignUp {
+    -fx-text-fill: #007bff;  /* Color azul para el enlace */
+    -fx-underline: true;     /* Subrayado para mostrar que es un enlace */
+    -fx-font-size: 14px;
+}
+
+.linkSignUp:hover {
+    -fx-text-fill: #0056b3;  /* Color más oscuro al pasar el cursor */
+}
+.lblHome{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 0 0;
+}

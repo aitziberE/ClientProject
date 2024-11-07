@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="600.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="userLogicTier.HomeController">
+    <stylesheets>
+        <URL value="@styles.css" />
+    </stylesheets>
+   <children>
+      <BorderPane layoutY="1.0" prefHeight="400.0" prefWidth="600.0">
+         <top>
+            <StackPane prefHeight="98.0" prefWidth="600.0" styleClass="vBox" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="49.0" prefWidth="600.0">
+                     <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text id="lblWelcome" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="Welcome" />
+                           </children>
+                        </StackPane>
+                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Button id="btnLogOut" fx:id="btnLogOut" mnemonicParsing="false" styleClass="btnSignIn" text="LogOut" />
+                           </children>
+                        </StackPane>
+                     </children>
+                  </HBox>
+               </children>
+            </StackPane>
+         </top>
+         <left>
+            <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="vBox" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="219.0" prefWidth="135.0">
+                     <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0" />
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <ImageView id="imgProfile" fitHeight="106.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../resources/avatar.png" />
+                                 </image>
+                                 <clip>
+                                     <Circle centerX="50" centerY="50" radius="50" />
+                                 </clip>
+                              </ImageView>
+                           </children>
+                        </StackPane>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text fx:id="lblUserName" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblTitle" text="name" />
+                           </children>
+                        </StackPane>
+                     </children></VBox>
+               </children>
+            </StackPane>
+         </left>
+         <center>
+            <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="vBox" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox prefHeight="219.0" prefWidth="473.0" spacing="10">
+                     <children>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox prefHeight="200.0" prefWidth="346.0" spacing="10">
+                                       <children>
+                                          <Text fx:id="lblEmail" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Email" />
+                                          <Text fx:id="lblUserEmail" strokeType="OUTSIDE" strokeWidth="0.0" text="example@emailcom" wrappingWidth="344.9619140625" />
+                                          <Text fx:id="lblAddress" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Address" />
+                                          <VBox prefHeight="55.0" prefWidth="346.0" spacing="10">
+                                             <children>
+                                                <Text fx:id="lblStreet" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="Street" />
+                                                <Text fx:id="lblUserStreet" strokeType="OUTSIDE" strokeWidth="0.0" text="example street" wrappingWidth="344.8642578125" />
+                                             </children>
+                                          </VBox>
+                                          <HBox prefHeight="100.0" prefWidth="200.0" spacing="10">
+                                             <children>
+                                                <StackPane prefHeight="150.0" prefWidth="200.0">
+                                                   <children>
+                                                      <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
+                                                         <children>
+                                                            <Text fx:id="lblCity" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="City" />
+                                                            <Text fx:id="lblUserCity" strokeType="OUTSIDE" strokeWidth="0.0" text="example City" />
+                                                         </children>
+                                                      </VBox>
+                                                   </children>
+                                                </StackPane>
+                                                <VBox prefHeight="200.0" prefWidth="100.0" spacing="10">
+                                                   <children>
+                                                      <Text fx:id="lblZip" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="lblHome" text="ZIP" />
+                                                      <Text fx:id="lblUserZip" strokeType="OUTSIDE" strokeWidth="0.0" text="example ZIP" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                     </children></VBox>
+               </children>
+            </StackPane>
+         </center>
+         <bottom>
+            <StackPane prefHeight="82.0" prefWidth="600.0" style="-fx-background-color: #4CAF50;" styleClass="vBox" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <StackPane prefHeight="150.0" prefWidth="200.0">
+                           <children>
+                              <Text id="lblAuthors" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Authors: Aitziber Eskizabel, Ander Moreno, Iñigo Freire, Pablo Rodriguez" textAlignment="RIGHT" wrappingWidth="557.6570663452148" />
+                           </children>
+                        </StackPane>
+                     </children></HBox>
+               </children>
+            </StackPane>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
