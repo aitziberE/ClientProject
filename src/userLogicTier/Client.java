@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package userLogicTier;
 
 import exceptions.ExistingUserException;
@@ -20,21 +25,17 @@ import message.MessageType;
 import userLogicTier.model.User;
 
 /**
- * The {@code Client} class implements the client logic for communicating with a server using {@link User} and {@link MessageType} objects. It manages the sending and receiving of {@link Message} objects and handles various server responses based on message types.
- * <p>
- * This class uses {@link Signable} to provide sign-up and sign-in operations, processing server responses and managing exceptions specific to user registration and authentication.
- * </p>
- * <p>
- * <b>Configuration:</b> The server IP and port are loaded from a configuration file.
- * </p>
- *
- * <p>
- * <b>Usage:</b></p>
- * <pre>
+ * The {@code Client} class implements the client logic for communicating with a server using {@link User} and {@link MessageType} objects.
+ * It manages the sending and receiving of {@link Message} objects and handles various server responses based on message types.
+ * 
+ * This class uses {@link Signable} to provide sign-up and sign-in operations, processing server responses and managing exceptions
+ * specific to user registration and authentication.
+ * 
+ * Configuration:The server IP and port are loaded from a configuration file.
+ * Usage:
  *     Client client = new Client();
  *     client.loadConfig();
  *     client.signUp(user);
- * </pre>
  *
  * @see Signable
  * @see Message
@@ -45,8 +46,8 @@ import userLogicTier.model.User;
  * @see ServerException
  * @see UserCapException
  * @see UserCredentialException
- *
- * @author Pebble
+ * 
+ * @author Pablo
  * @version 1.0
  */
 public class Client implements Signable {
@@ -56,7 +57,8 @@ public class Client implements Signable {
     private String IP;
 
     /**
-     * Sends a {@link Message} object to the server and receives the server's response. Initializes the connection, sends the message, and waits for the response.
+     * Sends a {@link Message} object to the server and receives the server's response.
+     * Initializes the connection, sends the message, and waits for the response.
      *
      * @param message the {@link Message} to be sent to the server
      * @return the {@link Message} received from the server, or {@code null} if no response is received
@@ -93,7 +95,6 @@ public class Client implements Signable {
         } catch (IOException | ClassNotFoundException e) {
             logger.log(Level.SEVERE, "Error communicating with server: ", e);
         } finally {
-
             // Close socket and streams
             try {
                 if (socket != null) {
