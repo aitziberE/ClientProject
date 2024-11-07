@@ -32,8 +32,8 @@
             <HBox alignment="CENTER_LEFT" spacing="5">
             <AnchorPane prefHeight="30.0" prefWidth="126.0">
                <children>
-                      <TextField fx:id="tfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171" visible="false" />
-                      <PasswordField fx:id="pfPassword" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
+                      <TextField fx:id="tfPasswd" maxWidth="200" prefHeight="26.0" prefWidth="171" visible="false" />
+                      <PasswordField fx:id="pfPasswd" maxWidth="200" prefHeight="26.0" prefWidth="171.0" promptText="Enter password" />
                </children>
             </AnchorPane>
                 <Button fx:id="btnShowPassword" prefHeight="30.0" prefWidth="46.0" textAlignment="CENTER">

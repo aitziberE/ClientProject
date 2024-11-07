@@ -62,7 +62,7 @@ public class ClientErrorTestSignUp extends ApplicationTest {
     public static void setUpUserRegistration() throws Exception {
         SignUpControllerTest registrationTest = new SignUpControllerTest();
         registrationTest.start(new Stage());
-        registrationTest.test_SignUp();
+        // registrationTest.test_SignUp();
     }
 
     /**

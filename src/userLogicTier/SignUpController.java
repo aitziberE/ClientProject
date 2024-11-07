@@ -3,7 +3,6 @@ package userLogicTier;
 import exceptions.ExistingUserException;
 import exceptions.ServerException;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,7 +113,7 @@ public class SignUpController {
      * Label to display error messages.
      */
     @FXML
-    private Label lblError;
+    private Label lblErrorSignUp;
 
     /**
      * CheckBox to set the user's active status.
@@ -135,7 +134,7 @@ public class SignUpController {
         logger.log(Level.INFO, "Initializing SignUpController...");
 
         btnSignUp.setDisable(true);
-        lblError.setText("");
+        lblErrorSignUp.setText("");
 
         // Add listeners for input field focus loss to validate data before enabling the SignUp button
         tfName.focusedProperty().addListener(this::handleFocusLost);
@@ -168,33 +167,33 @@ public class SignUpController {
             // Validate email format
             if (!tfEmail.getText().isEmpty()) {
                 if (!validateEmail()) {
-                    lblError.setText("Incorrect email format");
+                    lblErrorSignUp.setText("Incorrect email format");
                     btnSignUp.setDisable(true);
                     return;
                 } else {
-                    lblError.setText("");
+                    lblErrorSignUp.setText("");
                 }
             }
 
             // Validate zip code format
             if (!tfZip.getText().isEmpty()) {
                 if (!validateZip()) {
-                    lblError.setText("Write a valid 5 digit ZIP");
+                    lblErrorSignUp.setText("Write a valid 5 digit ZIP");
                     btnSignUp.setDisable(true);
                     return;
                 } else {
-                    lblError.setText("");
+                    lblErrorSignUp.setText("");
                 }
             }
 
             // Validate password length
             if (!pfPassword.getText().isEmpty()) {
                 if (!validatePassword()) {
-                    lblError.setText("Password must contain at least 8 characters");
+                    lblErrorSignUp.setText("Password must contain at least 8 characters");
                     btnSignUp.setDisable(true);
                     return;
                 } else {
-                    lblError.setText("");
+                    lblErrorSignUp.setText("");
                 }
             }
 
@@ -297,7 +296,7 @@ public class SignUpController {
                 stage.show();
                 logger.log(Level.INFO, "Opened SignIn window");
             } catch (IOException ex) {
-                lblError.setText("Error opening Sign In window");
+                lblErrorSignUp.setText("Error opening Sign In window");
             }
         }
     }
@@ -322,13 +321,14 @@ public class SignUpController {
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
         } catch (ExistingUserException ex) {
-            lblError.setText("User already exists");
+            lblErrorSignUp.setText("User already exists");
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
         } catch (ServerException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");
             alert.setContentText("There was an error in the server, please contact the responsible technician");
+            alert.showAndWait();
             logger.log(Level.SEVERE, null, ex);
         }
     }
