@@ -108,7 +108,6 @@ public class HomeController {
         logger.log(Level.INFO, "Validating data...");
         try {
             // Si el dato no existe o está vacío, devolver "unknown"
-            logger.log(Level.SEVERE, "Empty data");
             return (testData != null && !testData.trim().isEmpty()) ? testData : "unknown";
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error validating string data", e);

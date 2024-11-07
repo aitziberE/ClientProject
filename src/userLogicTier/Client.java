@@ -124,8 +124,6 @@ public class Client implements Signable {
     public User signUp(User user) throws ExistingUserException, ServerException {
         User responseUser = null;
 
-        logger.log(Level.SEVERE, user.getPassword());
-
         // Create the registration message for the server
         Message request = new Message(user, MessageType.SERVER_SIGN_UP_REQUEST);
 
