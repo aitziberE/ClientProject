@@ -7,13 +7,9 @@ package client;
 
 import javafx.stage.Stage;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.testfx.api.FxAssert;
 import org.testfx.framework.junit.ApplicationTest;
-import org.testfx.matcher.base.WindowMatchers;
-import org.testfx.matcher.control.LabeledMatchers;
 import userInterfaceTier.Application;
 import userInterfaceTier.ApplicationSignUp;
 
