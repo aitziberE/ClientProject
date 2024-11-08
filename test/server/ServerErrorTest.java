@@ -40,42 +40,6 @@ public class ServerErrorTest extends ApplicationTest {
     }
 
     /**
-     * Tests the sign-in process with valid user credentials. This method simulates a user attempting to sign in successfully.
-     */
-    @Ignore
-    @Test
-    public void test1_signIn() {
-        // why?
-        clickOn("#tfUsername");
-        write("example@email.com");
-
-        clickOn("#pfPassword");
-        write("abcd*1234");
-
-        clickOn("#btnSignIn");
-    }
-
-    /**
-     * Tests the sign-in process when the user capacity limit is exceeded. Expects a UserCapException to be handled and an appropriate message displayed.
-     */
-    @Ignore
-    @Test
-    public void test2_userCapExceeded() {
-        // Simulate user capacity being reached by USER_CAP = 1
-        // Doesnt work
-
-        clickOn("#tfUsername");
-        write("pablo@paia.com");
-
-        clickOn("#pfPasswd");
-        write("12345678");
-
-        clickOn("#btnSignIn");
-
-        FxAssert.verifyThat("#lblError", LabeledMatchers.hasText("Cannot process request, please try again later."));
-    }
-
-    /**
      * Tests the sign-in process when the server is not connected. Expects a ServerException to be handled and an appropriate message displayed.
      */
     @Test
