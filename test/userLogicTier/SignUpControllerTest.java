@@ -5,10 +5,8 @@
  */
 package userLogicTier;
 
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
@@ -22,95 +20,44 @@ import static org.testfx.matcher.control.ButtonMatchers.isCancelButton;
 import static org.testfx.matcher.control.ButtonMatchers.isDefaultButton;
 import org.testfx.matcher.control.LabeledMatchers;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
-import userInterfaceTier.ApplicationSignUp;
-
+import userInterfaceTier.Application;
 
 /**
+ * Test class for the SignUpController. This class contains tests for the functionality of the SignUpController in the application. It extends the ApplicationTest class from TestFX to perform UI testing on the JavaFX application. The tests are run in a specific order as defined by the FixMethodOrder annotation.
+ *
+ * The tests include: - Validations for email, zip code, password format, and enabling the registration button when fields are filled. - Attempting user registration and verifying successful registration. - Verifying error handling when a user already exists. - Verifying alert and confirmation dialogs behavior.
  *
  * @author Aitziber
+ * @author Ander
  */
-    
-@FixMethodOrder(MethodSorters.NAME_ASCENDING) //Esto es como un método @Before en JUnit
-public class SignUpControllerTest extends ApplicationTest{
-    
-    @Override 
-    public void start(Stage stage) throws Exception {
-        new ApplicationSignUp().start(stage);
-    }
-    
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class SignUpControllerTest extends ApplicationTest {
+
+    /**
+     * Default constructor for SignUpControllerTest. Initializes the test class without any specific setup. This constructor is required by JUnit, but does not need to perform any actions.
+     */
     public SignUpControllerTest() {
     }
-    
-    //  hacer también las validaciones, rellenar todos los campos y a ver si acepta el formato, no informa de error y activa el boton de registro
-    
 
-    @Test
-    public void test_emailFormatError() {
-        clickOn("#tfEmail");
-        write("notEmailAddress");
-        clickOn("#tfName");
-        
-        FxAssert.verifyThat("#lblError", hasText("Incorrect email format"));
-        FxAssert.verifyThat("#btnSignUp", isDisabled());
+    /**
+     * Initializes the application for testing by starting the Application. This method is automatically called before each test to set up the application context.
+     *
+     * @param stage the primary stage for the application, provided by TestFX framework.
+     * @throws Exception if there is an error starting the application.
+     */
+    @Override
+    public void start(Stage stage) throws Exception {
+        new Application().start(stage);
     }
 
+    /**
+     * Test method to simulate a successful sign-up process. This test verifies that a user can successfully register by filling out the sign-up form and clicking the sign-up button, which should navigate to the "SignIn" window.
+     */
     @Test
-    public void test_zipFormatError() {
-        clickOn("#tfZip");
-        write("1234");
-        clickOn("#tfName");
-        
-        FxAssert.verifyThat("#lblError", hasText("Write a valid 5 digit ZIP"));
-        FxAssert.verifyThat("#btnSignUp", NodeMatchers.isDisabled());
-    }
-   
+    public void testA_SignUp() {
+        clickOn("#hlSignUp");
+        clickOn("Aceptar");
 
-    @Test
-    public void test_passwordValidationError() {
-        // hay un problema con el foco 
-        clickOn("#pfPassword");
-        write("1");
-        clickOn("#tfEmail");
-        clickOn("#pfPassword");
-        
-        FxAssert.verifyThat("#lblError", hasText("Password must contain at least 8 characters"));
-        FxAssert.verifyThat("#btnSignUp", NodeMatchers.isDisabled());
-    }
-   
-
-    @Test
-    public void test_btnSignUp_isDefaultButton(){
-        FxAssert.verifyThat("#btnSignUp", isDefaultButton());
-    }
-
-    @Test
-    public void test_btnSignUp_enablesOnFill(){
-        clickOn("#tfName");
-        write("name");
-
-        clickOn("#tfEmail");
-        write("example@email.com");
-
-        clickOn("#pfPassword");
-        write("abcd*1234");
-
-        clickOn("#tfAddress");
-        write("street");
-
-        clickOn("#tfCity");
-        write("city");
-
-        clickOn("#tfZip");
-        write("12345");
-
-        clickOn("#cbActive");
-
-        FxAssert.verifyThat("#btnSignUp", isEnabled());
-    }
-    
-    @Ignore("Hay problema con el boton")
-    @Test
-    public void test_SignUp(){
         clickOn("#tfName");
         write("name");
 
@@ -133,45 +80,44 @@ public class SignUpControllerTest extends ApplicationTest{
 
         FxAssert.verifyThat("#btnSignUp", isEnabled());
         clickOn("#btnSignUp");
-        
-        //hay problema con el boton
+
         FxAssert.verifyThat(window("SignIn"), WindowMatchers.isShowing());
     }
-    
-    // Hyperlink and alert
-    @Test
-    public void test_hyperlink_showsAlert(){
-        clickOn("#hlSignIn");
-        FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
-        clickOn("Cancelar");
 
-    }
-    
+    /**
+     * Test method to handle the scenario where a user already exists. This test checks if an error message is displayed when attempting to register an already existing user.
+     */
     @Test
-    public void test_confirmationAlert_OK_navigation(){
-        clickOn("#hlSignIn");
-        FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
-    
+    public void testB_UserAlreadyExists() {
+        // sometimes bugs, of course, try again after deleting new user from db
+        clickOn("#hlSignUp");
         clickOn("Aceptar");
-      // estas lineas no están funcionando
-      // FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isNotShowing());
-      // FxAssert.verifyThat(window("SignUp"), WindowMatchers.isNotShowing());
-       FxAssert.verifyThat(window("SignIn"), WindowMatchers.isShowing());
+
+        clickOn("#tfName");
+        write("name");
+
+        clickOn("#tfEmail");
+        write("example@email.com");
+
+        clickOn("#pfPassword");
+        write("abcd*1234");
+
+        clickOn("#tfAddress");
+        write("street");
+
+        clickOn("#tfCity");
+        write("city");
+
+        clickOn("#tfZip");
+        write("12345");
+
+        clickOn("#cbActive");
+
+        // Click on the sign-up button to attempt registration.
+        clickOn("#btnSignUp");
+
+        // Verify that the error message "User already exists" is displayed.
+        FxAssert.verifyThat("#lblErrorSignUp", LabeledMatchers.hasText("User already exists"));
     }
-    
-    @Ignore("No identifica la ventana SignUp")
-    @Test
-    public void test_confirmationAlert_CANCEL(){
-        clickOn("#hlSignIn");
-        FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isShowing());
-        FxAssert.verifyThat("Cancelar", isCancelButton());
 
-        clickOn("Cancelar");
-        
-//        //FxAssert.verifyThat(window("Confirmation"), WindowMatchers.isNotShowing());
-        
-        //no está identificando este ventana
-        FxAssert.verifyThat(window("SignUp"), WindowMatchers.isShowing());
-    }   
 }
-

@@ -48,7 +48,8 @@ import userLogicTier.model.User;
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
  * 
- * @author Ander, Aitziber
+ * @author Ander
+ * @author Aitziber
  */
 public class SignInController {
 
@@ -67,13 +68,13 @@ public class SignInController {
      * PasswordField for entering the password in a concealed form.
      */
     @FXML
-    private PasswordField pfPassword;
+    private PasswordField pfPasswd;
 
     /**
      * TextField for showing the password in plain text when visibility is toggled.
      */
     @FXML
-    private TextField tfPassword;
+    private TextField tfPasswd;
 
     /**
      * Button to toggle the visibility of the password.
@@ -147,14 +148,14 @@ public class SignInController {
     private void handleButtonPasswordVisibility(ObservableValue observable, Boolean oldValue, Boolean newValue) {
         if (newValue) {
             // Show the password when pressed
-            String password = pfPassword.getText();
-            pfPassword.setVisible(false);
-            tfPassword.setText(password);
-            tfPassword.setVisible(true);
+            String password = pfPasswd.getText();
+            pfPasswd.setVisible(false);
+            tfPasswd.setText(password);
+            tfPasswd.setVisible(true);
         } else {
             // Hide the password when released
-            tfPassword.setVisible(false);
-            pfPassword.setVisible(true);
+            tfPasswd.setVisible(false);
+            pfPasswd.setVisible(true);
         }
     }
 
@@ -165,7 +166,7 @@ public class SignInController {
      */
     private void handleSignInButtonAction(ActionEvent actionEvent) {
         String username = tfUsername.getText();
-        String password = pfPassword.getText();
+        String password = pfPasswd.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
             lblError.setText("Please fill out all fields.");
