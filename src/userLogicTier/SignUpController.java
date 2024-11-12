@@ -7,6 +7,7 @@ package userLogicTier;
 
 import exceptions.ExistingUserException;
 import exceptions.ServerException;
+import exceptions.UserCapException;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -318,6 +319,13 @@ public class SignUpController {
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");
             alert.setContentText("There was an error in the server, please contact the responsible technician");
+            alert.showAndWait();
+            logger.log(Level.SEVERE, null, ex);
+        } catch (UserCapException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR");
+            alert.setHeaderText("User cap reached");
+            alert.setContentText("User cap reached, please wait for a connection or contact the server manager");
             alert.showAndWait();
             logger.log(Level.SEVERE, null, ex);
         }
