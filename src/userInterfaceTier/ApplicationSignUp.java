@@ -8,6 +8,7 @@ package userInterfaceTier;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -27,17 +28,22 @@ public class ApplicationSignUp extends javafx.application.Application {
      * @param stage the primary stage for this application
      * @throws Exception if an error occurs during loading of the FXML file
      */
+    
+    
+    public void ApplicationSignUp() {
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
-        
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setTitle("Sign Up");
-        stage.show();
+        FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignUp.fxml"));
+                Parent mainView = FXMLLoader.load();
+                stage.setResizable(false);
+                stage.getIcons().add(new Image("resources/logo.png"));
+                stage.setTitle("SignUp");
+                stage.setScene(new Scene(mainView));
+                stage.show();
     }
+    
 
     /**
      * The main entry point for the application.

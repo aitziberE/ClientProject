@@ -33,18 +33,16 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 
 /**
- * Controller class for the Sign Up screen.
- * Manages user registration, input validation, and navigation actions.
- * This class handles user interactions on the sign-up screen, including:
- * - Field validation methods
- * - Password visibility toggle
- * - Sign-up logic with error handling for various exceptions
- * 
+ * Controller class for the Sign Up screen. Manages user registration, input
+ * validation, and navigation actions. This class handles user interactions on
+ * the sign-up screen, including: - Field validation methods - Password
+ * visibility toggle - Sign-up logic with error handling for various exceptions
+ *
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
+ *
  * @author Pablo
  * @author Ander
  * @author Aitziber
@@ -129,12 +127,17 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     /**
-     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. 
-     * It configures the default state of the sign-up fields and assigns listeners for validation and actions.
+     * Initializes the controller by setting up event listeners and button
+     * properties. This method is automatically called after the FXML file is
+     * loaded. It configures the default state of the sign-up fields and assigns
+     * listeners for validation and actions.
      */
+    
+    private static Client Client;
+    
     public void initialize() {
         logger.log(Level.INFO, "Initializing SignUpController...");
-
+         Client = (Client) ClientFactory.getSignable();
         btnSignUp.setDisable(true);
         lblErrorSignUp.setText("");
 
@@ -156,7 +159,8 @@ public class SignUpController {
     }
 
     /**
-     * Validates input fields when they lose focus. Enables the Sign Up button if all required fields are valid.
+     * Validates input fields when they lose focus. Enables the Sign Up button
+     * if all required fields are valid.
      *
      * @param observable the observable property of the input field's focus.
      * @param oldValue the previous focus state.
@@ -234,7 +238,8 @@ public class SignUpController {
     /**
      * Validates the password length (must be at least 8 characters).
      *
-     * @return true if the password meets the minimum length requirement, false otherwise.
+     * @return true if the password meets the minimum length requirement, false
+     * otherwise.
      */
     public boolean validatePassword() {
         return pfPassword.getText().matches("^.{8,}$");
@@ -262,7 +267,9 @@ public class SignUpController {
     }
 
     /**
-     * Handles the action of the Sign In hyperlink. Prompts for confirmation to leave the registration screen and navigates to the Sign In screen if confirmed.
+     * Handles the action of the Sign In hyperlink. Prompts for confirmation to
+     * leave the registration screen and navigates to the Sign In screen if
+     * confirmed.
      *
      * @param actionEvent the action event triggered by clicking the hyperlink.
      */
@@ -294,9 +301,11 @@ public class SignUpController {
     }
 
     /**
-     * Handles the action of the Sign Up button. Creates a user, attempts registration, and navigates to the Sign In screen on success.
+     * Handles the action of the Sign Up button. Creates a user, attempts
+     * registration, and navigates to the Sign In screen on success.
      *
-     * @param actionEvent the action event triggered by clicking the Sign Up button.
+     * @param actionEvent the action event triggered by clicking the Sign Up
+     * button.
      * @throws ExistingUserException if the user already exists.
      * @throws ServerException if a server error occurs during registration.
      */
@@ -305,14 +314,19 @@ public class SignUpController {
         User user = new User(tfName.getText().trim(), tfEmail.getText().trim(), tfPassword.getText().trim(), tfAddress.getText().trim(), tfCity.getText().trim(), tfZip.getText().trim(), cbActive.isSelected());
         logger.log(Level.INFO, "Creating user");
         try {
-            ClientFactory.getSignable().signUp(user);
+            Client.signUp(user);
             logger.log(Level.INFO, "User signed up successfully");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Sign Up Confirmation");
+            alert.setHeaderText("Sign Up succeeded");
+            alert.setContentText("Redirecting to Sign In");
 
             ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
         } catch (ExistingUserException ex) {
             lblErrorSignUp.setText("User already exists");
-            logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
+            logger.log(Level.WARNING, "Error during SignUp:", ex.getMessage());
         } catch (ServerException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");

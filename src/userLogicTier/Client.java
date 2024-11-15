@@ -140,7 +140,7 @@ public class Client implements Signable {
                     logger.log(Level.INFO, "User signed up.");
                     break;
                 case SERVER_USER_ALREADY_EXISTS:
-                    logger.log(Level.SEVERE, "User already exists.");
+                    logger.log(Level.WARNING, "User already exists.");
                     throw new ExistingUserException();
                 case SERVER_RESPONSE_DENIED:
                     logger.log(Level.SEVERE, "Registration denied by server.");

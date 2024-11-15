@@ -31,8 +31,10 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
+import userInterfaceTier.Application;
+import userInterfaceTier.ApplicationSignUp;
 import userLogicTier.model.User;
+import javafx.stage.Stage;
 
 /**
  * Controller class for the Sign In screen. 
@@ -210,7 +212,8 @@ public class SignInController {
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-
+                
+                
                 FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignUp.fxml"));
                 Parent mainView = FXMLLoader.load();
                 Stage stage = new Stage();
@@ -238,4 +241,6 @@ public class SignInController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 }
