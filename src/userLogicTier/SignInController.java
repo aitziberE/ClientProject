@@ -99,12 +99,17 @@ public class SignInController {
      */
     @FXML
     private Hyperlink hlSignUp;
+    
+    private Signable signable = null;
 
     /**
      * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded.
      */
     public void initialize() {
         logger.log(Level.INFO, "Initilizing sign in controller");
+        
+        signable = ClientFactory.getSignable();
+        
         tfUsername.focusedProperty().addListener(this::handleTfUsernameFocusProperyLost);
         btnSignIn.setOnAction(this::handleSignInButtonAction);
         hlSignUp.setOnAction(this::handleSignUpHyperlinkAction);
@@ -168,29 +173,32 @@ public class SignInController {
         String username = tfUsername.getText();
         String password = pfPasswd.getText();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            lblError.setText("Please fill out all fields.");
-        } else {
-            try {
+        try {
+            if (username.isEmpty() || password.isEmpty()) {
+                throw new EmptyFieldsException("Please fill out all fields.");
+            } else {
                 lblError.setText("");
                 User user = new User(username, password);
-                user = ClientFactory.getSignable().signIn(user);
+                user = signable.signIn(user);
                 // Successfully authenticated; proceed to home screen
                 ((Node) actionEvent.getSource()).getScene().getWindow().hide();
                 WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
-            } catch (UserCredentialException ex) {
-                lblError.setText("Incorrect username or password.");
-                logger.log(Level.SEVERE, null, ex);
-            } catch (ServerException ex) {
-                showErrorAlert("Server error", "There was an error on the server, please contact support.");
-                logger.log(Level.SEVERE, null, ex);
-            } catch (InactiveUserException ex) {
-                showErrorAlert("User error", "Your account is deactivated, please contact support.");
-                logger.log(Level.SEVERE, null, ex);
-            } catch (UserCapException ex) {
-                showErrorAlert("Capacity limit", "Cannot process request, please try again later.");
-                logger.log(Level.SEVERE, null, ex);
             }
+        } catch (UserCredentialException ex) {
+            lblError.setText("Incorrect username or password.");
+            logger.log(Level.WARNING, null, ex);
+        } catch (ServerException ex) {
+            showErrorAlert("Server error", "There was an error on the server, please contact support.");
+            logger.log(Level.WARNING, null, ex);
+        } catch (InactiveUserException ex) {
+            showErrorAlert("User error", "Your account is deactivated, please contact support.");
+            logger.log(Level.WARNING, null, ex);
+        } catch (UserCapException ex) {
+            showErrorAlert("Capacity limit", "Cannot process request, please try again later.");
+            logger.log(Level.WARNING, null, ex);
+        } catch (EmptyFieldsException ex) {
+            lblError.setText(ex.getMessage());
+            logger.log(Level.WARNING, null, ex);
         }
     }
 
@@ -201,14 +209,7 @@ public class SignInController {
      */
     public void handleSignUpHyperlinkAction(ActionEvent actionEvent) {
         try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("You are about to exit");
-            alert.setContentText("Are you sure you want to leave the sign in window and open the sign up window?");
 
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.OK) {
                 ((Node) actionEvent.getSource()).getScene().getWindow().hide();
 
                 FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignUp.fxml"));
@@ -219,7 +220,7 @@ public class SignInController {
                 stage.setTitle("SignUp");
                 stage.setScene(new Scene(mainView));
                 stage.show();
-            }
+           
         } catch (IOException e) {
             logger.log(Level.SEVERE, null, e);
         }

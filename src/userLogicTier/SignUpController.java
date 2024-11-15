@@ -127,7 +127,7 @@ public class SignUpController {
      */
     @FXML
     private PasswordField pfPassword;
-
+    
     /**
      * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. 
      * It configures the default state of the sign-up fields and assigns listeners for validation and actions.

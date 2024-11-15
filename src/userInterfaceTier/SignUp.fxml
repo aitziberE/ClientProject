@@ -73,6 +73,11 @@
                                                         <Insets bottom="10.0" right="10.0" top="10.0" />
                                                     </VBox.margin>
                                                 </TextField>
+                                                <TextField fx:id="tfMobile" promptText="Enter your mobile">
+                                                    <VBox.margin>
+                                                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                    </VBox.margin>
+                                                </TextField>
                                                 <TextField fx:id="tfEmail" promptText="Enter your email">
                                                     <VBox.margin>
                                                         <Insets bottom="20.0" right="10.0" top="10.0" />
