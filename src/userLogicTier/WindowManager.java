@@ -8,7 +8,9 @@ package userLogicTier;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -39,9 +41,11 @@ public class WindowManager {
      * @param fxmlFilePath the path to the FXML file to load for the new window.
      * @param title the title to set for the new window.
      * @param user the user object to pass to the controller of the new window.
+     * @param actionEvent
      */
-    public static void openWindow(String fxmlFilePath, String title, User user) {
+    public static void openWindow(String fxmlFilePath, String title, User user, ActionEvent actionEvent) {
         try {
+            ((Node) actionEvent.getSource()).getScene().getWindow().hide();
              // Load the FXML file and its controller
             FXMLLoader fxmlLoader = new FXMLLoader(WindowManager.class.getResource(fxmlFilePath));
             Parent root = fxmlLoader.load();
@@ -68,10 +72,12 @@ public class WindowManager {
      *
      * @param fxmlFilePath the path to the FXML file to load for the new window.
      * @param title the title to set for the new window.
+     * @param actionEvent
      */
-    public static void openWindow(String fxmlFilePath, String title) {
+    public static void openWindow(String fxmlFilePath, String title, ActionEvent actionEvent) {
         try {
             // Load the FXML file
+            ((Node) actionEvent.getSource()).getScene().getWindow().hide();
             FXMLLoader fxmlLoader = new FXMLLoader(WindowManager.class.getResource(fxmlFilePath));
             Parent root = fxmlLoader.load();
 

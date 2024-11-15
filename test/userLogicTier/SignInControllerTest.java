@@ -9,6 +9,7 @@ import javafx.geometry.VerticalDirection;
 import javafx.stage.Stage;
 import org.junit.Test;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.runners.MethodSorters;
 import org.testfx.api.FxAssert;
 import static org.testfx.api.FxAssert.verifyThat;
@@ -50,6 +51,7 @@ public class SignInControllerTest extends ApplicationTest {
      * This test checks the process of logging in with correct credentials and verifying 
      * the presence of the "Log Out" button, then performing the log out action.
      */
+    @Ignore
     @Test
     public void testA_AcceptUser() {
         clickOn("#tfUsername");

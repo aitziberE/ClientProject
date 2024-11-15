@@ -33,18 +33,13 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 
 /**
- * Controller class for the Sign Up screen.
- * Manages user registration, input validation, and navigation actions.
- * This class handles user interactions on the sign-up screen, including:
- * - Field validation methods
- * - Password visibility toggle
- * - Sign-up logic with error handling for various exceptions
- * 
+ * Controller class for the Sign Up screen. Manages user registration, input validation, and navigation actions. This class handles user interactions on the sign-up screen, including: - Field validation methods - Password visibility toggle - Sign-up logic with error handling for various exceptions
+ *
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
+ *
  * @author Pablo
  * @author Ander
  * @author Aitziber
@@ -129,8 +124,7 @@ public class SignUpController {
     private PasswordField pfPassword;
 
     /**
-     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. 
-     * It configures the default state of the sign-up fields and assigns listeners for validation and actions.
+     * Initializes the controller by setting up event listeners and button properties. This method is automatically called after the FXML file is loaded. It configures the default state of the sign-up fields and assigns listeners for validation and actions.
      */
     public void initialize() {
         logger.log(Level.INFO, "Initializing SignUpController...");
@@ -274,22 +268,10 @@ public class SignUpController {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                ((Node) (actionEvent.getSource())).getScene().getWindow().hide();
-                logger.log(Level.INFO, "Closing SignUp window");
+            logger.log(Level.INFO, "Closing SignUp window");
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignIn.fxml"));
-                Parent root = loader.load();
-                Stage stage = new Stage();
-                stage.setResizable(false);
-                stage.getIcons().add(new Image("resources/logo.png"));
-                stage.setTitle("SignIn");
-                stage.setScene(new Scene(root));
-                stage.show();
-                logger.log(Level.INFO, "Opened SignIn window");
-            } catch (IOException ex) {
-                lblErrorSignUp.setText("Error opening Sign In window");
-            }
+            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "Sign in", actionEvent);
+            logger.log(Level.INFO, "Opened SignIn window");
         }
     }
 
@@ -307,17 +289,15 @@ public class SignUpController {
         try {
             ClientFactory.getSignable().signUp(user);
             logger.log(Level.INFO, "User signed up successfully");
-
-            ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
+            WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", actionEvent);
         } catch (ExistingUserException ex) {
-            lblErrorSignUp.setText("User already exists");
+            lblErrorSignUp.setText(ex.getMessage());
             logger.log(Level.INFO, "Error during SignUp:", ex.getMessage());
         } catch (ServerException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ERROR");
             alert.setHeaderText("Server error");
-            alert.setContentText("There was an error in the server, please contact the responsible technician");
+            alert.setContentText(ex.getMessage());
             alert.showAndWait();
             logger.log(Level.SEVERE, null, ex);
         }

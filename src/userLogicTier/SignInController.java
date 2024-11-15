@@ -35,19 +35,13 @@ import javafx.stage.Stage;
 import userLogicTier.model.User;
 
 /**
- * Controller class for the Sign In screen. 
- * Manages user authentication, navigation actions, and input validation.
- * This class is responsible for handling user interactions on the sign-in screen.
- * It includes:
- * - Field validation methods
- * - Password visibility toggle
- * - Sign-in logic with error handling for various exceptions
- * 
+ * Controller class for the Sign In screen. Manages user authentication, navigation actions, and input validation. This class is responsible for handling user interactions on the sign-in screen. It includes: - Field validation methods - Password visibility toggle - Sign-in logic with error handling for various exceptions
+ *
  * @see userLogicTier.model.User
  * @see javafx.beans.value.ObservableValue
  * @see javafx.event.ActionEvent
  * @see java.util.logging.Logger
- * 
+ *
  * @author Ander
  * @author Aitziber
  */
@@ -176,8 +170,7 @@ public class SignInController {
                 User user = new User(username, password);
                 user = ClientFactory.getSignable().signIn(user);
                 // Successfully authenticated; proceed to home screen
-                ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-                WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user);
+                WindowManager.openWindow("/userInterfaceTier/Home.fxml", "Home", user, actionEvent);
             } catch (UserCredentialException ex) {
                 lblError.setText("Incorrect username or password.");
                 logger.log(Level.SEVERE, null, ex);
@@ -200,29 +193,7 @@ public class SignInController {
      * @param actionEvent action event triggered by the Sign Up hyperlink.
      */
     public void handleSignUpHyperlinkAction(ActionEvent actionEvent) {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("You are about to exit");
-            alert.setContentText("Are you sure you want to leave the sign in window and open the sign up window?");
-
-            Optional<ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                ((Node) actionEvent.getSource()).getScene().getWindow().hide();
-
-                FXMLLoader FXMLLoader = new FXMLLoader(getClass().getResource("/userInterfaceTier/SignUp.fxml"));
-                Parent mainView = FXMLLoader.load();
-                Stage stage = new Stage();
-                stage.setResizable(false);
-                stage.getIcons().add(new Image("resources/logo.png"));
-                stage.setTitle("SignUp");
-                stage.setScene(new Scene(mainView));
-                stage.show();
-            }
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, null, e);
-        }
+        WindowManager.openWindow("/userInterfaceTier/SignUp.fxml", "Sign Up", actionEvent);
     }
 
     /**

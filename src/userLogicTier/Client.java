@@ -140,22 +140,22 @@ public class Client implements Signable {
                     logger.log(Level.INFO, "User signed up.");
                     break;
                 case SERVER_USER_ALREADY_EXISTS:
-                    logger.log(Level.SEVERE, "User already exists.");
-                    throw new ExistingUserException();
+                    logger.log(Level.SEVERE, "User already exists");
+                    throw new ExistingUserException("User already exists");
                 case SERVER_RESPONSE_DENIED:
-                    logger.log(Level.SEVERE, "Registration denied by server.");
-                    throw new ServerException();
+                    logger.log(Level.SEVERE, "Registration denied by server");
+                    throw new ServerException("Registration denied by server");
                 case SERVER_CONNECTION_ERROR:
-                    logger.log(Level.SEVERE, "Connection error with the server.");
-                    throw new ServerException();
+                    logger.log(Level.SEVERE, "Connection error with the server");
+                    throw new ServerException("Connection error with the server");
                 default:
-                    logger.log(Level.SEVERE, "Unexpected server response.");
-                    throw new ServerException();
+                    logger.log(Level.SEVERE, "Unexpected server response");
+                    throw new ServerException("Unexpected server response");
             }
 
         } else {
-            logger.log(Level.SEVERE, "No response from server.");
-            throw new ServerException();
+            logger.log(Level.SEVERE, "No response from server");
+            throw new ServerException("No response from server");
         }
 
         // Successful registration, return the user

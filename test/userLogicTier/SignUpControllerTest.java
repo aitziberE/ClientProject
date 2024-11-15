@@ -56,7 +56,6 @@ public class SignUpControllerTest extends ApplicationTest {
     @Test
     public void testA_SignUp() {
         clickOn("#hlSignUp");
-        clickOn("Aceptar");
 
         clickOn("#tfName");
         write("name");
@@ -91,7 +90,6 @@ public class SignUpControllerTest extends ApplicationTest {
     public void testB_UserAlreadyExists() {
         // sometimes bugs, of course, try again after deleting new user from db
         clickOn("#hlSignUp");
-        clickOn("Aceptar");
 
         clickOn("#tfName");
         write("name");

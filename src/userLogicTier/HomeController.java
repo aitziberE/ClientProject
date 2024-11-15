@@ -202,9 +202,7 @@ public class HomeController {
             try {
                 clearUserFields();
 
-                Stage home = (Stage) btnLogOut.getScene().getWindow();
-                home.close();
-                WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn");
+                WindowManager.openWindow("/userInterfaceTier/SignIn.fxml", "SignIn", actionEvent);
 
                 logger.log(Level.INFO, "Successfully navigated to Sign In screen.");
             } catch (Exception e) {
