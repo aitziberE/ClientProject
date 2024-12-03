@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400" prefWidth="600" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <!-- Contenedor principal -->
+      <GridPane hgap="10" vgap="10" AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+         <!-- Fila superior: Campos de texto -->
+         <Label text="Login:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+         <TextField fx:id="loginField" prefWidth="120" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+         
+         <Label text="Perfil:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+         <ComboBox fx:id="perfilComboBox" prefWidth="120" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+         
+         <Label text="Nombre:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+         <TextField fx:id="nombreField" prefWidth="120" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+         
+         <Label text="Departamento:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+         <TextField fx:id="departamentoField" prefWidth="120" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+         
+         <!-- Botones Crear y Modificar -->
+         <Button text="Crear" fx:id="crearButton" prefWidth="80" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+         <Button text="Modificar" fx:id="modificarButton" prefWidth="80" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+
+         <!-- Tabla -->
+         <TableView fx:id="usuariosTable" GridPane.columnSpan="5" prefHeight="200" prefWidth="500" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <columns>
+               <TableColumn fx:id="loginColumn" text="Login"/>
+               <TableColumn fx:id="nombreColumn" text="Nombre"/>
+               <TableColumn fx:id="perfilColumn" text="Perfil"/>
+               <TableColumn fx:id="departamentoColumn" text="Departamento"/>
+            </columns>
+         </TableView>
+         
+         <!-- Botones inferiores -->
+         <Button text="Eliminar" fx:id="eliminarButton" prefWidth="80" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+         <Button text="Salir" fx:id="salirButton" prefWidth="80" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
+      </GridPane>
+   </children>
+</AnchorPane>
