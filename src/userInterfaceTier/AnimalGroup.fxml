@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -20,30 +21,31 @@
          <Label prefHeight="17.0" prefWidth="45.0" text="Name:" />
          <TextField fx:id="loginField" prefHeight="26.0" prefWidth="92.0" GridPane.columnIndex="1" />
          
-         <Label text="Description:" GridPane.rowIndex="1" />
+         <Label text="Description:" GridPane.rowIndex="1" GridPane.valignment="BASELINE" />
          
          <Label text="Area:" GridPane.columnIndex="2" />
          <TextField fx:id="nombreField" prefWidth="120" GridPane.columnIndex="3" />
          
-         <Label text="Creation date:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+         <Label text="Creation date:" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BASELINE" />
          
          <!-- Botones Crear y Modificar -->
          <Button fx:id="crearButton" prefWidth="80" text="New" GridPane.columnIndex="4" />
-         <DatePicker GridPane.columnIndex="3" GridPane.rowIndex="1" />
+         <DatePicker GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.valignment="BASELINE" />
          <TextArea prefHeight="78.0" prefWidth="223.0" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          <Button fx:id="salirButton" prefWidth="80" text="Log out" GridPane.columnIndex="5" />
 
          <!-- Tabla -->
-         <TableView fx:id="usuariosTable" prefHeight="523.0" prefWidth="1000.0" GridPane.columnSpan="6" GridPane.rowIndex="2">
+         <TableView fx:id="usuariosTable" prefHeight="523.0" prefWidth="1000.0" GridPane.columnSpan="6" GridPane.rowIndex="3">
             <columns>
                <TableColumn fx:id="loginColumn" prefWidth="161.60003280639648" resizable="false" text="Name" />
                <TableColumn fx:id="nombreColumn" prefWidth="393.59996032714844" resizable="false" text="Description" />
                <TableColumn fx:id="perfilColumn" minWidth="0.0" prefWidth="75.20001220703125" resizable="false" text="Animals" />
                <TableColumn fx:id="departamentoColumn" minWidth="0.0" prefWidth="159.2000732421875" resizable="false" text="Area" />
                <TableColumn fx:id="departamentoColumn1" prefWidth="92.800048828125" resizable="false" text="Consume (kg)" />
-               <TableColumn fx:id="departamentoColumn11" prefWidth="120.7999267578125" resizable="false" text="Creation date" />
+               <TableColumn fx:id="departamentoColumn11" prefWidth="95.20003662109377" resizable="false" text="Creation date" />
             </columns>
          </TableView>
+         <Separator prefWidth="200.0" GridPane.columnSpan="6" GridPane.rowIndex="2" />
          <columnConstraints>
             <ColumnConstraints maxWidth="80.0" minWidth="38.0" prefWidth="80.0" />
             <ColumnConstraints maxWidth="237.80001220703124" minWidth="73.0" prefWidth="224.20003662109374" />
@@ -55,7 +57,8 @@
          <rowConstraints>
             <RowConstraints maxHeight="57.60000762939453" minHeight="30.399995422363283" prefHeight="45.60000762939453" />
             <RowConstraints maxHeight="132.79999389648435" minHeight="18.0" prefHeight="56.000012207031276" />
-            <RowConstraints maxHeight="567.0" minHeight="410.4000061035156" prefHeight="487.9999877929688" />
+            <RowConstraints maxHeight="132.79999389648435" minHeight="0.0" prefHeight="0.0" />
+            <RowConstraints maxHeight="567.0" minHeight="410.4000061035156" prefHeight="544.8" />
          </rowConstraints>
       </GridPane>
    </children>
